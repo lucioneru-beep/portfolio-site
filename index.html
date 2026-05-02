@@ -1,0 +1,5855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MY PORTFOLIO — EST. 199X</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --bg: #008080;
+  --bg2: #3a6ea5;
+  --win-bg: #c0c0c0;
+  --win-dark: #808080;
+  --win-darker: #404040;
+  --win-light: #ffffff;
+  --win-border: #dfdfdf;
+  --win-title: #000080;
+  --win-title-text: #ffffff;
+  --text: #000000;
+  --text-inv: #ffffff;
+  --monitor-body: #c8b89a;
+  --monitor-dark: #8a7a65;
+  --monitor-darker: #5a4a35;
+  --screen-off: #111;
+  --screen-on: #008080;
+  --accent: #000080;
+  --btn-face: #c0c0c0;
+  --shadow: rgba(0,0,0,0.5);
+  --taskbar: #c0c0c0;
+  --scanline: rgba(0,0,0,0.08);
+  --phosphor: rgba(0,255,0,0.03);
+}
+
+body.dark {
+  --bg: #1a1a2e;
+  --bg2: #16213e;
+  --win-bg: #2d2d2d;
+  --win-dark: #1a1a1a;
+  --win-darker: #0d0d0d;
+  --win-light: #3d3d3d;
+  --win-border: #444;
+  --win-title: #003366;
+  --win-title-text: #00ff41;
+  --text: #00ff41;
+  --text-inv: #000000;
+  --monitor-body: #2a2a2a;
+  --monitor-dark: #1a1a1a;
+  --monitor-darker: #0d0d0d;
+  --screen-off: #050505;
+  --screen-on: #0d1117;
+  --accent: #00ff41;
+  --btn-face: #2d2d2d;
+  --taskbar: #1a1a1a;
+  --scanline: rgba(0,255,0,0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'VT323', monospace;
+  background: var(--bg);
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.5s;
+  cursor: default;
+  user-select: none;
+}
+
+/* ===== TILED BACKGROUND ===== */
+.desktop-bg {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(ellipse at 20% 50%, rgba(0,0,128,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(128,0,128,0.1) 0%, transparent 40%);
+  z-index: 0;
+  transition: background 0.5s;
+}
+
+body:not(.dark) .desktop-bg {
+  background-image:
+    linear-gradient(135deg, #007070 25%, transparent 25%) -20px 0,
+    linear-gradient(225deg, #007070 25%, transparent 25%) -20px 0,
+    linear-gradient(315deg, #007070 25%, transparent 25%),
+    linear-gradient(45deg, #007070 25%, transparent 25%);
+  background-size: 40px 40px;
+  background-color: #008080;
+}
+
+body.dark .desktop-bg {
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,255,65,0.05) 39px, rgba(0,255,65,0.05) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,255,65,0.05) 39px, rgba(0,255,65,0.05) 40px);
+  background-color: #1a1a2e;
+}
+
+/* ===== TASKBAR ===== */
+.taskbar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 36px;
+  background: var(--taskbar);
+  border-top: 2px solid var(--win-light);
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  z-index: 9999;
+  gap: 4px;
+  transition: background 0.5s;
+}
+
+.start-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: var(--btn-face);
+  border: 2px outset var(--win-light);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
+  transition: all 0.1s;
+}
+.start-btn:active { border-style: inset; }
+.start-btn .logo { font-size: 14px; }
+
+.taskbar-clock {
+  margin-left: auto;
+  padding: 2px 8px;
+  border: 2px inset var(--win-light);
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--btn-face);
+  min-width: 70px;
+  text-align: center;
+}
+
+.theme-toggle {
+  padding: 2px 8px;
+  background: var(--btn-face);
+  border: 2px outset var(--win-light);
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.theme-toggle:active { border-style: inset; }
+
+.contact-shortcut-strip {
+  padding: 0 8px 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.contact-shortcut-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 28px;
+  padding: 4px 8px;
+  background: var(--btn-face);
+  border: 2px outset var(--win-light);
+  box-shadow: none;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.2px;
+  justify-content: flex-start;
+  cursor: pointer;
+  transition: background 0.12s ease, transform 0.12s ease;
+}
+
+.contact-shortcut-btn:hover,
+.contact-shortcut-btn:focus-visible {
+  background: var(--win-bg);
+}
+
+.contact-shortcut-btn:active {
+  border-style: inset;
+  transform: translateY(1px);
+}
+
+.contact-shortcut-btn span:first-child {
+  width: 1.1em;
+  text-align: center;
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+
+.contact-copy {
+  padding: 8px 8px 6px;
+  color: var(--text);
+  line-height: 1.35;
+  font-size: 15px;
+}
+
+.contact-copy strong {
+  color: var(--accent);
+}
+
+.contact-copy-title {
+  padding: 8px 8px 6px;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.35;
+  border-bottom: 1px solid var(--win-dark);
+  font-weight: bold;
+}
+
+.contact-copy-divider {
+  padding: 8px 8px 6px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.35;
+  border-top: 1px solid var(--win-dark);
+}
+
+.contact-email-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  font-weight: bold;
+}
+
+.contact-email-link:hover,
+.contact-email-link:focus-visible {
+  color: var(--win-title);
+}
+
+.contact-mail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 100%;
+  padding: 5px 8px;
+  background: var(--btn-face);
+  border: 2px outset var(--win-light);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  justify-content: flex-start;
+}
+
+.contact-mail-btn:hover,
+.contact-mail-btn:focus-visible {
+  background: var(--win-bg);
+}
+
+.contact-mail-btn:active {
+  border-style: inset;
+}
+
+.contact-mail-btn .mail-logo {
+  width: 1.2em;
+  text-align: center;
+  flex: 0 0 auto;
+}
+
+/* ===== AMBIENT TEXT (desktop) ===== */
+.desktop-text {
+  position: fixed;
+  z-index: 1;
+  pointer-events: none;
+  color: rgba(255,255,255,0.6);
+  font-family: 'VT323', monospace;
+  transition: color 0.5s;
+}
+body.dark .desktop-text { color: rgba(0,255,65,0.4); }
+
+.desktop-text.tl { top: 18px; left: 20px; font-size: 13px; line-height: 1.6; }
+.desktop-text.tr { top: 18px; right: 20px; font-size: 13px; text-align: right; line-height: 1.6; }
+.desktop-text.bl { bottom: 50px; left: 20px; font-size: 13px; line-height: 1.6; }
+.desktop-text.br { bottom: 50px; right: 20px; font-size: 13px; text-align: right; line-height: 1.6; }
+
+/* ===== MONITOR WRAPPER ===== */
+.monitor-scene {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  perspective: 1200px;
+}
+
+.monitor-wrapper {
+  position: relative;
+  cursor: grab;
+  transform-style: preserve-3d;
+  /* Static — no hover-follow */
+  transform: none;
+  transition: transform 0.15s ease-out;
+}
+.monitor-wrapper:active { cursor: grabbing; }
+.monitor-wrapper.dragging { /* while dragging keep the dynamic transform */ }
+
+.monitor-stickers {
+  position: absolute;
+  right: 50px;
+  bottom: 54px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  z-index: 200;
+  pointer-events: auto;
+}
+
+.sticker-btn {
+  width: 52px;
+  height: 52px;
+  border: 2px solid rgba(0,0,0,0.18);
+  background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.15));
+  box-shadow: 2px 3px 8px rgba(0,0,0,0.18);
+  padding: 0;
+  cursor: pointer;
+  border-radius: 6px;
+  overflow: hidden;
+  transform-origin: center;
+}
+
+.sticker-btn:hover {
+  transform: translateY(-1px) scale(1.04);
+}
+
+.sticker-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  image-rendering: auto;
+}
+
+.sticker-btn:nth-child(1),
+.sticker-btn:nth-child(2),
+.sticker-btn:nth-child(3),
+.sticker-btn:nth-child(4) { transform: none; }
+
+.sticker-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+@keyframes monitorFloat {
+  0%, 100% { transform: translateY(0px) rotateX(2deg) rotateY(-3deg); }
+  33% { transform: translateY(-8px) rotateX(0deg) rotateY(0deg); }
+  66% { transform: translateY(4px) rotateX(3deg) rotateY(3deg); }
+}
+
+/* ===== CRT MONITOR ===== */
+.monitor {
+  position: relative;
+  /* Increased size */
+  width: 760px;
+  height: 680px;
+  transform-style: preserve-3d;
+}
+
+/* Monitor body (front face) */
+.monitor-body {
+  position: absolute;
+  inset: 0;
+  /* CRT-style case: beige retro monitor */
+  background: linear-gradient(180deg, #f4eddf 0%, #e6ddc2 45%, #d6c9a8 100%);
+  border-radius: 20px;
+  box-shadow:
+    inset 2px 2px 8px rgba(255,255,255,0.6),
+    inset -2px -2px 8px rgba(0,0,0,0.08),
+    0 18px 40px rgba(0,0,0,0.15),
+    6px 6px 0 rgba(0,0,0,0.06),
+    8px 8px 20px rgba(0,0,0,0.08);
+  border: 3px solid rgba(0,0,0,0.12);
+}
+
+/* Screen bezel */
+.screen-bezel {
+  position: absolute;
+  /* larger bezel spacing to match bigger monitor */
+  top: 36px; left: 48px; right: 48px; bottom: 120px;
+  background: linear-gradient(180deg, #efe9d6 0%, #efe9d6 40%);
+  border-radius: 12px;
+  border: 10px solid #e6dcc2;
+  box-shadow:
+    inset 0 0 18px rgba(0,0,0,0.06),
+    inset 2px 2px 6px rgba(255,255,255,0.6),
+    0 6px 18px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+/* Actual screen */
+.screen {
+  position: absolute;
+  inset: 12px;
+  /* Dark glass surface with subtle texture */
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,20,0,0.04) 0px,
+      rgba(0,20,0,0.04) 2px,
+      transparent 2px,
+      transparent 4px
+    ),
+    radial-gradient(circle at 50% 35%, #0b0b0b 0%, #040404 55%, #000000 100%);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 
+    inset 0 0 40px rgba(0,0,0,0.05),
+    inset 0 0 60px rgba(0,0,0,0.2);
+}
+
+/* When monitor is on, same with texture */
+.monitor-on .screen {
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,20,0,0.04) 0px,
+      rgba(0,20,0,0.04) 2px,
+      transparent 2px,
+      transparent 4px
+    ),
+    radial-gradient(circle at 50% 35%, #0b0b0b 0%, #040404 55%, #000000 100%);
+}
+
+/* Glass reflection + vignette effect */
+.screen::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: 
+    radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.35) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 8%, transparent 25%);
+  border-radius: 10px;
+  z-index: 12;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Enhanced scanlines */
+.screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.08) 0px,
+    rgba(0,0,0,0.08) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 11;
+  pointer-events: none;
+  opacity: 0.25;
+}
+.monitor-on .screen::after { 
+  opacity: 0.35;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.1) 0px,
+    rgba(0,0,0,0.1) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* Phosphor glow */
+.screen-glow {
+  position: absolute;
+  inset: 0;
+  background: none;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.0;
+  border-radius: 10px;
+}
+.monitor-on .screen-glow { opacity: 0.0; }
+
+/* Screen content */
+.screen-content {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.3s;
+  overflow: hidden;
+}
+.monitor-on .screen-content { opacity: 1; }
+
+/* Click to start overlay */
+.screen-off-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: opacity 0.5s;
+}
+.monitor-on .screen-off-overlay { opacity: 0; pointer-events: none; }
+
+.power-icon-big {
+  font-size: 48px;
+  color: rgba(255,255,255,0.15);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
+
+.click-hint {
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* ===== TURN ON ANIMATION ===== */
+@keyframes crtTurnOn {
+  0% { transform: scaleY(0.003) scaleX(1); opacity: 0.8; filter: brightness(8); }
+  30% { transform: scaleY(0.003) scaleX(1); filter: brightness(8); }
+  50% { transform: scaleY(1) scaleX(1); filter: brightness(3); }
+  70% { filter: brightness(1.5); }
+  85% { filter: brightness(0.8); }
+  92% { filter: brightness(1.1); }
+  100% { transform: scaleY(1) scaleX(1); filter: brightness(1); }
+}
+
+@keyframes crtTurnOff {
+  0% { transform: scaleY(1); filter: brightness(1); }
+  30% { transform: scaleY(1) scaleX(1); filter: brightness(2); }
+  50% { transform: scaleY(0.003) scaleX(0.8); filter: brightness(8); }
+  100% { transform: scaleY(0.003) scaleX(0); filter: brightness(0); opacity: 0; }
+}
+
+.screen-content.turning-on {
+  animation: crtTurnOn 0.8s ease-out forwards;
+}
+.screen-content.turning-off {
+  animation: crtTurnOff 0.5s ease-in forwards;
+}
+
+.doro-window-content {
+  font-size: 22px;
+  line-height: 1.2;
+  text-align: center;
+  padding: 18px 10px;
+  color: var(--text);
+}
+
+.doro-window-content strong {
+  display: block;
+  font-size: 34px;
+  margin-bottom: 10px;
+  color: var(--win-title);
+}
+
+/* ===== MONITOR BOTTOM PANEL ===== */
+.monitor-bottom {
+  position: absolute;
+  bottom: 14px; left: 36px; right: 36px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 6px 24px;
+}
+
+.brand-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #6b5b40;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.monitor-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Power button (bezel-style small round buttons) */
+.power-btn {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(180deg,#d6c9a8,#cdbd98);
+  border: 2px solid rgba(0,0,0,0.08);
+  box-shadow: 0 2px 2px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.08s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.power-btn:active { transform: translateY(1px); }
+.power-led {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #333;
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  transition: all 0.2s;
+}
+.monitor-on .power-led {
+  background: #9ef07a;
+  box-shadow: 0 0 8px rgba(158,240,122,0.6);
+}
+
+.monitor-knob {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(180deg,#e2d6b8,#d3c8a0);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* Monitor stand */
+.monitor-stand-neck {
+  position: absolute;
+  bottom: -76px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 96px; height: 64px;
+  background: linear-gradient(180deg,#e6dcc2,#d6c9a8);
+  clip-path: polygon(18% 0%, 82% 0%, 100% 100%, 0% 100%);
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+  border-radius: 6px;
+}
+
+.monitor-stand-base {
+  position: absolute;
+  bottom: -116px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px; height: 34px;
+  background: linear-gradient(180deg,#efe7d0,#e2d6b8);
+  border-radius: 12px;
+  box-shadow: 6px 10px 30px rgba(0,0,0,0.12);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+/* ===== MONITOR SHADOW ===== */
+.monitor-shadow {
+  position: absolute;
+  bottom: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 520px; height: 48px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.45) 0%, transparent 70%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* ===== WINDOWS 95 DESKTOP (screen content) ===== */
+.win95-desktop {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 50% 10%, rgba(0,60,20,0.15) 0%, rgba(0,40,10,0.08) 40%, rgba(0,0,0,0.06) 100%);
+  position: relative;
+  overflow: hidden;
+  font-family: 'VT323', monospace;
+  transition: background 0.5s;
+  color: #98ff9e; /* phosphor green text */
+}
+
+/* Desktop icons */
+.desktop-icons {
+  display: grid;
+  grid-template-columns: repeat(2, 72px);
+  gap: 16px;
+  padding: 12px;
+  position: absolute;
+  top: 8px; left: 8px;
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 2px;
+  transition: background 0.1s;
+  width: 72px;
+}
+.icon-item:hover { background: rgba(0,0,128,0.5); }
+.icon-item.selected { background: rgba(0,0,128,0.8); }
+.icon-item:active { background: rgba(0,0,128,0.9); }
+
+.icon-img {
+  font-size: 36px;
+  line-height: 1;
+  filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.5));
+}
+.icon-label {
+  font-family: 'VT323', monospace;
+  font-size: 13px;
+  color: white;
+  text-shadow: 1px 1px 2px black, -1px -1px 0 black;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
+  width: 100%;
+}
+
+/* ===== WIN95 WINDOW ===== */
+.win95-window {
+  position: fixed;
+  display: none;
+  flex-direction: column;
+  background: var(--win-bg);
+  border: 2px solid;
+  border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light);
+  box-shadow: 2px 2px 0 var(--win-darker);
+  min-width: 200px;
+  z-index: 50;
+  font-family: 'VT323', monospace;
+  transition: background 0.3s, border-color 0.3s;
+}
+.win95-window.visible { display: flex; }
+.win95-window.active { z-index: 60; }
+
+.window-titlebar {
+  background: linear-gradient(to right, var(--win-title), #1084d0);
+  color: var(--win-title-text);
+  padding: 3px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: move;
+  height: 22px;
+  user-select: none;
+}
+body.dark .window-titlebar { background: linear-gradient(to right, #003366, #006644); }
+
+.window-title {
+  font-family: 'VT323', monospace;
+  font-size: clamp(12px, 1.5vw, 16px);
+  font-weight: bold;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
+.title-icon { font-size: clamp(10px, 1.4vw, 16px); }
+
+.window-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.win-btn {
+  width: 16px; height: 14px;
+  background: var(--win-bg);
+  border: 1px solid;
+  border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: bold;
+  color: var(--text);
+  line-height: 1;
+}
+.win-btn:active { border-color: var(--win-dark) var(--win-light) var(--win-light) var(--win-dark); }
+
+.win95-folder-btn {
+  background: var(--btn-face);
+  border: 2px outset var(--win-light);
+  padding: 4px 12px;
+  font-family: inherit;
+  font-size: clamp(11px, 1.3vw, 13px);
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.05s;
+}
+.win95-folder-btn:hover { background: var(--win-bg); }
+.win95-folder-btn:active { border-style: inset; border-color: var(--win-dark) var(--win-light) var(--win-light) var(--win-dark); }
+
+.window-menubar {
+  background: var(--win-bg);
+  border-bottom: 1px solid var(--win-dark);
+  padding: 2px 4px;
+  display: flex;
+  gap: 0;
+}
+.menu-item {
+  padding: 2px 0.5em;
+  font-size: clamp(12px, 1.5vw, 16px);
+  cursor: pointer;
+  color: var(--text);
+}
+.menu-item:hover { background: var(--win-title); color: white; }
+
+.window-body {
+  padding: clamp(4px, 1.5%, 12px);
+  color: var(--text);
+  font-size: clamp(13px, 1.8vw, 18px);
+  line-height: 1.5;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.resize-handle {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 14px;
+  height: 14px;
+  cursor: nwse-resize;
+  z-index: 5;
+  background:
+    linear-gradient(135deg, transparent 0 40%, var(--win-dark) 40% 48%, transparent 48% 58%, var(--win-dark) 58% 66%, transparent 66% 76%, var(--win-dark) 76% 84%, transparent 84% 100%);
+  opacity: 0.75;
+}
+
+.win95-window.resizing {
+  user-select: none;
+}
+
+/* Scrollbar */
+.window-body::-webkit-scrollbar { width: 14px; }
+.window-body::-webkit-scrollbar-track { background: var(--win-bg); border: 1px inset var(--win-dark); }
+.window-body::-webkit-scrollbar-thumb { background: var(--win-bg); border: 2px outset var(--win-light); }
+
+.win95-taskbar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 28px;
+  background: var(--win-bg);
+  border-top: 2px solid var(--win-light);
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  gap: 4px;
+  z-index: 200;
+}
+
+.inner-start {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  background: var(--btn-face);
+  border: 2px outset var(--win-light);
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--text);
+  cursor: pointer;
+}
+.inner-start:active { border-style: inset; }
+
+.inner-clock {
+  margin-left: auto;
+  padding: 1px 6px;
+  border: 2px inset var(--win-dark);
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* ===== FAQ WINDOW ===== */
+#faqWindow .window-body {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+/* ===== ABOUT WINDOW ===== */
+#aboutWindow {
+  width: 340px;
+  top: 20px; left: 20px;
+}
+
+.about-content {
+  display: flex;
+  gap: 0.8em;
+  align-items: flex-start;
+}
+.about-avatar {
+  font-size: clamp(48px, 7vw, 72px);
+  flex-shrink: 0;
+  filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+}
+.about-info { flex: 1; }
+.about-info h2 {
+  font-size: clamp(16px, 2.2vw, 24px);
+  color: var(--win-title);
+  margin-bottom: 0.5em;
+}
+body.dark .about-info h2 { color: var(--accent); }
+.about-info p { font-size: clamp(12px, 1.5vw, 16px); margin-bottom: 0.5em; line-height: 1.4; }
+.about-divider {
+  border: none;
+  border-top: 2px solid;
+  border-color: var(--win-dark) transparent transparent var(--win-light);
+  margin: 0.8em 0;
+}
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4em;
+  margin-top: 0.8em;
+}
+.stat-item {
+  background: var(--win-bg);
+  border: 2px inset var(--win-dark);
+  padding: 0.4em;
+  text-align: center;
+  font-size: clamp(11px, 1.3vw, 14px);
+}
+.stat-value { font-size: clamp(14px, 2vw, 22px); color: var(--win-title); }
+body.dark .stat-value { color: var(--accent); }
+
+/* ===== WORKS WINDOW - File Explorer ===== */
+#worksWindow {
+  width: 380px;
+  top: 30px; left: 40px;
+}
+
+.file-explorer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6em;
+  padding: 0.8em;
+}
+
+.file-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.8em 0.4em;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  transition: background 0.1s;
+}
+.file-icon:hover { background: rgba(0,0,128,0.15); border-color: var(--win-title); }
+.file-icon:active { background: rgba(0,0,128,0.25); }
+.file-icon .fi {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: clamp(20px, 3.2vw, 36px);
+}
+.file-icon .fi img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border: 2px solid #f0b37d;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
+}
+.file-explorer .back-row {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 0.2em;
+}
+.file-icon-label { font-size: clamp(10px, 1.2vw, 13px); text-align: center; color: var(--text); word-break: break-word; }
+
+/* ===== WORK VIEWER WINDOW ===== */
+#workViewerWindow {
+  width: 360px;
+  top: 50px; left: 60px;
+}
+
+#workViewerWindow .window-body {
+  overflow: hidden;
+}
+
+#workViewerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.work-viewer-media {
+  width: fit-content;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: #111;
+  border: 2px inset var(--win-dark);
+  margin: 0 auto;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.work-viewer-img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(86vh, 640px);
+  object-fit: contain;
+  display: block;
+}
+
+.art-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.88);
+  z-index: 20000;
+  padding: 24px;
+}
+
+.art-overlay.visible { display: flex; }
+
+.art-overlay-panel {
+  position: relative;
+  max-width: min(96vw, 1200px);
+  max-height: 92vh;
+  background: var(--win-bg);
+  border: 2px outset var(--win-light);
+  box-shadow: 0 0 0 2px #000, 0 18px 48px rgba(0,0,0,0.5);
+  padding: 10px;
+}
+
+.art-overlay-panel img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(92vh - 20px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: zoom-out;
+}
+
+.art-overlay-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border: 2px outset var(--win-light);
+  background: var(--win-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.work-placeholder {
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(135deg, #1a1a6e, #003366, #1a1a6e);
+  border: 2px inset var(--win-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00aaff;
+  font-size: clamp(11px, 1.4vw, 15px);
+  text-align: center;
+  margin-bottom: 0.8em;
+  flex-direction: column;
+  gap: 0.8em;
+}
+.work-placeholder-icon { font-size: clamp(32px, 4.8vw, 52px); }
+
+.work-viewer-media:active,
+.work-viewer-media:focus-visible,
+.art-overlay-panel img:active {
+  cursor: zoom-out;
+}
+
+.work-desc { font-size: clamp(11px, 1.4vw, 15px); color: var(--text); line-height: 1.5; }
+.work-tags { display: flex; flex-wrap: wrap; gap: 0.4em; margin-top: 0.8em; }
+.work-tag {
+  background: var(--win-title);
+  color: white;
+  padding: 0.2em 0.6em;
+  font-size: clamp(10px, 1.2vw, 13px);
+  border: 1px solid var(--win-darker);
+}
+body.dark .work-tag { background: #003322; color: var(--accent); border-color: var(--accent); }
+
+/* ===== LINKS WINDOW ===== */
+#linksWindow {
+  width: 300px;
+  top: 25px; left: 30px;
+}
+
+.links-list { display: flex; flex-direction: column; gap: 0.4em; }
+.link-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.6em;
+  background: var(--win-bg);
+  border: 2px outset var(--win-light);
+  cursor: pointer;
+  font-size: clamp(13px, 1.6vw, 17px);
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.1s;
+}
+.link-row:hover { background: var(--win-title); color: white; }
+.link-row:active { border-style: inset; }
+.link-icon { font-size: clamp(16px, 2vw, 22px); }
+
+.link-row.vgen-link {
+  background: linear-gradient(180deg, #dcffe9 0%, #c9f9dc 100%);
+  border-color: #f4fff8 #3b9f64 #3b9f64 #f4fff8;
+  color: #145c33;
+}
+
+.link-row.vgen-link:hover {
+  background: linear-gradient(180deg, #48c97e 0%, #36b96c 100%);
+  color: #f5fff8;
+}
+
+/* ===== FAQ WINDOW ===== */
+#faqWindow {
+  width: 340px;
+  top: 20px; left: 20px;
+}
+
+.faq-item { margin-bottom: 1em; }
+.faq-q {
+  font-size: clamp(12px, 1.5vw, 16px);
+  font-weight: bold;
+  color: var(--win-title);
+  margin-bottom: 0.3em;
+  display: flex;
+  gap: 0.3em;
+}
+body.dark .faq-q { color: var(--accent); }
+.faq-a { font-size: clamp(11px, 1.4vw, 15px); color: var(--text); padding-left: 1.5em; line-height: 1.4; }
+
+/* ===== CONTACTS WINDOW ===== */
+#contactsWindow {
+  width: 310px;
+  top: 20px; left: 20px;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  padding: 0.8em;
+  border-bottom: 1px solid var(--win-dark);
+  font-size: clamp(12px, 1.5vw, 16px);
+  color: var(--text);
+}
+.contact-icon { font-size: clamp(18px, 2.4vw, 26px); }
+.contact-info { flex: 1; }
+.contact-label { font-size: clamp(10px, 1.2vw, 13px); color: var(--win-dark); }
+.contact-value { font-size: clamp(12px, 1.5vw, 16px); }
+
+/* ===== STATUS BAR ===== */
+/* ===== MUSIC PLAYER WINDOW ===== */
+#musicWindow {
+  position: fixed;
+  width: 380px;
+  top: 120px;
+  left: 28px;
+  z-index: 250;
+}
+
+#videoWindow {
+  position: fixed;
+  width: 420px;
+  top: 120px;
+  right: 28px;
+  z-index: 250;
+}
+
+.video-stage {
+  background: #000;
+  border: 2px inset var(--win-dark);
+  margin: 0 auto 0.8em;
+  aspect-ratio: 16 / 9;
+  max-height: min(52vh, 380px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.video-empty {
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  text-align: center;
+}
+
+.player-display {
+  background: var(--win-dark);
+  border: 2px inset var(--win-darker);
+  padding: clamp(4px, 1%, 8px);
+  margin-bottom: 0.8em;
+  border-radius: 2px;
+}
+
+.player-title {
+  font-size: clamp(11px, 1.3vw, 14px);
+  color: var(--text);
+  margin-bottom: 0.4em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-time {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: clamp(10px, 1.2vw, 13px);
+  color: var(--win-dark);
+  margin-bottom: 0.6em;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.2px;
+}
+
+.player-time span {
+  display: inline-block;
+  min-width: 38px;
+  text-align: right;
+}
+
+.player-progress-bar {
+  position: relative;
+  width: 100%;
+  height: clamp(12px, 1.8vw, 18px);
+  background: var(--win-bg);
+  border: 1px inset var(--win-dark);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.player-progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  background: linear-gradient(90deg, #1f4fbf 0%, #5b84ea 100%);
+}
+
+.player-progress-bar input[type="range"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+.player-progress-bar input[type="range"]::-webkit-slider-runnable-track {
+  height: 14px;
+  background: transparent;
+  border: 0;
+}
+
+.player-progress-bar input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: 0;
+}
+
+.player-progress-bar input[type="range"]::-moz-range-track {
+  height: 14px;
+  background: transparent;
+  border: 0;
+}
+
+.player-progress-bar input[type="range"]::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: 0;
+}
+
+.player-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--win-title) 0%, #4a7ac7 100%);
+  width: 0%;
+}
+
+.playlist-container {
+  background: var(--win-bg);
+  border: 2px inset var(--win-dark);
+  overflow-y: auto;
+}
+
+.track-picker {
+  width: 100%;
+  margin: 0.5em 0 0.8em;
+  padding: 0.35em 0.45em;
+  font-family: inherit;
+  font-size: clamp(11px, 1.3vw, 14px);
+  color: var(--text);
+  background: var(--win-bg);
+  border: 2px inset var(--win-dark);
+}
+
+.track-picker:focus {
+  outline: 1px dotted var(--win-title);
+  outline-offset: -2px;
+}
+
+.playlist-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+  padding: 0.5em 0.8em;
+  font-size: clamp(11px, 1.3vw, 14px);
+  color: var(--text);
+  border-bottom: 1px solid var(--win-border);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.playlist-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-remove {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--win-dark);
+  background: var(--btn-face);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.playlist-remove:hover {
+  background: #cc4444;
+  color: #fff;
+}
+
+.playlist-remove:active {
+  border-style: inset;
+}
+
+.playlist-item:hover {
+  background: var(--win-title);
+  color: var(--text-inv);
+}
+
+.playlist-item.active {
+  background: var(--win-title);
+  color: var(--text-inv);
+  font-weight: bold;
+}
+
+.playlist-item.active .playlist-remove {
+  color: var(--text);
+}
+
+.player-controls {
+  display: flex;
+  gap: 0.4em;
+  margin: 0.8em 0;
+}
+
+.player-btn {
+  flex: 1;
+  padding: clamp(4px, 1%, 10px);
+  font-size: clamp(12px, 1.6vw, 17px);
+  background: var(--btn-face);
+  border: 2px outset var(--win-light);
+  cursor: pointer;
+  transition: background 0.1s;
+  font-family: inherit;
+}
+
+.player-btn:hover {
+  background: #e0e0e0;
+}
+
+.player-btn:active {
+  border-style: inset;
+}
+
+/* ===== VIDEO PLAYER STYLING ===== */
+.video-stage {
+  background: #000;
+  border: 2px inset var(--win-dark);
+  margin: 0 auto 0.8em;
+  aspect-ratio: 16 / 9;
+  max-height: min(52vh, 300px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+}
+
+.video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.video-empty {
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  text-align: center;
+  position: absolute;
+  display: none !important;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.window-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  cursor: se-resize;
+  background: linear-gradient(135deg, transparent 50%, var(--win-dark) 50%);
+  user-select: none;
+}
+
+/* ===== STATUS BAR ===== */
+.window-statusbar {
+  background: var(--win-bg);
+  border-top: 1px solid var(--win-dark);
+  padding: 0.2em 0.8em;
+  font-size: clamp(11px, 1.3vw, 14px);
+  color: var(--text);
+  display: flex;
+  gap: 0.8em;
+}
+.statusbar-item {
+  border: 1px inset var(--win-dark);
+  padding: 0 6px;
+}
+
+/* ===== BOOT SEQUENCE ===== */
+.boot-screen {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: #aaa;
+  padding: 20px;
+  overflow: hidden;
+}
+.boot-line { margin: 1px 0; white-space: pre; text-align: left; width: 100%; }
+.boot-line.ok { color: #00ff41; }
+.boot-line.warn { color: #ffaa00; }
+.boot-line.title { color: #00aaff; font-size: 14px; font-weight: bold; }
+.boot-bar-wrap { width: 100%; margin: 8px 0; }
+.boot-bar {
+  height: 10px;
+  background: #004400;
+  border: 1px solid #00aa00;
+  overflow: hidden;
+}
+.boot-bar-fill {
+  height: 100%;
+  background: #00ff41;
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px #00ff41;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.blink { animation: blink 1s step-end infinite; }
+
+@keyframes windowOpen {
+  from { transform: scale(0.3) translateY(20px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+.win95-window.visible { animation: windowOpen 0.15s ease-out; }
+
+@keyframes crtTurnOn {
+  0% { transform: scaleY(0.003) scaleX(1); opacity: 0.8; filter: brightness(8); }
+  30% { transform: scaleY(0.003) scaleX(1); filter: brightness(8); }
+  50% { transform: scaleY(1) scaleX(1); filter: brightness(3); }
+  70% { filter: brightness(1.5); }
+  85% { filter: brightness(0.8); }
+  92% { filter: brightness(1.1); }
+  100% { transform: scaleY(1) scaleX(1); filter: brightness(1); }
+}
+
+@keyframes crtTurnOff {
+  0% { transform: scaleY(1); filter: brightness(1); opacity: 1; }
+  30% { transform: scaleY(1) scaleX(1); filter: brightness(2); }
+  50% { transform: scaleY(0.003) scaleX(0.8); filter: brightness(8); }
+  100% { transform: scaleY(0.003) scaleX(0); filter: brightness(0); opacity: 0; }
+}
+
+.screen-content.turning-on {
+  animation: crtTurnOn 0.8s ease-out forwards;
+  transform-origin: center;
+}
+
+.screen-content.turning-off {
+  animation: crtTurnOff 0.5s ease-in forwards;
+  transform-origin: center;
+  pointer-events: none;
+}
+
+/* ===== CONTEXT MENU ===== */
+.context-menu {
+  position: absolute;
+  background: var(--win-bg);
+  border: 2px solid;
+  border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light);
+  box-shadow: 2px 2px 0 var(--win-darker);
+  z-index: 300;
+  display: none;
+  min-width: 160px;
+}
+.context-menu.visible { display: block; }
+.ctx-item {
+  padding: 4px 20px;
+  font-size: 16px;
+  color: var(--text);
+  cursor: pointer;
+}
+.ctx-item:hover { background: var(--win-title); color: white; }
+.ctx-divider { height: 1px; background: var(--win-dark); margin: 2px 4px; }
+
+/* ===== RIPPLE ON SCREEN CLICK ===== */
+@keyframes ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* ===== MONITOR 3D SIDE/TOP ===== */
+.monitor-3d-top {
+  display: none;
+}
+.monitor-3d-left {
+  position: absolute;
+  top: 14px; left: -18px; bottom: 14px; width: 18px;
+  background: linear-gradient(to right, #e9e0c8, #dfd3b2);
+  transform: rotateY(-30deg);
+  transform-origin: right;
+  border-radius: 10px 0 0 10px;
+}
+.monitor-3d-right {
+  position: absolute;
+  top: 14px; right: -18px; bottom: 14px; width: 18px;
+  background: linear-gradient(to left, #e9e0c8, #dfd3b2);
+  transform: rotateY(30deg);
+  transform-origin: left;
+  border-radius: 0 10px 10px 0;
+}
+
+/* Progress bar in windows */
+.win-progress {
+  height: 16px;
+  background: var(--win-bg);
+  border: 2px inset var(--win-dark);
+  overflow: hidden;
+  margin: 4px 0;
+}
+.win-progress-fill {
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--win-title) 0px,
+    var(--win-title) 12px,
+    transparent 12px,
+    transparent 14px
+  );
+}
+
+/* ===== RESPONSIVE ===== */
+/* Desktop: Show music and video players by default */
+#musicWindow,
+#videoWindow {
+  display: flex !important;
+}
+
+@media (max-width: 650px) {
+  .monitor { width: 370px; height: 340px; }
+  .screen-bezel { top: 16px; left: 18px; right: 18px; bottom: 55px; }
+  .monitor-stand-neck { width: 40px; height: 35px; }
+  .monitor-stand-base { width: 130px; height: 16px; }
+  .desktop-icons { grid-template-columns: repeat(2, 60px); gap: 10px; }
+  .icon-img { font-size: 28px; }
+  #aboutWindow, #worksWindow, #linksWindow, #faqWindow, #contactsWindow, #videoWindow { width: calc(100% - 20px); left: 10px !important; right: auto !important; }
+  .monitor-stickers { right: 16px; bottom: 36px; gap: 5px; }
+  .sticker-btn { width: 38px; height: 38px; }
+  .boot-screen { font-size: 10px; }
+}
+</style>
+<style>
+/* Prominent Close All Doro button on real taskbar */
+.close-all-doro-btn {
+  margin-left: 12px;
+  padding: 6px 10px;
+  background: linear-gradient(180deg,var(--win-title),#1084d0);
+  color: var(--win-title-text);
+  border: 2px solid rgba(0,0,0,0.12);
+  box-shadow: 0 2px 6px rgba(16,132,208,0.22), 0 0 8px rgba(74,122,199,0.12) inset;
+  font-family: 'VT323', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+.close-all-doro-btn:active { transform: translateY(1px); }
+
+@keyframes doroPulse {
+  0% { box-shadow: 0 2px 6px rgba(16,132,208,0.22); }
+  50% { box-shadow: 0 6px 16px rgba(16,132,208,0.30); }
+  100% { box-shadow: 0 2px 6px rgba(16,132,208,0.22); }
+}
+.close-all-doro-btn.pulse { animation: doroPulse 1.6s ease-in-out infinite; }
+
+/* ===== START MENU ===== */
+.start-menu {
+  position: fixed;
+  bottom: 32px;
+  left: 0;
+  background: var(--btn-face);
+  border: 2px solid;
+  border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light);
+  box-shadow: -2px -2px 0 var(--win-darker);
+  z-index: 500;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+}
+
+.start-menu-item {
+  padding: 6px 16px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  font-family: 'VT323', monospace;
+  border-bottom: 1px solid var(--win-border);
+  transition: background 0.1s;
+}
+
+.start-menu-item:last-child {
+  border-bottom: none;
+}
+
+.start-menu-item:hover {
+  background: var(--win-title);
+  color: white;
+}
+
+.start-menu-item:active {
+  background: #000040;
+}
+
+.start-menu-divider {
+  height: 2px;
+  background: var(--win-dark);
+  margin: 2px 0;
+}
+
+/* ===== WING ICON ===== */
+.wing-icon {
+  margin: 0 8px;
+  font-size: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s;
+}
+
+.wing-icon:hover {
+  transform: scale(1.15);
+}
+
+.wing-icon:active {
+  transform: scale(0.95);
+}
+
+/* ===== VIDEO TRANSITION OVERLAY ===== */
+.video-transition-overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.glitch-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.angel-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.98) 6%, rgba(255,250,232,0.95) 12%, rgba(255,235,180,0.78) 22%, rgba(255,214,124,0.54) 34%, rgba(255,255,255,0) 66%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.95) 0%, rgba(255,248,218,0.38) 24%, rgba(255,255,255,0) 60%),
+    radial-gradient(circle at 50% 50%, rgba(255,246,205,0.35) 0%, rgba(255,246,205,0.08) 34%, rgba(255,255,255,0) 68%);
+  mix-blend-mode: screen;
+  filter: blur(1px) saturate(1.35);
+  transform: scale(0.82);
+}
+
+.angel-flash::before,
+.angel-flash::after {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+}
+
+.angel-flash::before {
+  background: repeating-linear-gradient(
+    115deg,
+    rgba(255,255,255,0.0) 0px,
+    rgba(255,255,255,0.0) 18px,
+    rgba(255,244,214,0.55) 22px,
+    rgba(255,255,255,0.0) 28px
+  );
+  filter: blur(6px);
+  opacity: 0.9;
+}
+
+.angel-flash::after {
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.55) 12%, rgba(255,255,255,0.12) 26%, rgba(255,255,255,0) 60%);
+  transform: scale(1.15);
+  filter: blur(12px);
+}
+
+.video-transition-overlay.angelic-enter .angel-flash {
+  animation: angel-flash-burst 1250ms cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.video-transition-overlay.angelic-exit .angel-flash {
+  animation: angel-fade-away 950ms ease-in forwards;
+}
+
+.transition-video.angelic-intro {
+  animation: angel-video-enter 1150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  filter: blur(22px) brightness(2.4) contrast(1.45) saturate(1.35);
+  transform: scale(0.94);
+}
+
+.transition-video.angelic-outro {
+  animation: angel-video-exit 950ms ease-in forwards;
+}
+
+.transition-video {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  object-fit: cover;
+  object-position: center center;
+  background: #000;
+  transform: translateZ(0);
+  image-rendering: auto;
+  will-change: transform, opacity;
+}
+
+@keyframes scanlines {
+  0% { text-shadow: 0 0 15px #00ff00, 0 0 30px rgba(0,255,0,0.3); }
+  50% { text-shadow: 0 0 20px #00ff00, 0 0 40px rgba(0,255,0,0.5); }
+  100% { text-shadow: 0 0 15px #00ff00, 0 0 30px rgba(0,255,0,0.3); }
+}
+
+@keyframes glitch-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes angel-flash-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.78);
+    filter: blur(12px) brightness(2.8);
+  }
+  8% {
+    opacity: 1;
+    transform: scale(0.88);
+    filter: blur(8px) brightness(3.2);
+  }
+  16% {
+    opacity: 1;
+    transform: scale(1.02);
+    filter: blur(4px) brightness(2.5);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.12);
+    filter: blur(1px) brightness(1.8);
+  }
+  46% {
+    opacity: 0.96;
+    transform: scale(1.24);
+    filter: blur(0px) brightness(1.28);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+    filter: blur(14px) brightness(0.65);
+  }
+}
+
+@keyframes angel-fade-away {
+  0% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  30% {
+    opacity: 0.95;
+    transform: scale(1.1);
+  }
+  65% {
+    opacity: 0.55;
+    transform: scale(1.22);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes angel-video-enter {
+  0% {
+    filter: blur(28px) brightness(3.2) contrast(1.6) saturate(1.6);
+    transform: translate3d(0px, 0px, 0) scale(0.9) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    transform: translate3d(-16px, 9px, 0) scale(0.92) rotate(-0.8deg);
+  }
+  18% {
+    filter: blur(18px) brightness(2.6) contrast(1.45) saturate(1.4);
+    transform: translate3d(14px, -11px, 0) scale(0.94) rotate(0.7deg);
+    opacity: 0.55;
+  }
+  30% {
+    transform: translate3d(-12px, -7px, 0) scale(0.96) rotate(-0.55deg);
+  }
+  42% {
+    filter: blur(10px) brightness(1.9) contrast(1.25) saturate(1.2);
+    transform: translate3d(10px, 6px, 0) scale(0.98) rotate(0.45deg);
+    opacity: 0.9;
+  }
+  54% {
+    transform: translate3d(-8px, 5px, 0) scale(1) rotate(-0.32deg);
+  }
+  68% {
+    filter: blur(3px) brightness(1.25) contrast(1.05) saturate(1.05);
+    transform: translate3d(5px, -3px, 0) scale(1.01) rotate(0.2deg);
+    opacity: 1;
+  }
+  84% {
+    transform: translate3d(-2px, 1px, 0) scale(1.003) rotate(-0.08deg);
+  }
+  100% {
+    filter: blur(0px) brightness(1) contrast(1) saturate(1);
+    transform: translate3d(0px, 0px, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes angel-video-exit {
+  0% {
+    filter: blur(0px) brightness(1) contrast(1) saturate(1);
+    transform: translate3d(0px, 0px, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  12% {
+    transform: translate3d(7px, -5px, 0) scale(1.01) rotate(0.28deg);
+  }
+  22% {
+    filter: blur(8px) brightness(1.25) contrast(1.15) saturate(1.1);
+    transform: translate3d(-10px, 6px, 0) scale(1.02) rotate(-0.4deg);
+    opacity: 1;
+  }
+  38% {
+    transform: translate3d(13px, -8px, 0) scale(1.04) rotate(0.5deg);
+  }
+  55% {
+    filter: blur(18px) brightness(1.9) contrast(1.35) saturate(1.25);
+    transform: translate3d(-15px, 9px, 0) scale(1.07) rotate(-0.62deg);
+    opacity: 0.82;
+  }
+  78% {
+    transform: translate3d(9px, -6px, 0) scale(1.1) rotate(0.4deg);
+  }
+  100% {
+    filter: blur(28px) brightness(2.5) contrast(1.55) saturate(1.4);
+    transform: translate3d(0px, 0px, 0) scale(1.12) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+@keyframes glitch-enter {
+  0% {
+    transform: translate(0);
+    filter: brightness(1) contrast(1);
+    opacity: 1;
+  }
+  10% {
+    transform: translate(-4px, 2px);
+    filter: brightness(0.9) contrast(1.2);
+  }
+  20% {
+    transform: translate(2px, -3px);
+    filter: brightness(1.1) contrast(0.9);
+  }
+  30% {
+    transform: translate(-3px, -1px);
+    filter: brightness(0.8) contrast(1.3);
+  }
+  40% {
+    transform: translate(3px, 2px);
+    filter: brightness(1.05) contrast(1.1);
+  }
+  50% {
+    transform: translate(-2px, 3px);
+    filter: brightness(0.95) contrast(1.2);
+  }
+  60% {
+    transform: translate(4px, -2px);
+    filter: brightness(1.1) contrast(0.95);
+  }
+  70% {
+    transform: translate(-1px, -2px);
+    filter: brightness(0.9) contrast(1.15);
+  }
+  80% {
+    transform: translate(2px, 1px);
+    filter: brightness(1) contrast(1.1);
+  }
+  90% {
+    transform: translate(-1px, 1px);
+    filter: brightness(1) contrast(1.05);
+  }
+  100% {
+    transform: translate(0);
+    filter: brightness(1) contrast(1);
+    opacity: 1;
+  }
+}
+
+@keyframes glitch-exit {
+  0% {
+    transform: translate(0) scaleY(1);
+    filter: brightness(1) contrast(1);
+    opacity: 1;
+  }
+  15% {
+    transform: translate(-6px, -3px) scaleY(1);
+    filter: brightness(0.8) contrast(1.3);
+  }
+  30% {
+    transform: translate(5px, 4px) scaleY(0.95);
+    filter: brightness(1.2) contrast(0.8);
+  }
+  45% {
+    transform: translate(-4px, -5px) scaleY(0.98);
+    filter: brightness(0.7) contrast(1.4);
+  }
+  60% {
+    transform: translate(3px, 2px) scaleY(0.9);
+    filter: brightness(1.1) contrast(1.2);
+  }
+  75% {
+    transform: translate(-2px, 3px) scaleY(0.85);
+    filter: brightness(0.6) contrast(1.5);
+  }
+  90% {
+    transform: translate(1px, -1px) scaleY(0.3);
+    filter: brightness(0.5) contrast(1.6);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(0) scaleY(0);
+    filter: brightness(0) contrast(1);
+    opacity: 0;
+  }
+}
+
+.video-transition-overlay.glitch-enter {
+  animation: glitch-enter 0.8s ease-in-out forwards;
+}
+
+.video-transition-overlay.glitch-exit {
+  animation: glitch-exit 0.8s ease-in-out forwards;
+}
+
+.skip-btn {
+  position: absolute;
+  bottom: 30px;
+  padding: 10px 20px;
+  font-family: 'VT323', monospace;
+  font-size: 14px;
+  background: var(--win-title);
+  color: white;
+  border: 2px outset var(--win-light);
+  cursor: pointer;
+  z-index: 10000;
+  transition: background 0.2s;
+}
+
+.skip-btn:hover {
+  background: #0000c0;
+}
+
+.skip-btn:active {
+  border-style: inset;
+}
+</style>
+<style>
+/* About window: readable typography + subtle retro scrollbar */
+#aboutWindow .about-inner { font-family: 'Share Tech Mono', monospace; color: var(--text); }
+#aboutWindow .about-inner h2 { font-size: 24px; margin: 0 0 6px 0; letter-spacing: 0.5px; }
+#aboutWindow .about-inner p { font-size: 15px; line-height: 1.6; color: #111; margin: 8px 0; }
+#aboutWindow .about-inner ul { font-size: 14px; line-height: 1.6; margin: 6px 0 12px 18px; padding: 0; }
+#aboutWindow .about-inner li { margin: 6px 0; }
+#aboutWindow .about-inner strong { color: var(--win-title); }
+#aboutWindow .about-content { overscroll-behavior: contain; }
+
+/* WebKit scrollbar (Chrome, Edge, Safari) */
+#aboutWindow .about-content::-webkit-scrollbar { width: 12px; }
+#aboutWindow .about-content::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+  border-left: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-dark);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);
+}
+#aboutWindow .about-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg,#3a6ea5,#105ab0);
+  border-radius: 6px;
+  border: 2px solid var(--win-border);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* Firefox fallback */
+#aboutWindow .about-content { scrollbar-width: thin; scrollbar-color: #105ab0 var(--win-bg); }
+
+@media (max-width: 820px) {
+  body {
+    overflow: hidden;
+  }
+
+  .desktop-text {
+    display: none;
+  }
+
+  .monitor-scene {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    align-items: stretch;
+    justify-content: stretch;
+    perspective: none;
+  }
+
+  .monitor-wrapper {
+    width: 100%;
+    height: 100%;
+    transform: none !important;
+  }
+
+  .monitor {
+    width: 100vw;
+    height: calc(100vh - 36px);
+    max-height: calc(100vh - 36px);
+  }
+
+  .monitor-body {
+    border-radius: 0;
+    border-width: 2px;
+    box-shadow: inset 1px 1px 6px rgba(255,255,255,0.45), inset -1px -1px 6px rgba(0,0,0,0.08);
+  }
+
+  .screen-bezel {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 58px;
+    border-width: 6px;
+    border-radius: 8px;
+  }
+
+  .screen {
+    inset: 8px;
+    border-radius: 8px;
+  }
+
+  .monitor-stand-neck,
+  .monitor-stand-base,
+  .monitor-shadow,
+  .monitor-stickers {
+    display: none;
+  }
+
+  .monitor-bottom {
+    left: 10px;
+    right: 10px;
+    bottom: 8px;
+    height: 40px;
+    padding: 4px 8px;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .brand-text {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+
+  .win95-desktop {
+    overflow: hidden;
+  }
+
+  .desktop-icons {
+    grid-template-columns: repeat(3, minmax(72px, 1fr));
+    gap: 10px;
+    width: 100%;
+    left: 0;
+    top: 4px;
+    padding: 10px 10px 44px;
+  }
+
+  .icon-item {
+    width: auto;
+    min-width: 72px;
+    padding: 6px 2px;
+  }
+
+  .icon-img {
+    font-size: 34px;
+  }
+
+  .icon-label {
+    font-size: 13px;
+    line-height: 1.1;
+  }
+
+  .win95-window {
+    width: calc(100vw - 14px) !important;
+    max-width: calc(100vw - 14px) !important;
+    left: 7px !important;
+    right: auto !important;
+    top: 52px !important;
+    max-height: calc(100vh - 100px) !important;
+  }
+
+  .window-title {
+    font-size: 13px;
+  }
+
+  .window-body {
+    max-height: calc(100vh - 170px) !important;
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #worksWindow .file-explorer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #musicWindow,
+  #videoWindow {
+    display: none !important;
+  }
+
+  #musicWindow.visible,
+  #videoWindow.visible {
+    display: flex !important;
+  }
+
+  #aboutWindow,
+  #worksWindow,
+  #workViewerWindow,
+  #linksWindow,
+  #faqWindow,
+  #contactsWindow {
+    width: calc(100vw - 14px) !important;
+  }
+
+  #workViewerWindow .window-body {
+    overflow: hidden !important;
+  }
+
+  .taskbar {
+    height: 34px;
+    padding: 2px;
+    gap: 2px;
+  }
+
+  .start-btn {
+    padding: 2px 6px;
+    font-size: 7px;
+  }
+
+  .taskbar-clock {
+    min-width: 58px;
+    font-size: 14px;
+    padding: 1px 6px;
+  }
+
+  .theme-toggle {
+    font-size: 14px;
+    padding: 1px 6px;
+  }
+
+  .start-menu {
+    width: calc(100vw - 6px);
+    left: 3px;
+    bottom: 36px;
+  }
+
+  .art-overlay {
+    padding: 10px;
+  }
+
+  .art-overlay-panel {
+    max-width: 96vw;
+    max-height: 94vh;
+  }
+
+  .art-overlay-panel img {
+    max-height: calc(94vh - 28px);
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Desktop background -->
+<div class="desktop-bg"></div>
+
+<!-- Ambient desktop text -->
+<div class="desktop-text tl">
+  ✦ Welcome to my little corner<br>
+  of the internet — circa 199X<br>
+  ─────────────────────<br>
+  Double-click the monitor to<br>
+  wake it up
+</div>
+<div class="desktop-text tr">
+  ─────────────────────<br>
+  Version 4.0.0.950<br>
+  Build 1995.08.24<br>
+  ─────────────────────<br>
+  ✦ All rights reserved
+</div>
+<div class="desktop-text bl">
+  ─────────────────────<br>
+  yahallo<br>
+  ─────────────────────
+</div>
+<div class="desktop-text br">
+  ─────────────────────<br>
+  "i love hatsune miku"<br>
+  ─────────────────────<br>
+  ✦ Lucio Neru
+</div>
+
+<!-- Monitor scene -->
+<div class="monitor-scene" id="monitorScene">
+  <div class="monitor-wrapper" id="monitorWrapper">
+    <!-- 3D sides -->
+    <div class="monitor-3d-top"></div>
+    <div class="monitor-3d-left"></div>
+    <div class="monitor-3d-right"></div>
+
+    <div class="monitor" id="monitor">
+      <div class="monitor-body">
+        <!-- Screen area -->
+        <div class="screen-bezel">
+          <div class="screen" id="screenEl">
+            <div class="screen-glow"></div>
+
+            <!-- Off-state overlay -->
+            <div class="screen-off-overlay" id="offOverlay" onclick="powerOn()">
+              <div class="power-icon-big">⏻</div>
+              <div class="click-hint">CLICK TO POWER ON</div>
+            </div>
+
+            <!-- Boot then OS content -->
+            <div class="screen-content" id="screenContent">
+
+              <!-- Boot screen -->
+              <div class="boot-screen" id="bootScreen">
+                <div class="boot-line title">PORTFOLIOS OS v4.0 ████████████</div>
+                <div class="boot-line">Copyright (C) 1995. All Rights Reserved.</div>
+                <div class="boot-line">&nbsp;</div>
+                <div class="boot-line" id="bl1"></div>
+                <div class="boot-line" id="bl2"></div>
+                <div class="boot-line" id="bl3"></div>
+                <div class="boot-line" id="bl4"></div>
+                <div class="boot-line" id="bl5"></div>
+                <div class="boot-line">&nbsp;</div>
+                <div class="boot-bar-wrap">
+                  <div class="boot-bar"><div class="boot-bar-fill" id="bootBarFill"></div></div>
+                </div>
+                <div class="boot-line" id="bl6"></div>
+              </div>
+
+              <!-- Win95 Desktop -->
+              <div class="win95-desktop" id="win95Desktop" style="display:none;" oncontextmenu="showContextMenu(event)">
+
+                <!-- Doro popup window -->
+                <div class="win95-window" id="doroWindow" style="top:120px;left:120px;width:260px;z-index:255;">
+                  <div class="window-titlebar">
+                    <div class="window-title">Doro</div>
+                    <div class="window-controls">
+                      <div class="win-btn" onclick="minimizeWindow('doroWindow')">_</div>
+                      <div class="win-btn" style="font-size:7px;">□</div>
+                      <div class="win-btn" onclick="closeWindow('doroWindow')">✕</div>
+                    </div>
+                  </div>
+                  <div class="window-menubar">
+                    <div class="menu-item">File</div>
+                    <div class="menu-item">View</div>
+                    <div class="menu-item">Help</div>
+                  </div>
+                  <div class="window-body">
+                    <div class="doro-window-content">
+                      <strong>doro</strong>
+                    </div>
+                  </div>
+                  <div class="window-statusbar">
+                    <div class="statusbar-item">doro</div>
+                  </div>
+                </div>
+
+                <!-- Desktop icons -->
+                <div class="desktop-icons">
+                  <div class="icon-item" ondblclick="openWindow('aboutWindow', true)" onclick="selectIcon(this)">
+                    <div class="icon-img">👤</div>
+                    <div class="icon-label">About.txt</div>
+                  </div>
+                  <div class="icon-item" ondblclick="openWindow('worksWindow', true)" onclick="selectIcon(this)">
+                    <div class="icon-img">📁</div>
+                    <div class="icon-label">My Works</div>
+                  </div>
+                  <div class="icon-item" ondblclick="openWindow('linksWindow', true)" onclick="selectIcon(this)">
+                    <div class="icon-img">🔗</div>
+                    <div class="icon-label">Links.url</div>
+                  </div>
+                  <div class="icon-item" ondblclick="openWindow('faqWindow', true)" onclick="selectIcon(this)">
+                    <div class="icon-img">❓</div>
+                    <div class="icon-label">FAQ.doc</div>
+                  </div>
+                  <div class="icon-item" ondblclick="openWindow('contactsWindow', true)" onclick="selectIcon(this)">
+                    <div class="icon-img">📧</div>
+                    <div class="icon-label">Contact.exe</div>
+                  </div>
+                  <div class="icon-item" ondblclick="openWindow('musicWindow', true)" onclick="selectIcon(this)">
+                    <div class="icon-img">🎵</div>
+                    <div class="icon-label">Music.mp3</div>
+                  </div>
+                  <div class="icon-item" ondblclick="openWindow('videoWindow', true)" onclick="selectIcon(this)">
+                    <div class="icon-img">🎬</div>
+                    <div class="icon-label">Videos.mp4</div>
+                  </div>
+                  <div class="icon-item" ondblclick="toggleMonitor()" onclick="selectIcon(this)">
+                    <div class="icon-img">⏻</div>
+                    <div class="icon-label">Shutdown</div>
+                  </div>
+                </div>
+
+                <!-- ABOUT WINDOW -->
+                <div class="win95-window" id="aboutWindow" style="top:20px;left:20px;width:420px;max-height:340px;flex-direction:column;">
+                  <div class="window-titlebar">
+                    <div class="window-title"><span class="title-icon">👤</span> About Me — Notepad</div>
+                    <div class="window-controls">
+                      <div class="win-btn" onclick="minimizeWindow('aboutWindow')">_</div>
+                      <div class="win-btn" style="font-size:7px;">□</div>
+                      <div class="win-btn" onclick="closeWindow('aboutWindow')">✕</div>
+                    </div>
+                  </div>
+                  <div class="window-menubar">
+                    <div class="menu-item">File</div>
+                    <div class="menu-item">Edit</div>
+                    <div class="menu-item">Help</div>
+                  </div>
+                  <div class="window-body" style="padding:0;display:flex;flex-direction:column;flex:1;min-height:0;">
+                    <div class="about-content" style="padding:12px;overflow-y:auto;overflow-x:hidden;max-height:100%;flex:1;box-sizing:border-box;white-space:normal;word-break:normal;">
+                      <div class="about-inner" style="max-width:360px;margin:0 auto;">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                          <div class="about-avatar" style="font-size:36px;">🧑‍💻</div>
+                          <div>
+                            <h2 style="font-size:22px;margin:0 0 4px 0;color:var(--win-title);">Lucio Neru</h2>
+                            <p style="font-size:14px;color:var(--win-dark);margin:0;"><strong>PH-based freelance animator</strong></p>
+                          </div>
+                        </div>
+
+                        <hr class="about-divider" style="margin:12px 0;">
+
+                        <p style="font-size:14px;line-height:1.6;margin:10px 0;">Hi — I'm Lucio. I make illustrations, 2D animation, and frontend experiences. Former graphic designer and IT intern at <a href="#" onclick="return false;" style="color:var(--win-title);text-decoration:underline;cursor:pointer;">wonderzyme</a>.</p>
+
+                        <p style="font-size:15px;font-weight:bold;margin:14px 0 8px 0;color:var(--win-title);">What I Do</p>
+                        <ul style="margin:0 0 12px 18px;padding:0;font-size:13px;line-height:1.6;color:var(--text);">
+                          <li><strong>Illustration</strong> — illustrations and graphics that bring ideas to life</li>
+                          <li><strong>Animation</strong> — 2D animations with movement and personality</li>
+                          <li><strong>Design</strong> — website wireframes and design systems</li>
+                          <li><strong>Frontend</strong> — web development with modern tools</li>
+                        </ul>
+
+                        <p style="font-size:15px;font-weight:bold;margin:8px 0;color:var(--win-title);">Education</p>
+                        <p style="font-size:13px;margin:4px 0 12px 0;line-height:1.6;">Bachelor of Information Technology — graduating in 2027</p>
+
+                        <p style="font-size:15px;font-weight:bold;margin:8px 0;color:var(--win-title);">Languages</p>
+                        <p style="font-size:13px;margin:4px 0 12px 0;line-height:1.6;">Native in English and Filipino (Tagalog). Learning Japanese and Spanish.</p>
+
+                        <p style="font-size:15px;font-weight:bold;margin:8px 0;color:var(--win-title);">Other Interests</p>
+                        <p style="font-size:13px;margin:4px 0 12px 0;line-height:1.6;">Game development, writing stories, Vocaloid, singing (Megpoid GUMI & Hatsune Miku).</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="window-statusbar">
+                    <div class="statusbar-item">Ln 1, Col 1</div>
+                    <div class="statusbar-item">100%</div>
+                  </div>
+                </div>
+
+                <!-- WORKS WINDOW -->
+                <div class="win95-window" id="worksWindow" style="top:30px;left:30px;width:360px;">
+                  <div class="window-titlebar">
+                    <div class="window-title"><span class="title-icon">📁</span> My Works — File Manager</div>
+                    <div class="window-controls">
+                      <div class="win-btn" onclick="minimizeWindow('worksWindow')">_</div>
+                      <div class="win-btn" style="font-size:7px;">□</div>
+                      <div class="win-btn" onclick="closeWindow('worksWindow')">✕</div>
+                    </div>
+                  </div>
+                  <div class="window-menubar">
+                    <div class="menu-item">File</div>
+                    <div class="menu-item">View</div>
+                    <div class="menu-item">Help</div>
+                  </div>
+                  <div class="window-body" style="padding:0;">
+                    <div style="background:var(--win-bg);border-bottom:1px solid var(--win-dark);padding:4px 8px;font-size:13px;">
+                      📂 C:\Portfolio\Works\ — 2 folder(s)
+                    </div>
+                    <div class="file-explorer">
+                          <div class="file-icon" data-folder="illustrations">
+                            <div class="fi">📁</div>
+                            <div class="file-icon-label">Illustrations</div>
+                          </div>
+                          <div class="file-icon" data-folder="videos">
+                            <div class="fi">📁</div>
+                            <div class="file-icon-label">Videos</div>
+                          </div>
+                    </div>
+                  </div>
+                  <div class="window-statusbar">
+                    <div class="statusbar-item">2 folder(s)</div>
+                    <div class="statusbar-item">Tap or click to open</div>
+                  </div>
+                </div>
+
+                <!-- WORK VIEWER WINDOW -->
+                <div class="win95-window" id="workViewerWindow" style="top:50px;left:50px;width:340px;">
+                  <div class="window-titlebar">
+                    <div class="window-title"><span class="title-icon" id="workViewerIcon">🎨</span> <span id="workViewerTitle">Project</span> — Viewer</div>
+                    <div class="window-controls">
+                      <div class="win-btn" onclick="minimizeWindow('workViewerWindow')">_</div>
+                      <div class="win-btn" style="font-size:7px;">□</div>
+                      <div class="win-btn" onclick="closeWindow('workViewerWindow')">✕</div>
+                    </div>
+                  </div>
+                  <div class="window-menubar">
+                    <div class="menu-item">File</div>
+                    <div class="menu-item">Image</div>
+                    <div class="menu-item">View</div>
+                  </div>
+                  <div class="window-body">
+                    <div id="workViewerContent"></div>
+                  </div>
+                </div>
+
+                <div class="art-overlay" id="artOverlay" onclick="closeArtworkFull()">
+                  <div class="art-overlay-panel" onclick="event.stopPropagation()">
+                    <button class="art-overlay-close" type="button" onclick="closeArtworkFull()">✕</button>
+                    <img id="artOverlayImage" alt="Artwork preview">
+                    <div id="artOverlayCaption" style="margin-top:8px;font-size:13px;color:var(--text);"></div>
+                  </div>
+                </div>
+
+                <!-- LINKS WINDOW -->
+                <div class="win95-window" id="linksWindow" style="top:25px;left:25px;width:280px;">
+                  <div class="window-titlebar">
+                    <div class="window-title"><span class="title-icon">🔗</span> Links — Internet Explorer</div>
+                    <div class="window-controls">
+                      <div class="win-btn" onclick="minimizeWindow('linksWindow')">_</div>
+                      <div class="win-btn" style="font-size:7px;">□</div>
+                      <div class="win-btn" onclick="closeWindow('linksWindow')">✕</div>
+                    </div>
+                  </div>
+                  <div class="window-menubar">
+                    <div class="menu-item">File</div>
+                    <div class="menu-item">Favorites</div>
+                    <div class="menu-item">Help</div>
+                  </div>
+                  <div class="window-body">
+                    <div style="font-size:14px;margin-bottom:8px;color:var(--win-dark);">// My corner of the internet</div>
+                    <div class="links-list">
+                      <a class="link-row" href="https://x.com/NeruNemuTeto" target="_blank" rel="noopener noreferrer">
+                        <span class="link-icon">🐦</span> Twitter / X
+                        <span style="margin-left:auto;font-size:12px;">→</span>
+                      </a>
+                      <a class="link-row" href="https://www.tiktok.com/@lucioneru21" target="_blank" rel="noopener noreferrer">
+                        <span class="link-icon">🎵</span> TikTok
+                        <span style="margin-left:auto;font-size:12px;">→</span>
+                      </a>
+                      <a class="link-row" href="https://www.youtube.com/@laciel21" target="_blank" rel="noopener noreferrer">
+                        <span class="link-icon">▶️</span> YouTube
+                        <span style="margin-left:auto;font-size:12px;">→</span>
+                      </a>
+                      <a class="link-row" href="https://www.instagram.com/daledo21/" target="_blank" rel="noopener noreferrer">
+                        <span class="link-icon">📸</span> Instagram
+                        <span style="margin-left:auto;font-size:12px;">→</span>
+                      </a>
+                      <a class="link-row vgen-link" href="https://vgen.co/NeruNemuTeto" target="_blank" rel="noopener noreferrer">
+                        <span class="link-icon">🟢</span> VGen
+                        <span style="margin-left:auto;font-size:12px;">→</span>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="window-statusbar">
+                    <div class="statusbar-item">5 links</div>
+                  </div>
+                </div>
+
+                <!-- FAQ WINDOW -->
+                <div class="win95-window" id="faqWindow" style="top:20px;left:20px;width:330px;">
+                  <div class="window-titlebar">
+                    <div class="window-title"><span class="title-icon">❓</span> FAQ — Help Center</div>
+                    <div class="window-controls">
+                      <div class="win-btn" onclick="minimizeWindow('faqWindow')">_</div>
+                      <div class="win-btn" style="font-size:7px;">□</div>
+                      <div class="win-btn" onclick="closeWindow('faqWindow')">✕</div>
+                    </div>
+                  </div>
+                  <div class="window-menubar">
+                    <div class="menu-item">Topics</div>
+                    <div class="menu-item">Search</div>
+                  </div>
+                  <div class="window-body">
+                    <div class="faq-item">
+                      <div class="faq-q">► What is your usual deadline for commissions?</div>
+                      <div class="faq-a">I usually finish within 1–2 weeks, depending on my schedule. I'll keep you posted if anything comes up, but I'm typically quick at hitting deadlines once they're set! That said, if you're not in a rush and are okay with a flexible timeline, it gives me more room to experiment and add extra polish. I'm reliable either way!</div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-q">► What setup do you use to draw?</div>
+                      <div class="faq-a">A HUION H640P.. Yes I know it's a pretty old model.. but it still works! I love my little war machine! And I use a laptop also.</div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-q">► Can I repost your work/use in an edit?</div>
+                      <div class="faq-a">To be honest, I think it's inevitable for other people to use your work if it ever gathers attention; it's kind of the nature of social media and it's a common problem, unfortunately. So, I'll say I don't mind you guys reposting it, so long as you do actually credit me. It's a win for me either way since it's a way my clout gets spread out lol.</div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-q">► Are you open to connecting with other artists and creatives?</div>
+                      <div class="faq-a">Absolutely! I'd love to connect with people who are passionate about art and creativity. I'm looking for folks who can give constructive feedback, share ideas, and maybe collaborate or just vibe over creative stuff. I'm pretty approachable, but heads up—I'm often busy, so I might not be super active every day. Still, if you need someone to bounce ideas off of or just want to share your work, feel free to reach out! ^^</div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-q">► hatsune miku?</div>
+                      <div class="faq-a">Hatsune Miku.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CONTACTS WINDOW -->
+                <div class="win95-window" id="contactsWindow" style="top:20px;left:20px;width:300px;">
+                  <div class="window-titlebar">
+                    <div class="window-title"><span class="title-icon">📧</span> Contact.exe</div>
+                    <div class="window-controls">
+                      <div class="win-btn" onclick="minimizeWindow('contactsWindow')">_</div>
+                      <div class="win-btn" style="font-size:7px;">□</div>
+                      <div class="win-btn" onclick="closeWindow('contactsWindow')">✕</div>
+                    </div>
+                  </div>
+                  <div class="window-body" style="padding:0;">
+                    <div class="contact-copy-title">
+                      interested in taking a commission or other inquiries?
+                    </div>
+                    <div class="contact-copy">
+                      To contact me, please send me an email.
+                    </div>
+                    <div class="contact-row">
+                      <div class="contact-icon">📧</div>
+                      <div class="contact-info">
+                        <div class="contact-label">EMAIL</div>
+                        <a class="contact-mail-btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=lucioneru@gmail.com&su=Commission%20Inquiry&body=Hi%20Lucioneru%2C%0A%0AI%27d%20like%20to%20ask%20about%20a%20commission.%0A" target="_blank" rel="noopener">
+                          <span class="mail-logo">📧</span>
+                          <span>lucioneru@gmail.com</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="contact-copy-divider">
+                      You can also reach out through my links including the ff:
+                    </div>
+                    <div class="contact-shortcut-strip">
+                      <a class="contact-shortcut-btn" href="https://x.com/NeruNemuTeto" target="_blank" rel="noopener">
+                        <span>𝕏</span><span>X</span>
+                      </a>
+                      <a class="contact-shortcut-btn" href="https://www.tiktok.com/@lucioneru21" target="_blank" rel="noopener">
+                        <span>♪</span><span>TikTok</span>
+                      </a>
+                      <a class="contact-shortcut-btn" href="https://www.youtube.com/@laciel21" target="_blank" rel="noopener">
+                        <span>▶</span><span>YouTube</span>
+                      </a>
+                      <a class="contact-shortcut-btn" href="https://www.instagram.com/daledo21/" target="_blank" rel="noopener">
+                        <span>◎</span><span>Instagram</span>
+                      </a>
+                      <a class="contact-shortcut-btn" href="https://vgen.co/NeruNemuTeto" target="_blank" rel="noopener">
+                        <span>V</span><span>VGen</span>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="window-statusbar">
+                    <div class="statusbar-item">Ready</div>
+                    <div class="statusbar-item">✉ Send message</div>
+                  </div>
+                </div>
+
+                <div class="context-menu" id="contextMenu">
+                  <div class="ctx-item" onclick="closeContextMenu()">🔄 Refresh</div>
+                  <div class="ctx-item" onclick="closeContextMenu()">🎨 Properties</div>
+                  <div class="ctx-divider"></div>
+                  <div class="ctx-item" onclick="openAllWindows();closeContextMenu()">📂 Open All</div>
+                  <div class="ctx-item" onclick="closeAllWindows();closeContextMenu()">🗂 Close All</div>
+                </div>
+
+                <!-- Inner taskbar -->
+                <div class="win95-taskbar">
+                  <div class="inner-start">
+                    <span>🪟</span> Start
+                  </div>
+                  <div style="width:1px;height:20px;background:var(--win-dark);margin:0 2px;"></div>
+                  <div id="taskbarItems" style="display:flex;gap:3px;flex:1;overflow:hidden;"></div>
+                  <div class="inner-clock" id="innerClock">12:00</div>
+                </div>
+              </div>
+            </div><!-- end screen-content -->
+          </div><!-- end screen -->
+        </div><!-- end bezel -->
+
+        <div class="monitor-stickers" aria-label="Character stickers">
+          <button class="sticker-btn" type="button" onclick="openDoroWindow('doroWindow')" title="doro 1">
+            <img src="images/character1.png" alt="Character 1">
+          </button>
+          <button class="sticker-btn" type="button" onclick="openDoroWindow('doroWindow')" title="doro 2">
+            <img src="images/character2.png" alt="Character 2">
+          </button>
+          <button class="sticker-btn" type="button" onclick="openDoroWindow('doroWindow')" title="doro 3">
+            <img src="images/character3.png" alt="Character 3">
+          </button>
+          <button class="sticker-btn" type="button" onclick="openDoroWindow('doroWindow')" title="doro 4">
+            <img src="images/character4.png" alt="Character 4">
+          </button>
+        </div>
+
+        <!-- Bottom panel -->
+        <div class="monitor-bottom">
+          <div class="brand-text">RETRO·TECH</div>
+          <div class="monitor-controls">
+            <div class="monitor-knob"></div>
+            <div class="monitor-knob"></div>
+            <div class="power-btn" id="powerBtn" onclick="toggleMonitor()" title="Power">
+              <div class="power-led" id="powerLed"></div>
+            </div>
+          </div>
+        </div>
+      </div><!-- end monitor-body -->
+
+      <!-- Stand -->
+      <div class="monitor-stand-neck"></div>
+      <div class="monitor-stand-base"></div>
+    </div><!-- end monitor -->
+
+    <div class="monitor-shadow"></div>
+  </div><!-- end monitor-wrapper -->
+</div>
+
+<!-- Desktop music player -->
+<div class="win95-window" id="musicWindow" style="top:120px;left:28px;width:360px;">
+  <div class="window-titlebar">
+    <div class="window-title">Music Player</div>
+    <div class="window-controls">
+      <div class="win-btn" onclick="minimizeWindow('musicWindow')">_</div>
+      <div class="win-btn" style="font-size:7px;">□</div>
+      <div class="win-btn" onclick="closeWindow('musicWindow')">✕</div>
+    </div>
+  </div>
+  <div class="window-menubar">
+    <div class="menu-item">File</div>
+    <div class="menu-item">Playlist</div>
+    <div class="menu-item">Help</div>
+  </div>
+  <div class="window-body" style="padding:12px;">
+    <input type="file" id="musicFileInput" accept="audio/mpeg,audio/mp3" multiple style="display:none" onchange="loadSelectedTracks(this.files)">
+    <div class="player-display">
+      <div class="player-title" id="playerTitle">Now Playing: —</div>
+      <div class="player-time">
+        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+      </div>
+      <div class="player-progress-bar">
+        <div class="player-progress-fill" id="playerProgressFill"></div>
+        <input type="range" id="musicSeekBar" min="0" max="100" value="0" oninput="seekMusic(this.value)" style="width:100%;height:100%;margin:0;">
+      </div>
+    </div>
+
+    <select id="trackPicker" class="track-picker" onchange="musicSelectTrack(Number(this.value), true)">
+      <option value="-1">Choose a song...</option>
+    </select>
+
+    <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" onclick="document.getElementById('musicFileInput').click()">Add MP3s</button>
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" onclick="musicPrevious()">⏮</button>
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" id="playPauseBtn" onclick="musicPlayPause()">▶</button>
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" onclick="musicNext()">⏭</button>
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" onclick="musicRestart()">↺</button>
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" onclick="musicStop()">Stop</button>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;min-width:150px;">
+        <span style="font-size:12px;">🔊</span>
+        <input type="range" id="volumeSlider" min="0" max="100" value="70" style="flex:1;" onchange="setVolume(this.value)">
+      </div>
+    </div>
+
+    <div style="margin-bottom:8px;font-size:13px;color:var(--win-dark);font-weight:bold;">Favorite Tracks</div>
+    <div id="playlistContainer" class="playlist-container" style="max-height:160px;overflow-y:auto;">
+      <div class="playlist-item" style="color:var(--win-dark);text-align:center;padding:20px;">
+        Load MP3 files to start your playlist.
+      </div>
+    </div>
+  </div>
+  <div class="window-statusbar">
+    <div class="statusbar-item" id="playerStatus">Ready to load music</div>
+    <div class="statusbar-item">Music</div>
+  </div>
+  <div class="window-resize-handle" onmousedown="beginWindowResize(event, 'musicWindow')" onpointerdown="beginWindowResize(event, 'musicWindow')"></div>
+</div>
+
+<!-- Desktop video player -->
+<div class="win95-window" id="videoWindow" style="top:120px;right:28px;width:420px;">
+  <div class="window-titlebar">
+    <div class="window-title">MP4 Player</div>
+    <div class="window-controls">
+      <div class="win-btn" onclick="minimizeWindow('videoWindow')">_</div>
+      <div class="win-btn" style="font-size:7px;">□</div>
+      <div class="win-btn" onclick="closeWindow('videoWindow')">✕</div>
+    </div>
+  </div>
+  <div class="window-menubar">
+    <div class="menu-item">File</div>
+    <div class="menu-item">Playlist</div>
+    <div class="menu-item">Help</div>
+  </div>
+  <div class="window-body" style="padding:12px;">
+    <input type="file" id="videoFileInput" accept="video/mp4" multiple style="display:none" onchange="loadSelectedVideos(this.files)">
+
+    <div class="video-stage">
+      <video id="videoElement" class="video-element" preload="auto" playsinline></video>
+      <div id="videoEmptyState" class="video-empty">Add MP4 files to start playback</div>
+    </div>
+
+    <div class="player-time">
+      <span id="currentVideoTime">0:00</span> / <span id="videoDuration">0:00</span>
+    </div>
+
+    <div class="player-progress-bar">
+      <div class="player-progress-fill" id="videoProgressFill"></div>
+      <input type="range" id="videoSeekBar" min="0" max="100" value="0" oninput="seekVideo(this.value)" style="width:100%;height:100%;margin:0;">
+    </div>
+
+    <select id="videoPicker" class="track-picker" onchange="videoSelectTrack(Number(this.value), false)">
+      <option value="-1">Choose a video...</option>
+    </select>
+
+    <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" onclick="document.getElementById('videoFileInput').click()">Add MP4s</button>
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" onclick="videoPrevious()">⏮</button>
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" id="videoPlayPauseBtn" onclick="videoPlayPause()">▶</button>
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" onclick="videoNext()">⏭</button>
+      <button class="player-btn" style="flex:0 0 auto;padding:6px 10px;" onclick="videoStop()">Stop</button>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;min-width:150px;">
+        <span style="font-size:12px;">🔊</span>
+        <input type="range" id="videoVolumeSlider" min="0" max="100" value="70" style="flex:1;" onchange="setVideoVolume(this.value)">
+      </div>
+    </div>
+
+    <div style="margin-bottom:8px;font-size:13px;color:var(--win-dark);font-weight:bold;">Video Playlist</div>
+    <div id="videoPlaylistContainer" class="playlist-container" style="max-height:140px;overflow-y:auto;">
+      <div class="playlist-item" style="color:var(--win-dark);text-align:center;padding:20px;">
+        Load MP4 files to start your playlist.
+      </div>
+    </div>
+  </div>
+  <div class="window-statusbar">
+    <div class="statusbar-item" id="videoStatus">Ready to load videos</div>
+    <div class="statusbar-item">Video</div>
+  </div>
+  <div class="window-resize-handle" onmousedown="beginWindowResize(event, 'videoWindow')" onpointerdown="beginWindowResize(event, 'videoWindow')"></div>
+</div>
+
+<!-- Real taskbar -->
+<div class="taskbar">
+  <div class="start-btn" onclick="toggleStartMenu()">
+    <span class="logo">🪟</span> START
+  </div>
+  <div id="startMenu" class="start-menu" style="display:none;">
+    <div class="start-menu-item" onclick="openWindow('aboutWindow'); closeStartMenu();">📄 About</div>
+    <div class="start-menu-item" onclick="openWindow('worksWindow'); closeStartMenu();">📁 My Works</div>
+    <div class="start-menu-item" onclick="openWindow('linksWindow'); closeStartMenu();">🔗 Links</div>
+    <div class="start-menu-item" onclick="openWindow('faqWindow'); closeStartMenu();">❓ FAQ</div>
+    <div class="start-menu-item" onclick="openWindow('contactsWindow'); closeStartMenu();">📧 Contact</div>
+    <div class="start-menu-item" onclick="openWindow('musicWindow'); closeStartMenu();">🎵 Music</div>
+    <div class="start-menu-item" onclick="openWindow('videoWindow'); closeStartMenu();">🎬 Videos</div>
+    <div class="start-menu-divider"></div>
+    <div class="start-menu-item" onclick="openAllWindows(); closeStartMenu();">📂 Open All</div>
+    <div class="start-menu-item" onclick="closeAllWindows(); closeStartMenu();">🗂 Close All</div>
+  </div>
+  <div style="width:1px;height:24px;background:#808080;margin:0 2px;"></div>
+  <div style="font-family:'VT323',monospace;font-size:16px;color:var(--text);padding:2px 8px;border:2px inset #808080;background:var(--btn-face);">
+    📺 My Portfolio
+  </div>
+  <div id="closeAllDoroBtnMain" class="close-all-doro-btn" style="display:none;" onclick="closeAllDoroTabs()">✕✕ Close Doro Tabs</div>
+  <div class="wing-icon" onclick="playVideoTransition()" title="Special Video">🪽</div>
+  <div class="taskbar-clock" id="taskbarClock">12:00 PM</div>
+</div>
+
+<!-- Video Transition Overlay -->
+<div id="videoTransitionOverlay" class="video-transition-overlay" style="display:none;">
+  <div class="glitch-container">
+    <div class="angel-flash" aria-hidden="true"></div>
+    <video id="transitionVideo" class="transition-video" controls playsinline webkit-playsinline preload="auto" style="display:none;">
+      <source src="videos/ツユ - 泥の分際で私だけの大切を奪おうだなんて MV - ツユ (1080p).mp4" type="video/mp4">
+    </video>
+  </div>
+  <button class="skip-btn" onclick="exitVideoTransition()">SKIP ▶</button>
+</div>
+
+<script>
+// ===== START MENU =====
+function toggleStartMenu() {
+  const menu = document.getElementById('startMenu');
+  if (!menu) return;
+  if (menu.style.display === 'none') {
+    menu.style.display = 'flex';
+    document.addEventListener('click', closeStartMenuOnClickOutside);
+  } else {
+    closeStartMenu();
+  }
+}
+
+function closeStartMenu() {
+  const menu = document.getElementById('startMenu');
+  if (menu) menu.style.display = 'none';
+  document.removeEventListener('click', closeStartMenuOnClickOutside);
+}
+
+function closeStartMenuOnClickOutside(e) {
+  const menu = document.getElementById('startMenu');
+  const startBtn = document.querySelector('.start-btn');
+  if (menu && !menu.contains(e.target) && !startBtn.contains(e.target)) {
+    closeStartMenu();
+  }
+}
+
+
+// ===== VIDEO TRANSITION =====
+let videoTransitionToken = 0;
+const transitionVideoPath = encodeURI('videos/ツユ - 泥の分際で私だけの大切を奪おうだなんて MV - ツユ (1080p).mp4');
+const transitionVideoStartTime = 147;
+
+function playVideoTransition() {
+  const overlay = document.getElementById('videoTransitionOverlay');
+  const video = document.getElementById('transitionVideo');
+  const sourceEl = video ? video.querySelector('source') : null;
+  const sessionToken = ++videoTransitionToken;
+  
+  if (!overlay) {
+    console.error('Video transition overlay not found');
+    return;
+  }
+
+  if (!video || !sourceEl) {
+    console.error('Video transition video element not found');
+    return;
+  }
+
+  if (sourceEl.getAttribute('src') !== transitionVideoPath) {
+    sourceEl.src = transitionVideoPath;
+    video.load();
+  }
+
+  overlay.style.display = 'flex';
+  overlay.classList.add('angelic-enter');
+  overlay.classList.remove('angelic-exit');
+  video.classList.remove('angelic-outro');
+  video.classList.add('angelic-intro');
+  video.style.display = 'block';
+
+  if (overlay.requestFullscreen) {
+    overlay.requestFullscreen().catch(() => {});
+  } else if (overlay.webkitRequestFullscreen) {
+    overlay.webkitRequestFullscreen();
+  }
+
+  const beginPlayback = () => {
+    if (sessionToken !== videoTransitionToken) return;
+    if (sessionToken !== videoTransitionToken) return;
+    try {
+      video.playbackRate = 1;
+    } catch (err) {
+      console.warn('Unable to set transition playback rate:', err);
+    }
+
+    // Start immediately so visuals animate with real playback, then seek once metadata is ready.
+    video.play().catch(err => {
+      if (sessionToken === videoTransitionToken) {
+        console.error('Video play failed:', err);
+      }
+    });
+
+    const seekToStart = () => {
+      if (sessionToken !== videoTransitionToken) return;
+      try {
+        video.currentTime = transitionVideoStartTime;
+      } catch (err) {
+        console.warn('Unable to seek transition video to start time:', err);
+      }
+    };
+
+    if (video.readyState >= 1) {
+      seekToStart();
+    } else {
+      video.addEventListener('loadedmetadata', seekToStart, { once: true });
+    }
+
+    window.setTimeout(() => {
+      if (sessionToken === videoTransitionToken) {
+        overlay.classList.remove('angelic-enter');
+      }
+    }, 1100);
+    window.setTimeout(() => {
+      if (sessionToken === videoTransitionToken) {
+        video.classList.remove('angelic-intro');
+      }
+    }, 900);
+  };
+
+  if (video.readyState >= 1) {
+    beginPlayback();
+  } else {
+    video.addEventListener('loadedmetadata', beginPlayback, { once: true });
+  }
+}
+
+function exitVideoTransition() {
+  const overlay = document.getElementById('videoTransitionOverlay');
+  const video = document.getElementById('transitionVideo');
+  videoTransitionToken += 1;
+
+  if (!overlay || !video) return;
+
+  video.pause();
+  overlay.classList.remove('angelic-enter');
+  overlay.classList.add('angelic-exit');
+  video.classList.remove('angelic-intro');
+  video.classList.add('angelic-outro');
+
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    overlay.classList.remove('angelic-exit');
+    video.classList.remove('angelic-outro');
+    video.currentTime = 0;
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }, 950);
+}
+let isOn = false;
+let currentWindowZ = 60;
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+let resizeDrag = null;
+let resizeStartX = 0;
+let resizeStartY = 0;
+let resizeStartWidth = 0;
+let resizeStartHeight = 0;
+
+// Keep power state in sync with current DOM visibility to avoid false reboot triggers.
+try {
+  const monitorEl = document.getElementById('monitor');
+  const desktopEl = document.getElementById('win95Desktop');
+  if (monitorEl?.classList.contains('monitor-on')) {
+    isOn = true;
+  }
+  if (desktopEl && getComputedStyle(desktopEl).display !== 'none') {
+    isOn = true;
+  }
+} catch (err) {
+  // ignore if DOM not fully ready
+}
+
+function moveWindowsOutOfMonitor() {
+  const windowIds = ['aboutWindow','worksWindow','workViewerWindow','linksWindow','faqWindow','contactsWindow','musicWindow','videoWindow','doroWindow'];
+  const taskbar = document.querySelector('.taskbar');
+  windowIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el && el.parentElement !== document.body) {
+      document.body.insertBefore(el, taskbar);
+    }
+  });
+}
+
+function attachResizeHandles() {
+  document.querySelectorAll('.win95-window').forEach((windowEl) => {
+    if (windowEl.querySelector('.resize-handle')) return;
+    const handle = document.createElement('div');
+    handle.className = 'resize-handle';
+    handle.addEventListener('mousedown', (e) => startResizeWindow(e, windowEl.id));
+    windowEl.appendChild(handle);
+  });
+}
+
+const works = [
+  {
+    icon: '🎨',
+    title: 'Project Alpha',
+    desc: 'A bold visual identity system built from scratch. Covers logo design, color systems, typography, and full brand guidelines. Delivered across print and digital.',
+    tags: ['Branding', 'Identity', 'Print'],
+    color: '#1a1a6e',
+    emoji: '🎨'
+  },
+  {
+    icon: '🌐',
+    title: 'Web Design',
+    desc: 'Full-stack web application with custom animations, responsive layout, and dark/light mode. Built with React, Three.js, and a whole lot of caffeine.',
+    tags: ['React', 'Three.js', 'CSS'],
+    color: '#0d3355',
+    emoji: '🌐'
+  },
+  {
+    icon: '🎮',
+    title: 'Game Jam Entry',
+    desc: 'A 48-hour game jam submission. Puzzle-platformer with hand-drawn pixel art. Won "Best Art Direction" from the community.',
+    tags: ['Game Dev', 'Pixel Art', 'Unity'],
+    color: '#2d1a4e',
+    emoji: '🎮'
+  },
+  {
+    icon: '📱',
+    title: 'Mobile App',
+    desc: 'iOS & Android productivity app. Focused on micro-interactions and accessibility. Shipped to 10k+ users on launch week.',
+    tags: ['React Native', 'UX', 'Mobile'],
+    color: '#1a3a1a',
+    emoji: '📱'
+  },
+  {
+    icon: '🎬',
+    title: 'Motion Art',
+    desc: 'Generative motion graphics series exploring chaos theory. Each piece is algorithmically unique — no two frames are ever the same.',
+    tags: ['Motion', 'Generative', 'Processing'],
+    color: '#4e1a1a',
+    emoji: '🎬'
+  },
+  {
+    icon: '💡',
+    title: 'Branding Suite',
+    desc: 'Complete visual identity for a tech startup. From naming strategy to final brand book. Scaled from seed to Series A funding.',
+    tags: ['Branding', 'Strategy', 'Figma'],
+    color: '#3a3a0d',
+    emoji: '💡'
+  }
+];
+
+// ===== CLOCK =====
+function updateClock() {
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  const h12 = h % 12 || 12;
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const pad = n => String(n).padStart(2,'0');
+  const timeStr = `${pad(h12)}:${pad(m)} ${ampm}`;
+  const inner = `${pad(h12)}:${pad(m)}:${pad(s)}`;
+  document.getElementById('taskbarClock').textContent = timeStr;
+  const ic = document.getElementById('innerClock');
+  if(ic) ic.textContent = inner;
+}
+setInterval(updateClock, 1000);
+updateClock();
+moveWindowsOutOfMonitor();
+// attachResizeHandles(); // Disabled - using .window-resize-handle elements instead
+
+// Dynamically attach event listeners for window dragging to work around scoping issues
+function initWindowDragListeners() {
+  // Attach listeners to all window titlebars
+  document.querySelectorAll('.window-titlebar').forEach((titlebar) => {
+    // Get the window ID from the parent window element
+    const windowEl = titlebar.closest('.win95-window');
+    if (!windowEl) return;
+    const windowId = windowEl.id;
+    
+    titlebar.addEventListener('mousedown', function(e) {
+      startDragWindow(e, windowId);
+    });
+  });
+  
+  // Attach listeners to resize handles
+  document.querySelectorAll('.resize-handle').forEach((handle) => {
+    const windowEl = handle.closest('.win95-window');
+    if (!windowEl) return;
+    const windowId = windowEl.id;
+    
+    handle.addEventListener('mousedown', function(e) {
+      startResizeWindow(e, windowId);
+    });
+  });
+}
+
+// Initialize drag listeners and also set up a MutationObserver to handle dynamically added windows
+function setupDragHandlers() {
+  initWindowDragListeners();
+  
+  // Watch for new window elements being added
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.addedNodes.length) {
+        // Re-attach listeners when new windows are added
+        initWindowDragListeners();
+      }
+    });
+  });
+  
+  const screenContent = document.getElementById('screenContent');
+  if (screenContent) {
+    observer.observe(screenContent, { childList: true, subtree: true });
+  }
+}
+
+// Initialize once DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupDragHandlers);
+} else {
+  setupDragHandlers();
+}
+
+// ===== ENSURE POPPED-OUT WINDOWS APPEAR IN FRONT OF MONITOR =====
+// Watch for new doro instances and ensure they have z-index > monitorScene
+const ensurePopoutZIndex = () => {
+  document.querySelectorAll('.doro-instance').forEach((el, idx) => {
+    if (!el.style.zIndex || parseInt(el.style.zIndex) < 10000) {
+      el.style.zIndex = String(10000 + idx);
+    }
+  });
+};
+
+ensurePopoutZIndex();
+const popoutObserver = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.addedNodes.length) {
+      ensurePopoutZIndex();
+    }
+  });
+});
+popoutObserver.observe(document.body, { childList: true });
+
+
+// ===== MONITOR DRAG (constrained) =====
+const monitorWrapper = document.getElementById('monitorWrapper');
+// base rotation kept zero so monitor remains still unless explicitly dragged
+let baseRotX = 0, baseRotY = 0;
+let velX = 0, velY = 0;
+
+monitorWrapper.addEventListener('mousedown', (e) => {
+  if(e.target.closest('.screen, .power-btn, .win95-window, .win-btn, .icon-item, .file-icon, .link-row, .ctx-item, .menu-item, .win95-taskbar')) return;
+  isDragging = true;
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
+  monitorWrapper.classList.add('dragging');
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', (e) => {
+  if(!isDragging) return;
+  const dx = (e.clientX - dragStartX) * 0.3;
+  const dy = (e.clientY - dragStartY) * 0.3;
+  velX = dx; velY = dy;
+  const rx = Math.max(-20, Math.min(20, baseRotX - dy));
+  const ry = Math.max(-25, Math.min(25, baseRotY + dx));
+  monitorWrapper.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+  // subtle translate but spring back
+  const tx = Math.max(-60, Math.min(60, (e.clientX - dragStartX) * 0.15));
+  const ty = Math.max(-40, Math.min(40, (e.clientY - dragStartY) * 0.15));
+  monitorWrapper.style.transform = `translateX(${tx}px) translateY(${ty}px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+});
+
+document.addEventListener('mouseup', () => {
+  if(!isDragging) return;
+  isDragging = false;
+  monitorWrapper.classList.remove('dragging');
+  // Spring back
+  monitorWrapper.style.transition = 'transform 0.6s cubic-bezier(0.34,1.56,0.64,1)';
+  monitorWrapper.style.transform = `rotateX(${baseRotX}deg) rotateY(${baseRotY}deg)`;
+  setTimeout(() => { monitorWrapper.style.transition = ''; }, 700);
+});
+
+// ===== POWER TOGGLE =====
+function toggleMonitor() {
+  if(!isOn) {
+    powerOn();
+  } else {
+    powerOff();
+  }
+}
+
+// Screen click to power on (only when off)
+document.getElementById('screenEl').addEventListener('click', (e) => {
+  if (isOn) return;
+  const bootEl = document.getElementById('bootScreen');
+  const desktopEl = document.getElementById('win95Desktop');
+  const bootVisible = bootEl ? getComputedStyle(bootEl).display !== 'none' : true;
+  const desktopVisible = desktopEl ? getComputedStyle(desktopEl).display !== 'none' : false;
+
+  // If desktop is already visible, fix stale state instead of replaying boot.
+  if (!bootVisible && desktopVisible) {
+    isOn = true;
+    return;
+  }
+  powerOn();
+});
+
+function powerOn() {
+  const desktopEl = document.getElementById('win95Desktop');
+  if (isOn && desktopEl && getComputedStyle(desktopEl).display !== 'none') {
+    return;
+  }
+  isOn = true;
+  const monitor = document.getElementById('monitor');
+  monitor.classList.add('monitor-on');
+  const content = document.getElementById('screenContent');
+  content.classList.remove('turning-off');
+  content.classList.add('turning-on');
+  content.style.opacity = '1';
+
+  // Run boot sequence
+  setTimeout(runBootSequence, 100);
+}
+
+function powerOff() {
+  isOn = false;
+  const monitor = document.getElementById('monitor');
+  const content = document.getElementById('screenContent');
+  content.classList.remove('turning-on');
+  content.classList.add('turning-off');
+
+  setTimeout(() => {
+    monitor.classList.remove('monitor-on');
+    content.style.opacity = '0';
+    content.classList.remove('turning-off');
+    // Reset
+    document.getElementById('bootScreen').style.display = 'flex';
+    document.getElementById('win95Desktop').style.display = 'none';
+    clearBootLines();
+  }, 500);
+}
+
+// ===== BOOT SEQUENCE =====
+const bootLines = [
+  { id:'bl1', text:'BIOS v2.01  Memory Test: 640K OK', cls:'ok', delay:0 },
+  { id:'bl2', text:'Detecting Hardware...', cls:'', delay:200 },
+  { id:'bl3', text:'  > CPU: RETRO-486 @ 66MHz        [OK]', cls:'ok', delay:500 },
+  { id:'bl4', text:'  > Memory: 8192KB                [OK]', cls:'ok', delay:700 },
+  { id:'bl5', text:'  > Portfolio Modules Loading...  [OK]', cls:'ok', delay:1000 },
+  { id:'bl6', text:'Starting PortfolioOS...', cls:'warn', delay:1400 },
+];
+
+function clearBootLines() {
+  bootLines.forEach(l => {
+    const el = document.getElementById(l.id);
+    if(el) { el.textContent = ''; el.className = 'boot-line'; }
+  });
+  document.getElementById('bootBarFill').style.width = '0%';
+}
+
+function runBootSequence() {
+  clearBootLines();
+  bootLines.forEach(l => {
+    setTimeout(() => {
+      const el = document.getElementById(l.id);
+      if(el) {
+        el.textContent = l.text;
+        if(l.cls) el.classList.add(l.cls);
+      }
+    }, l.delay);
+  });
+
+  // Progress bar
+  let progress = 0;
+  const fill = document.getElementById('bootBarFill');
+  const interval = setInterval(() => {
+    progress += 4;
+    fill.style.width = Math.min(progress, 100) + '%';
+    if(progress >= 100) clearInterval(interval);
+  }, 70);
+
+  // Show desktop after boot
+  setTimeout(() => {
+    document.getElementById('bootScreen').style.display = 'none';
+    document.getElementById('win95Desktop').style.display = 'block';
+    isOn = true;
+  }, 2200);
+}
+
+// ===== WINDOWS =====
+const windowOrder = {};
+
+function bringToFront(id) {
+  const w = document.getElementById(id);
+  if(!w) return;
+  
+  // Check if this is a popped-out window (not inside monitor)
+  const isPoppedOut = !w.closest('.screen-content, .win95-desktop') && w.closest('body');
+  
+  if (isPoppedOut) {
+    // For popped-out windows, maintain high z-index
+    currentWindowZ = Math.max(currentWindowZ, 10000);
+    w.style.zIndex = String(++currentWindowZ);
+  } else {
+    // For in-monitor windows, use regular z-index
+    w.style.zIndex = String(++currentWindowZ);
+  }
+}
+
+function openWindow(id, popOut = false) {
+  const w = document.getElementById(id);
+  if(!w) return;
+  if (popOut) {
+    const isInsideMonitor = w.closest('.screen-content, .win95-desktop');
+    if (isInsideMonitor) {
+      w.style.display = 'none';
+      document.body.insertBefore(w, document.querySelector('.taskbar'));
+      w.style.display = '';
+    }
+  }
+  w.classList.add('visible', 'active');
+  bringToFront(id);
+  updateTaskbar();
+}
+
+function closeWindow(id) {
+  const w = document.getElementById(id);
+  if(!w) return;
+  // If this is a dynamically created Doro instance, remove it from the DOM
+  if (w.classList.contains('doro-instance')) {
+    w.remove();
+  } else {
+    w.classList.remove('visible', 'active');
+  }
+  updateTaskbar();
+}
+
+function minimizeWindow(id) {
+  const w = document.getElementById(id);
+  if (!w) return;
+  // For doro instances, just hide them (minimize) instead of removing DOM
+  if (w.classList.contains('doro-instance')) {
+    w.classList.remove('visible', 'active');
+    // ensure inline display hidden in case it was set on open
+    w.style.display = 'none';
+  } else {
+    closeWindow(id);
+  }
+}
+
+function openAllWindows() {
+  ['aboutWindow','worksWindow','linksWindow','faqWindow','contactsWindow','musicWindow','videoWindow'].forEach(openWindow);
+  document.querySelectorAll('.doro-instance').forEach((el) => {
+    el.classList.add('visible', 'active');
+    bringToFront(el.id);
+  });
+}
+function closeAllWindows() {
+  ['aboutWindow','worksWindow','linksWindow','faqWindow','contactsWindow','workViewerWindow','musicWindow','videoWindow'].forEach(closeWindow);
+  document.querySelectorAll('.doro-instance').forEach((el) => closeWindow(el.id));
+}
+
+function closeAllDoroTabs() {
+  document.querySelectorAll('.doro-instance').forEach((el) => closeWindow(el.id));
+}
+
+let doroWindowCount = 0;
+
+function openDoroWindow() {
+  const template = document.getElementById('doroWindow');
+  if (!template) return;
+
+  doroWindowCount += 1;
+  const clone = template.cloneNode(true);
+  const instanceId = `doroWindow_${doroWindowCount}`;
+  clone.id = instanceId;
+  clone.classList.add('visible', 'active', 'doro-instance');
+  clone.style.display = 'flex';
+  clone.style.right = 'auto';
+
+  const offsetX = 110 + ((doroWindowCount - 1) % 5) * 28;
+  const offsetY = 118 + ((doroWindowCount - 1) % 4) * 24;
+  clone.style.left = `${offsetX}px`;
+  clone.style.top = `${offsetY}px`;
+  clone.style.zIndex = String(10000 + doroWindowCount);
+
+  const titlebar = clone.querySelector('.window-titlebar');
+  if (titlebar) {
+    titlebar.onmousedown = (e) => startDragWindow(e, instanceId);
+  }
+
+  const buttons = clone.querySelectorAll('.window-controls .win-btn');
+  if (buttons[0]) {
+    buttons[0].removeAttribute('onclick');
+    buttons[0].onmousedown = (e) => e.stopPropagation();
+    buttons[0].addEventListener('click', (e) => {
+      e.stopPropagation();
+      minimizeWindow(instanceId);
+    });
+  }
+  if (buttons[1]) {
+    buttons[1].removeAttribute('onclick');
+    buttons[1].onmousedown = (e) => e.stopPropagation();
+    buttons[1].addEventListener('click', (e) => e.stopPropagation());
+  }
+  if (buttons[2]) {
+    buttons[2].removeAttribute('onclick');
+    buttons[2].onmousedown = (e) => e.stopPropagation();
+    buttons[2].addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeWindow(instanceId);
+    });
+  }
+
+  document.body.insertBefore(clone, document.querySelector('.taskbar'));
+  bringToFront(instanceId);
+  updateTaskbar();
+}
+
+function updateTaskbar() {
+  const bar = document.getElementById('taskbarItems');
+  if(!bar) return;
+  bar.innerHTML = '';
+  const wins = [
+    {id:'aboutWindow', icon:'👤', label:'About'},
+    {id:'worksWindow', icon:'📁', label:'Works'},
+    {id:'workViewerWindow', icon:'🖼', label:'Viewer'},
+    {id:'linksWindow', icon:'🔗', label:'Links'},
+    {id:'faqWindow', icon:'❓', label:'FAQ'},
+    {id:'contactsWindow', icon:'📧', label:'Contact'},
+    {id:'musicWindow', icon:'♪', label:'Music'},
+    {id:'videoWindow', icon:'🎬', label:'MP4'},
+  ];
+  wins.forEach(w => {
+    const el = document.getElementById(w.id);
+    if(el && el.classList.contains('visible')) {
+      const btn = document.createElement('div');
+      btn.style.cssText = 'padding:1px 6px;background:var(--btn-face);border:2px inset var(--win-dark);font-size:12px;cursor:pointer;display:flex;gap:3px;align-items:center;color:var(--text);';
+      btn.innerHTML = `${w.icon} ${w.label}`;
+      btn.onclick = () => bringToFront(w.id);
+      bar.appendChild(btn);
+    }
+  });
+
+  document.querySelectorAll('.doro-instance.visible').forEach((el, index) => {
+    const btn = document.createElement('div');
+    btn.style.cssText = 'padding:1px 6px;background:var(--btn-face);border:2px inset var(--win-dark);font-size:12px;cursor:pointer;display:flex;gap:3px;align-items:center;color:var(--text);';
+    btn.innerHTML = `doro ${index + 1}`;
+    btn.onclick = () => bringToFront(el.id);
+    bar.appendChild(btn);
+  });
+
+  const visibleDoros = document.querySelectorAll('.doro-instance.visible').length;
+  if (visibleDoros > 2) {
+    const closeAllBtn = document.createElement('div');
+    closeAllBtn.style.cssText = 'padding:1px 8px;background:#d9c8a5;border:2px outset var(--win-light);font-size:12px;cursor:pointer;display:flex;gap:3px;align-items:center;color:var(--text);';
+    closeAllBtn.textContent = 'Close Doro Tabs';
+    closeAllBtn.onclick = closeAllDoroTabs;
+    bar.appendChild(closeAllBtn);
+  }
+
+  // Update main taskbar Close All Doro button (outside the monitor)
+  try {
+    const mainCloseBtn = document.getElementById('closeAllDoroBtnMain');
+    if (mainCloseBtn) {
+      if (visibleDoros > 2) {
+        mainCloseBtn.style.display = 'flex';
+        mainCloseBtn.textContent = `✕✕ Close Doro Tabs (${visibleDoros})`;
+        if (visibleDoros > 4) mainCloseBtn.classList.add('pulse'); else mainCloseBtn.classList.remove('pulse');
+      } else {
+        mainCloseBtn.style.display = 'none';
+        mainCloseBtn.classList.remove('pulse');
+      }
+    }
+  } catch (err) {
+    // ignore in older browsers
+    console.warn('updateTaskbar: mainCloseBtn update failed', err);
+  }
+}
+
+// Compatibility bridge: startDragWindow used by older inline handlers
+function startDragWindow(e, windowId) {
+  const windowEl = document.getElementById(windowId);
+  if (!windowEl) return;
+  beginWindowDrag(e, windowEl);
+}
+
+function startResizeWindow(e, windowId) {
+  // Minimal resize handler placeholder to avoid ReferenceError.
+  // Full resize behavior can be implemented later if needed.
+  const windowEl = document.getElementById(windowId);
+  if (!windowEl) return;
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+function beginWindowDrag(e, windowEl) {
+  const dragRoot = windowEl.closest('.screen-content, .win95-desktop');
+  const monitor = dragRoot || null;
+  const inv = monitor ? getInverseTransformFor(monitor) : null;
+  const ptLocal = inv ? applyInverseToPoint(inv, e.clientX, e.clientY) : { x: e.clientX, y: e.clientY };
+  const rect = windowEl.getBoundingClientRect();
+  const rectLocal = inv ? applyInverseToPoint(inv, rect.left, rect.top) : { x: rect.left, y: rect.top };
+  activeDrag = windowEl.id;
+  dragOffsets[activeDrag] = {
+    x: ptLocal.x - rectLocal.x,
+    y: ptLocal.y - rectLocal.y,
+    rootInv: inv,
+    rootId: monitor ? monitor.id : null
+  };
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+window.startDragWindow = startDragWindow;
+
+// ===== TRANSFORM-AWARE WINDOW DRAGGING =====
+let activeDrag = null;
+let dragOffsets = {};
+
+function parseMatrix(transform) {
+  if (!transform || transform === 'none') return null;
+  const m3d = transform.match(/^matrix3d\((.+)\)$/);
+  if (m3d) return { type: '3d', values: m3d[1].split(',').map(s=>Number(s.trim())) };
+  const m2 = transform.match(/^matrix\((.+)\)$/);
+  if (m2) return { type: '2d', values: m2[1].split(',').map(s=>Number(s.trim())) };
+  return null;
+}
+
+function invertMatrix2D(v) {
+  const [a,b,c,d,tx,ty] = v;
+  const det = a*d - b*c;
+  if (!det) return null;
+  const id = 1/det;
+  return [ d*id, -b*id, -c*id, a*id, (c*ty - d*tx)*id, (b*tx - a*ty)*id ];
+}
+
+function invertMatrix3D(m) {
+  // Generic 4x4 inversion for matrix3d values
+  const a = m;
+  const inv = new Array(16);
+  inv[0] = a[5]*a[10]*a[15] - a[5]*a[11]*a[14] - a[9]*a[6]*a[15] + a[9]*a[7]*a[14] + a[13]*a[6]*a[11] - a[13]*a[7]*a[10];
+  inv[1] = -a[1]*a[10]*a[15] + a[1]*a[11]*a[14] + a[9]*a[2]*a[15] - a[9]*a[3]*a[14] - a[13]*a[2]*a[11] + a[13]*a[3]*a[10];
+  inv[2] = a[1]*a[6]*a[15] - a[1]*a[7]*a[14] - a[5]*a[2]*a[15] + a[5]*a[3]*a[14] + a[13]*a[2]*a[7] - a[13]*a[3]*a[6];
+  inv[3] = -a[1]*a[6]*a[11] + a[1]*a[7]*a[10] + a[5]*a[2]*a[11] - a[5]*a[3]*a[10] - a[9]*a[2]*a[7] + a[9]*a[3]*a[6];
+  inv[4] = -a[4]*a[10]*a[15] + a[4]*a[11]*a[14] + a[8]*a[6]*a[15] - a[8]*a[7]*a[14] - a[12]*a[6]*a[11] + a[12]*a[7]*a[10];
+  inv[5] = a[0]*a[10]*a[15] - a[0]*a[11]*a[14] - a[8]*a[2]*a[15] + a[8]*a[3]*a[14] + a[12]*a[2]*a[11] - a[12]*a[3]*a[10];
+  inv[6] = -a[0]*a[6]*a[15] + a[0]*a[7]*a[14] + a[4]*a[2]*a[15] - a[4]*a[3]*a[14] - a[12]*a[2]*a[7] + a[12]*a[3]*a[6];
+  inv[7] = a[0]*a[6]*a[11] - a[0]*a[7]*a[10] - a[4]*a[2]*a[11] + a[4]*a[3]*a[10] + a[8]*a[2]*a[7] - a[8]*a[3]*a[6];
+  inv[8] = a[4]*a[9]*a[15] - a[4]*a[11]*a[13] - a[8]*a[5]*a[15] + a[8]*a[7]*a[13] + a[12]*a[5]*a[11] - a[12]*a[7]*a[9];
+  inv[9] = -a[0]*a[9]*a[15] + a[0]*a[11]*a[13] + a[8]*a[1]*a[15] - a[8]*a[3]*a[13] - a[12]*a[1]*a[11] + a[12]*a[3]*a[9];
+  inv[10] = a[0]*a[5]*a[15] - a[0]*a[7]*a[13] - a[4]*a[1]*a[15] + a[4]*a[3]*a[13] + a[12]*a[1]*a[7] - a[12]*a[3]*a[5];
+  inv[11] = -a[0]*a[5]*a[11] + a[0]*a[7]*a[9] + a[4]*a[1]*a[11] - a[4]*a[3]*a[9] - a[8]*a[1]*a[7] + a[8]*a[3]*a[5];
+  inv[12] = -a[4]*a[9]*a[14] + a[4]*a[10]*a[13] + a[8]*a[5]*a[14] - a[8]*a[6]*a[13] - a[12]*a[5]*a[10] + a[12]*a[6]*a[9];
+  inv[13] = a[0]*a[9]*a[14] - a[0]*a[10]*a[13] - a[8]*a[1]*a[14] + a[8]*a[2]*a[13] + a[12]*a[1]*a[10] - a[12]*a[2]*a[9];
+  inv[14] = -a[0]*a[5]*a[14] + a[0]*a[6]*a[13] + a[4]*a[1]*a[14] - a[4]*a[2]*a[13] - a[12]*a[1]*a[6] + a[12]*a[2]*a[5];
+  inv[15] = a[0]*a[5]*a[10] - a[0]*a[6]*a[9] - a[4]*a[1]*a[10] + a[4]*a[2]*a[9] + a[8]*a[1]*a[6] - a[8]*a[2]*a[5];
+  let det = a[0]*inv[0] + a[1]*inv[4] + a[2]*inv[8] + a[3]*inv[12];
+  if (!det) return null;
+  det = 1.0 / det;
+  for (let i = 0; i < 16; i++) inv[i] = inv[i] * det;
+  return inv;
+}
+
+function applyInverseToPoint(inv, x, y) {
+  if (!inv) return { x, y };
+  if (inv.length === 6) {
+    const [a,b,c,d,tx,ty] = inv;
+    const nx = a * x + c * y + tx;
+    const ny = b * x + d * y + ty;
+    return { x: nx, y: ny };
+  }
+  const nx = inv[0]*x + inv[4]*y + inv[12]*1;
+  const ny = inv[1]*x + inv[5]*y + inv[13]*1;
+  const nw = inv[3]*x + inv[7]*y + inv[15]*1 || 1;
+  return { x: nx / nw, y: ny / nw };
+}
+
+function getInverseTransformFor(el) {
+  const style = getComputedStyle(el);
+  const parsed = parseMatrix(style.transform);
+  if (!parsed) return null;
+  if (parsed.type === '2d') return invertMatrix2D(parsed.values);
+  return invertMatrix3D(parsed.values);
+}
+
+document.addEventListener('mousedown', (e) => {
+  const titlebar = e.target.closest('.window-titlebar');
+  if (!titlebar) return;
+  if (e.target.closest('.window-controls') || e.target.closest('.win-btn')) return;
+  const windowEl = titlebar.closest('.win95-window');
+  if (!windowEl) return;
+  bringToFront(windowEl.id);
+});
+
+
+document.addEventListener('click', (e) => {
+  const winBtn = e.target.closest('.win-btn');
+  if (winBtn) {
+    const windowEl = winBtn.closest('.win95-window');
+    if (!windowEl) return;
+    const controls = Array.from(winBtn.parentElement?.children || []);
+    const index = controls.indexOf(winBtn);
+    if (index === 0) {
+      minimizeWindow(windowEl.id);
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    } else if (index === 2) {
+      closeWindow(windowEl.id);
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+    return;
+  }
+
+  const startBtn = e.target.closest('.start-btn');
+  if (startBtn) {
+    toggleStartMenu();
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return;
+  }
+
+  const desktopIcon = e.target.closest('.desktop-icons .icon-item');
+  const isMobileUi = window.matchMedia('(max-width: 820px)').matches || window.matchMedia('(pointer: coarse)').matches;
+  if (desktopIcon && isMobileUi) {
+    if (typeof window.selectIcon === 'function') {
+      window.selectIcon(desktopIcon);
+    }
+
+    const action = desktopIcon.getAttribute('ondblclick') || '';
+    const openMatch = action.match(/openWindow\('([^']+)'(?:,\s*(true|false))?\)/);
+    if (openMatch) {
+      const id = openMatch[1];
+      const popOut = openMatch[2] ? openMatch[2] === 'true' : false;
+      openWindow(id, popOut);
+    } else if (action.includes('toggleMonitor()')) {
+      toggleMonitor();
+    }
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return;
+  }
+
+  const wingIcon = e.target.closest('.wing-icon');
+  if (wingIcon) {
+    playVideoTransition();
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return;
+  }
+
+  const closeAllDoroBtn = e.target.closest('.close-all-doro-btn');
+  if (closeAllDoroBtn) {
+    closeAllDoroTabs();
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return;
+  }
+
+  const startMenuItem = e.target.closest('.start-menu-item');
+  if (startMenuItem) {
+    const action = startMenuItem.getAttribute('onclick') || '';
+    const match = action.match(/openWindow\('([^']+)'\)/);
+    if (match) {
+      openWindow(match[1]);
+    } else if (action.includes('toggleMonitor()')) {
+      toggleMonitor();
+    } else if (action.includes('openAllWindows()')) {
+      openAllWindows();
+    } else if (action.includes('closeAllWindows()')) {
+      closeAllWindows();
+    } else if (action.includes('closeAllDoroTabs()')) {
+      closeAllDoroTabs();
+    }
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+
+  // Catch-all: Stop propagation for any click inside screen content (windows, desktop icons, taskbar, etc)
+  // This prevents clicks from bubbling up to #screenEl and triggering unintended powerOn calls
+  const screenContent = e.target.closest('.screen-content');
+  if (screenContent) {
+    // Check if this is actually an interactive element that should be handled
+    const interactive = e.target.closest('.win95-window, .desktop-icons, .win95-taskbar, .context-menu, .start-menu');
+    if (interactive && !e.target.closest('a')) {
+      e.stopPropagation();
+    }
+  }
+}, true);
+
+document.addEventListener('click', (e) => {
+  // Limit custom click behavior to the Works window only, so desktop icons
+  // keep their native inline ondblclick behavior.
+  const folderEl = e.target.closest('#worksWindow .file-icon[data-folder]');
+  if (folderEl) {
+    const name = folderEl.dataset.folder;
+    if (name && typeof window.openFolder === 'function') {
+      window.openFolder(name);
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+    return;
+  }
+
+  const itemEl = e.target.closest('#worksWindow .file-icon[data-item-index]');
+  if (itemEl) {
+    const idx = Number(itemEl.dataset.itemIndex || '0');
+    const headerText = document.querySelector('#worksWindow > .window-body > div')?.textContent || '';
+    const folderMatch = headerText.match(/Works\\([^\\]+)\\/);
+    const folderName = folderMatch ? folderMatch[1] : '';
+    if (folderName) {
+      openWorkViewer(folderName, idx);
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  }
+}, true);
+
+// ===== WORKS VIEWER =====
+function openWork(i) {
+  const work = works[i];
+  document.getElementById('workViewerIcon').textContent = work.icon;
+  document.getElementById('workViewerTitle').textContent = work.title;
+
+  const content = document.getElementById('workViewerContent');
+  content.innerHTML = `
+    <div class="work-placeholder" style="background:linear-gradient(135deg,${work.color},#000);">
+      <div class="work-placeholder-icon">${work.emoji}</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);">[ Add your image here ]</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.3);">Supports any aspect ratio</div>
+    </div>
+    <div class="work-desc">${work.desc}</div>
+    <div class="work-tags">${work.tags.map(t=>`<div class="work-tag">${t}</div>`).join('')}</div>
+    <div style="margin-top:8px;font-size:12px;color:var(--win-dark);">File: ${work.title.replace(/\s+/g,'_')}.png  |  Modified: 01/01/1995</div>
+    <div style="margin-top:6px;">
+      <div class="win-progress"><div class="win-progress-fill" style="width:${60+i*7}%"></div></div>
+      <div style="font-size:12px;color:var(--win-dark);">Completion: ${60+i*7}%</div>
+    </div>
+  `;
+  openWindow('workViewerWindow');
+  bringToFront('workViewerWindow');
+}
+
+const folderIndex = {
+  illustrations: [
+    { icon: '🖼️', title: 'Illustration 1', desc: 'Digital artwork and design piece.', image: 'images/ill1.png' },
+    { icon: '🖼️', title: 'Illustration 2', desc: 'Creative concept and color study.', image: 'images/ill2.png' },
+    { icon: '🖼️', title: 'Illustration 3', desc: 'Character design and composition.', image: 'images/ill3.png' },
+    { icon: '🖼️', title: 'Illustration 4', desc: 'Final artwork and visual storytelling.', image: 'images/ill4.png' }
+  ],
+  videos: [
+    { icon: '🎬', title: 'Demo Reel', desc: 'Compilation of motion pieces.' },
+    { icon: '🎬', title: 'Animation Test', desc: 'Short loop animation.' }
+  ]
+};
+
+function renderWorksRoot() {
+  const header = document.querySelector('#worksWindow > .window-body > div');
+  const explorer = document.querySelector('#worksWindow .file-explorer');
+  const statusLeft = document.querySelector('#worksWindow .window-statusbar .statusbar-item');
+  if (!header || !explorer) return;
+
+  header.textContent = '📂 C:\\Portfolio\\Works\\ — 2 folder(s)';
+  explorer.innerHTML = `
+    <div class="file-icon" data-folder="illustrations">
+      <div class="fi">📁</div>
+      <div class="file-icon-label">Illustrations</div>
+    </div>
+    <div class="file-icon" data-folder="videos">
+      <div class="fi">📁</div>
+      <div class="file-icon-label">Videos</div>
+    </div>
+  `;
+  if (statusLeft) statusLeft.textContent = '2 folder(s)';
+}
+
+function openFolder(name) {
+  const explorer = document.querySelector('#worksWindow .file-explorer');
+  const header = document.querySelector('#worksWindow > .window-body > div');
+  const statusLeft = document.querySelector('#worksWindow .window-statusbar .statusbar-item');
+  if (!explorer || !header) return;
+
+  const items = folderIndex[name] || [];
+  header.textContent = `📂 C:\\Portfolio\\Works\\${name}\\ — ${items.length} item(s)`;
+  explorer.innerHTML = items.map((it, idx) => `
+    <div class="file-icon" data-item-index="${idx}">
+      <div class="fi">${it.image ? `<img src="${it.image}" alt="${it.title}">` : it.icon}</div>
+      <div class="file-icon-label">${it.title}</div>
+    </div>
+  `).join('') + '<div class="back-row"><button class="win95-folder-btn" onclick="renderWorksRoot()">◀ Back</button></div>';
+  if (statusLeft) statusLeft.textContent = `${items.length} item(s)`;
+}
+
+function openWorkViewer(folderName, idx) {
+  const items = folderIndex[folderName] || [];
+  const it = items[idx];
+  if (!it) return;
+
+  document.getElementById('workViewerIcon').textContent = it.icon || '🗂';
+  document.getElementById('workViewerTitle').textContent = it.title;
+  const content = document.getElementById('workViewerContent');
+  content.innerHTML = `
+      ${it.image ? `<div class="work-viewer-media" onclick="openArtworkFull('${it.image}', '${it.title.replace(/'/g, "\\'")}')"><img class="work-viewer-img" src="${it.image}" alt="${it.title}"></div>` : `<div class="work-placeholder" style="background:linear-gradient(135deg,#333,#000);height:160px;display:flex;align-items:center;justify-content:center;"><div style="font-size:48px;">${it.icon}</div></div>`}
+    <div style="padding:8px;font-size:13px;color:var(--win-dark);">${it.desc || ''}</div>
+  `;
+
+  if (it.image) {
+    const image = content.querySelector('.work-viewer-img');
+    if (image) {
+      const fitViewerToArtwork = () => {
+        const windowEl = document.getElementById('workViewerWindow');
+        const titlebar = windowEl?.querySelector('.window-titlebar');
+        const menubar = windowEl?.querySelector('.window-menubar');
+        const caption = content.querySelector('div[style*="padding:8px"]');
+        if (!windowEl || !titlebar || !menubar || !image) return;
+
+        const viewportWidth = Math.max(320, window.innerWidth - 48);
+        const viewportHeight = Math.max(320, window.innerHeight - 48);
+        const chromeHeight = titlebar.offsetHeight + menubar.offsetHeight + (caption?.offsetHeight || 0) + 44;
+        const chromeWidth = 28;
+        const naturalWidth = image.naturalWidth || 1;
+        const naturalHeight = image.naturalHeight || 1;
+        const aspect = naturalWidth / naturalHeight;
+
+        let targetImageWidth = naturalWidth;
+        let targetImageHeight = naturalHeight;
+        const maxImageWidth = Math.max(240, viewportWidth - chromeWidth);
+        const maxImageHeight = Math.max(180, viewportHeight - chromeHeight);
+
+        if (targetImageWidth > maxImageWidth) {
+          targetImageWidth = maxImageWidth;
+          targetImageHeight = targetImageWidth / aspect;
+        }
+
+        if (targetImageHeight > maxImageHeight) {
+          targetImageHeight = maxImageHeight;
+          targetImageWidth = targetImageHeight * aspect;
+        }
+
+        image.style.maxWidth = `${Math.floor(maxImageWidth)}px`;
+        image.style.maxHeight = `${Math.floor(maxImageHeight)}px`;
+
+        const media = content.querySelector('.work-viewer-media');
+        if (media) {
+          media.style.width = `${Math.ceil(targetImageWidth + 4)}px`;
+        }
+
+        windowEl.style.width = `${Math.ceil(Math.min(viewportWidth, Math.max(340, targetImageWidth + chromeWidth)))}px`;
+        windowEl.style.height = `${Math.ceil(Math.min(viewportHeight, chromeHeight + targetImageHeight + 24))}px`;
+      };
+
+      if (image.complete && image.naturalWidth > 0) {
+        fitViewerToArtwork();
+      } else {
+        image.addEventListener('load', fitViewerToArtwork, { once: true });
+      }
+    }
+  }
+
+  openWindow('workViewerWindow');
+  bringToFront('workViewerWindow');
+}
+
+function openArtworkFull(src, title) {
+  const overlay = document.getElementById('artOverlay');
+  const image = document.getElementById('artOverlayImage');
+  const caption = document.getElementById('artOverlayCaption');
+  if (!overlay || !image || !caption) return;
+
+  if (overlay.parentElement !== document.body) {
+    document.body.appendChild(overlay);
+  }
+
+  image.src = src;
+  image.alt = title || 'Artwork preview';
+  caption.textContent = title || '';
+  overlay.style.position = 'fixed';
+  overlay.style.inset = '0';
+  overlay.style.zIndex = '20000';
+  overlay.style.display = 'flex';
+  overlay.style.pointerEvents = 'auto';
+  overlay.classList.add('visible');
+}
+
+function closeArtworkFull() {
+  const overlay = document.getElementById('artOverlay');
+  if (!overlay) return;
+  overlay.classList.remove('visible');
+  overlay.style.display = 'none';
+}
+
+window.openFolder = openFolder;
+window.renderWorksRoot = renderWorksRoot;
+window.openWorkViewer = openWorkViewer;
+window.openArtworkFull = openArtworkFull;
+window.closeArtworkFull = closeArtworkFull;
+
+document.addEventListener('click', (e) => {
+  const folderEl = e.target.closest('#worksWindow .file-icon[data-folder]');
+  if (folderEl) {
+    const name = folderEl.dataset.folder;
+    if (name) openFolder(name);
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
+
+  const itemEl = e.target.closest('#worksWindow .file-icon[data-item-index]');
+  if (itemEl) {
+    const idx = Number(itemEl.dataset.itemIndex || '0');
+    const headerText = document.querySelector('#worksWindow > .window-body > div')?.textContent || '';
+    const folderMatch = headerText.match(/Works\\([^\\]+)\\/);
+    const folderName = folderMatch ? folderMatch[1] : '';
+    if (folderName) {
+      openWorkViewer(folderName, idx);
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+}, true);
+
+// ===== ICON SELECTION =====
+function selectIcon(el) {
+  document.querySelectorAll('.icon-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ===== CONTEXT MENU =====
+function showContextMenu(e) {
+  e.preventDefault();
+  const menu = document.getElementById('contextMenu');
+  const sRect = document.getElementById('win95Desktop').getBoundingClientRect();
+  let x = e.clientX - sRect.left;
+  let y = e.clientY - sRect.top;
+  menu.style.left = x + 'px';
+  menu.style.top = y + 'px';
+  menu.classList.add('visible');
+}
+function closeContextMenu() {
+  document.getElementById('contextMenu')?.classList.remove('visible');
+}
+document.addEventListener('click', (e) => {
+  if(!e.target.closest('#contextMenu')) closeContextMenu();
+});
+
+// ===== DESELECT ICONS ON DESKTOP CLICK =====
+document.getElementById('win95Desktop')?.addEventListener('click', (e) => {
+  if(!e.target.closest('.icon-item,.win95-window,.context-menu')) {
+    document.querySelectorAll('.icon-item').forEach(i => i.classList.remove('selected'));
+  }
+});
+// (selection handled via inline `onclick="selectIcon(this)"` on icon elements)
+// ===== MUSIC PLAYER =====
+let musicPlayer = null;
+let musicPlaylist = [];
+let currentTrackIndex = -1;
+let isPlaying = false;
+let videoPlaylist = [];
+let currentVideoIndex = -1;
+let isVideoPlaying = false;
+
+function initMusicPlayer() {
+  if (!musicPlayer) {
+    musicPlayer = new Audio();
+    musicPlayer.volume = 0.7;
+    musicPlayer.addEventListener('ended', () => musicNext());
+    musicPlayer.addEventListener('timeupdate', updateMusicProgress);
+    musicPlayer.addEventListener('loadedmetadata', updateMusicDuration);
+  }
+}
+
+function loadSelectedTracks(fileList) {
+  initMusicPlayer();
+  const files = Array.from(fileList || []).filter(file => /audio\/(mpeg|mp3)|\.mp3$/i.test(file.type) || file.name.toLowerCase().endsWith('.mp3'));
+  if (files.length === 0) {
+    document.getElementById('playerStatus').textContent = 'No valid MP3 files selected';
+    return;
+  }
+
+  const existingKeys = new Set(musicPlaylist.map(track => track.key));
+  const newTracks = [];
+
+  files.forEach((file) => {
+    const key = `${file.name}-${file.size}-${file.lastModified}`;
+    if (existingKeys.has(key)) return;
+    newTracks.push({
+      key,
+      name: file.name.replace(/\.mp3$/i, ''),
+      url: URL.createObjectURL(file)
+    });
+  });
+
+  if (newTracks.length === 0) {
+    document.getElementById('playerStatus').textContent = 'Those songs are already in your playlist';
+    return;
+  }
+
+  musicPlaylist = [...musicPlaylist, ...newTracks];
+  if (currentTrackIndex === -1) currentTrackIndex = 0;
+  renderPlaylist();
+  updatePlayerUI();
+  document.getElementById('playerStatus').textContent = `${newTracks.length} song(s) added • ${musicPlaylist.length} total`;
+
+  const fileInput = document.getElementById('musicFileInput');
+  if (fileInput) fileInput.value = '';
+}
+
+function renderPlaylist() {
+  const container = document.getElementById('playlistContainer');
+  const picker = document.getElementById('trackPicker');
+  if (!container) return;
+  if (musicPlaylist.length === 0) {
+    container.innerHTML = '<div class="playlist-item" style="color:var(--win-dark);text-align:center;padding:20px;">Load MP3 files to start your playlist.</div>';
+    if (picker) picker.innerHTML = '<option value="-1">Choose a song...</option>';
+    return;
+  }
+
+  container.innerHTML = musicPlaylist.map((track, idx) =>
+    `<div class="playlist-item ${idx === currentTrackIndex ? 'active' : ''}" onclick="musicSelectTrack(${idx})"><span class="playlist-name">${idx === currentTrackIndex && isPlaying ? '▶ ' : ''}${track.name}</span><button class="playlist-remove" onclick="removeTrackByIndex(${idx}, event)" title="Remove song">x</button></div>`
+  ).join('');
+
+  if (picker) {
+    picker.innerHTML = musicPlaylist.map((track, idx) =>
+      `<option value="${idx}">${idx + 1}. ${track.name}</option>`
+    ).join('');
+    picker.value = String(currentTrackIndex >= 0 ? currentTrackIndex : 0);
+  }
+}
+
+function musicSelectTrack(idx, forcePlay = true) {
+  if (!musicPlaylist[idx]) return;
+  initMusicPlayer();
+  currentTrackIndex = idx;
+  musicPlayer.src = musicPlaylist[idx].url;
+  if (forcePlay) {
+    musicPlayer.play();
+    isPlaying = true;
+  } else {
+    isPlaying = false;
+  }
+  updatePlayerUI();
+  updateMusicProgress();
+}
+
+function musicPlayPause() {
+  initMusicPlayer();
+  if (!musicPlayer.src && musicPlaylist.length > 0) {
+    musicSelectTrack(0);
+    return;
+  }
+  if (musicPlayer.paused) {
+    musicPlayer.play();
+    isPlaying = true;
+  } else {
+    musicPlayer.pause();
+    isPlaying = false;
+  }
+  updatePlayerUI();
+  updateMusicProgress();
+}
+
+function musicRestart() {
+  if (!musicPlayer) return;
+  if (!musicPlayer.src && musicPlaylist.length > 0) {
+    musicSelectTrack(0);
+    return;
+  }
+  musicPlayer.currentTime = 0;
+  if (!musicPlayer.paused) {
+    musicPlayer.play();
+  }
+  updatePlayerUI();
+  updateMusicProgress();
+}
+
+function musicStop() {
+  if (!musicPlayer) return;
+  musicPlayer.pause();
+  musicPlayer.currentTime = 0;
+  isPlaying = false;
+  updatePlayerUI();
+  updateMusicProgress();
+}
+
+function musicNext() {
+  if (musicPlaylist.length === 0) return;
+  currentTrackIndex = (currentTrackIndex + 1) % musicPlaylist.length;
+  musicSelectTrack(currentTrackIndex);
+}
+
+function musicPrevious() {
+  if (musicPlaylist.length === 0) return;
+  currentTrackIndex = (currentTrackIndex - 1 + musicPlaylist.length) % musicPlaylist.length;
+  musicSelectTrack(currentTrackIndex);
+}
+
+function removeCurrentTrack() {
+  if (currentTrackIndex < 0 || !musicPlaylist[currentTrackIndex]) {
+    const status = document.getElementById('playerStatus');
+    if (status) status.textContent = 'No track selected to remove';
+    return;
+  }
+  removeTrackByIndex(currentTrackIndex);
+}
+
+function removeTrackByIndex(idx, evt) {
+  if (evt) evt.stopPropagation();
+  if (!musicPlaylist[idx]) return;
+
+  const removed = musicPlaylist[idx];
+  const wasCurrent = idx === currentTrackIndex;
+  const wasPlayingCurrent = wasCurrent && isPlaying;
+
+  if (removed.url) URL.revokeObjectURL(removed.url);
+  musicPlaylist.splice(idx, 1);
+
+  if (musicPlaylist.length === 0) {
+    currentTrackIndex = -1;
+    isPlaying = false;
+    if (musicPlayer) {
+      musicPlayer.pause();
+      musicPlayer.removeAttribute('src');
+      musicPlayer.load();
+    }
+    const currentTime = document.getElementById('currentTime');
+    const duration = document.getElementById('duration');
+    const fill = document.getElementById('playerProgressFill');
+    const seekBar = document.getElementById('musicSeekBar');
+    if (currentTime) currentTime.textContent = '0:00';
+    if (duration) duration.textContent = '0:00';
+    if (fill) fill.style.width = '0%';
+    if (seekBar) seekBar.value = '0';
+    updatePlayerUI();
+    const status = document.getElementById('playerStatus');
+    if (status) status.textContent = 'Playlist is empty';
+    return;
+  }
+
+  if (idx < currentTrackIndex) {
+    currentTrackIndex -= 1;
+  }
+
+  if (wasCurrent) {
+    currentTrackIndex = Math.min(idx, musicPlaylist.length - 1);
+    musicPlayer.src = musicPlaylist[currentTrackIndex].url;
+    musicPlayer.currentTime = 0;
+    if (wasPlayingCurrent) {
+      musicPlayer.play();
+      isPlaying = true;
+    } else {
+      musicPlayer.pause();
+      isPlaying = false;
+    }
+  }
+
+  updatePlayerUI();
+  updateMusicProgress();
+  const status = document.getElementById('playerStatus');
+  if (status) status.textContent = `Removed "${removed.name}" • ${musicPlaylist.length} song(s) left`;
+}
+
+function loadSelectedVideos(fileList) {
+  const video = document.getElementById('videoElement');
+  const files = Array.from(fileList || []).filter(file => /video\/mp4/i.test(file.type) || file.name.toLowerCase().endsWith('.mp4'));
+  if (!video) return;
+  if (files.length === 0) {
+    const status = document.getElementById('videoStatus');
+    if (status) status.textContent = 'No valid MP4 files selected';
+    return;
+  }
+
+  const existingKeys = new Set(videoPlaylist.map(track => track.key));
+  const newVideos = [];
+
+  files.forEach((file) => {
+    const key = `${file.name}-${file.size}-${file.lastModified}`;
+    if (existingKeys.has(key)) return;
+    newVideos.push({
+      key,
+      name: file.name.replace(/\.mp4$/i, ''),
+      url: URL.createObjectURL(file)
+    });
+  });
+
+  if (newVideos.length === 0) {
+    const status = document.getElementById('videoStatus');
+    if (status) status.textContent = 'Those videos are already in your playlist';
+    return;
+  }
+
+  videoPlaylist = [...videoPlaylist, ...newVideos];
+  if (currentVideoIndex === -1) currentVideoIndex = 0;
+  renderVideoPlaylist();
+  updateVideoUI();
+
+  const status = document.getElementById('videoStatus');
+  if (status) status.textContent = `${newVideos.length} video(s) added • ${videoPlaylist.length} total`;
+  const fileInput = document.getElementById('videoFileInput');
+  if (fileInput) fileInput.value = '';
+}
+
+function renderVideoPlaylist() {
+  const container = document.getElementById('videoPlaylistContainer');
+  const picker = document.getElementById('videoPicker');
+  if (!container) return;
+
+  if (videoPlaylist.length === 0) {
+    container.innerHTML = '<div class="playlist-item" style="color:var(--win-dark);text-align:center;padding:20px;">Load MP4 files to start your playlist.</div>';
+    if (picker) picker.innerHTML = '<option value="-1">Choose a video...</option>';
+    return;
+  }
+
+  container.innerHTML = videoPlaylist.map((track, idx) =>
+    `<div class="playlist-item ${idx === currentVideoIndex ? 'active' : ''}" onclick="videoSelectTrack(${idx})"><span class="playlist-name">${idx === currentVideoIndex && isVideoPlaying ? '▶ ' : ''}${track.name}</span><button class="playlist-remove" onclick="removeVideoByIndex(${idx}, event)" title="Remove video">x</button></div>`
+  ).join('');
+
+  if (picker) {
+    picker.innerHTML = videoPlaylist.map((track, idx) =>
+      `<option value="${idx}">${idx + 1}. ${track.name}</option>`
+    ).join('');
+    picker.value = String(currentVideoIndex >= 0 ? currentVideoIndex : 0);
+  }
+}
+
+function videoSelectTrack(idx, forcePlay = true) {
+  const video = document.getElementById('videoElement');
+  if (!video || !videoPlaylist[idx]) return;
+
+  currentVideoIndex = idx;
+  const track = videoPlaylist[idx];
+  
+  if (forcePlay) {
+    let playAttempted = false;
+    const attemptPlay = () => {
+      if (playAttempted) return;
+      playAttempted = true;
+      try {
+        if (track && Number.isFinite(track.startTime) && track.startTime > 0 && track.startTime < (video.duration || Infinity)) {
+          video.currentTime = track.startTime;
+        }
+      } catch (err) {
+        console.warn('videoSelectTrack: seek failed', err);
+      }
+      video.muted = false;
+      video.defaultMuted = false;
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch((err) => {
+          console.warn('videoSelectTrack: play() rejected:', err);
+          if (err && err.name === 'NotAllowedError') {
+            video.muted = true;
+            video.play().catch((fallbackErr) => {
+              console.warn('videoSelectTrack: muted fallback failed:', fallbackErr);
+            });
+          }
+        });
+      }
+      isVideoPlaying = true;
+      video.removeEventListener('loadedmetadata', attemptPlay);
+      video.removeEventListener('canplay', attemptPlay);
+    };
+    video.addEventListener('loadedmetadata', attemptPlay);
+    video.addEventListener('canplay', attemptPlay);
+    window.setTimeout(() => {
+      if (!playAttempted) {
+        attemptPlay();
+      }
+    }, 2000);
+  } else {
+    isVideoPlaying = false;
+  }
+  
+  video.src = track.url;
+  video.load();
+  video.currentTime = 0;
+  
+  updateVideoUI();
+  updateVideoProgress();
+}
+
+function videoPlayPause() {
+  const video = document.getElementById('videoElement');
+  if (!video) return;
+  if (!video.src && videoPlaylist.length > 0) {
+    videoSelectTrack(0);
+    return;
+  }
+  if (video.paused) {
+    video.muted = false;
+    video.play();
+    isVideoPlaying = true;
+  } else {
+    video.pause();
+    isVideoPlaying = false;
+  }
+  updateVideoUI();
+}
+
+function videoNext() {
+  if (videoPlaylist.length === 0) return;
+  currentVideoIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+  videoSelectTrack(currentVideoIndex);
+}
+
+function videoPrevious() {
+  if (videoPlaylist.length === 0) return;
+  currentVideoIndex = (currentVideoIndex - 1 + videoPlaylist.length) % videoPlaylist.length;
+  videoSelectTrack(currentVideoIndex);
+}
+
+function videoStop() {
+  const video = document.getElementById('videoElement');
+  if (!video) return;
+  video.pause();
+  video.currentTime = 0;
+  isVideoPlaying = false;
+  updateVideoUI();
+  updateVideoProgress();
+}
+
+function setVideoVolume(val) {
+  const video = document.getElementById('videoElement');
+  if (!video) return;
+  video.volume = Number(val) / 100;
+  if (Number(val) > 0) {
+    video.muted = false;
+  }
+}
+
+function seekVideo(value) {
+  const video = document.getElementById('videoElement');
+  if (!video || !Number.isFinite(video.duration) || video.duration <= 0) return;
+  video.currentTime = (Number(value) / 100) * video.duration;
+  updateVideoProgress();
+}
+
+function removeVideoByIndex(idx, evt) {
+  if (evt) evt.stopPropagation();
+  if (!videoPlaylist[idx]) return;
+
+  const removed = videoPlaylist[idx];
+  const video = document.getElementById('videoElement');
+  const wasCurrent = idx === currentVideoIndex;
+  const wasPlaying = wasCurrent && isVideoPlaying;
+
+  if (removed.url) URL.revokeObjectURL(removed.url);
+  videoPlaylist.splice(idx, 1);
+
+  if (videoPlaylist.length === 0) {
+    currentVideoIndex = -1;
+    isVideoPlaying = false;
+    if (video) {
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    }
+    const current = document.getElementById('currentVideoTime');
+    const dur = document.getElementById('videoDuration');
+    const fill = document.getElementById('videoProgressFill');
+    const seek = document.getElementById('videoSeekBar');
+    if (current) current.textContent = '0:00';
+    if (dur) dur.textContent = '0:00';
+    if (fill) fill.style.width = '0%';
+    if (seek) seek.value = '0';
+    updateVideoUI();
+    const status = document.getElementById('videoStatus');
+    if (status) status.textContent = 'Video playlist is empty';
+    return;
+  }
+
+  if (idx < currentVideoIndex) currentVideoIndex -= 1;
+
+  if (wasCurrent && video) {
+    currentVideoIndex = Math.min(idx, videoPlaylist.length - 1);
+    video.src = videoPlaylist[currentVideoIndex].url;
+    video.currentTime = 0;
+    if (wasPlaying) {
+      video.play();
+      isVideoPlaying = true;
+    } else {
+      video.pause();
+      isVideoPlaying = false;
+    }
+  }
+
+  updateVideoUI();
+  updateVideoProgress();
+  const status = document.getElementById('videoStatus');
+  if (status) status.textContent = `Removed "${removed.name}" • ${videoPlaylist.length} video(s) left`;
+}
+
+// Try to auto-add the local static video from /videos and set its start time to 2:58.
+// The actual filename contains spaces and special characters, so it must be URL-encoded.
+function tryAddStaticVideo() {
+  const path = 'videos/Static%20%28FLAVOR%20FOLEY%29%20_%20vally.exe%E3%80%90COVER%E3%80%91.mp4';
+  const alreadyAdded = videoPlaylist.some((track) => track.key === 'static-file' || track.url === path);
+  if (alreadyAdded) return;
+
+  videoPlaylist.push({
+    key: 'static-file',
+    name: 'static',
+    url: path,
+    startTime: 178
+  });
+  currentVideoIndex = videoPlaylist.length - 1;
+  renderVideoPlaylist();
+  updateVideoUI();
+
+  const status = document.getElementById('videoStatus');
+  if (status) status.textContent = 'Added local video: static';
+}
+
+function updateVideoUI() {
+  const status = document.getElementById('videoStatus');
+  const btn = document.getElementById('videoPlayPauseBtn');
+  const emptyState = document.getElementById('videoEmptyState');
+  const video = document.getElementById('videoElement');
+
+  if (btn) btn.textContent = isVideoPlaying ? '⏸' : '▶';
+  if (emptyState) emptyState.style.display = currentVideoIndex >= 0 ? 'none' : 'block';
+  if (video) video.style.display = currentVideoIndex >= 0 ? 'block' : 'none';
+
+  if (status) {
+    status.textContent = videoPlaylist.length
+      ? (isVideoPlaying ? `Playing video ${currentVideoIndex + 1} of ${videoPlaylist.length}` : `${videoPlaylist.length} video(s) ready`)
+      : 'Ready to load videos';
+  }
+  renderVideoPlaylist();
+}
+
+function updateVideoProgress() {
+  const video = document.getElementById('videoElement');
+  if (!video || !Number.isFinite(video.duration) || video.duration <= 0) {
+    const fill = document.getElementById('videoProgressFill');
+    const seek = document.getElementById('videoSeekBar');
+    if (fill) fill.style.width = '0%';
+    if (seek) seek.value = '0';
+    return;
+  }
+  const progress = (video.currentTime / video.duration) * 100;
+  const fill = document.getElementById('videoProgressFill');
+  const seek = document.getElementById('videoSeekBar');
+  if (fill) fill.style.width = `${progress}%`;
+  if (seek && document.activeElement !== seek) seek.value = String(progress);
+
+  const current = document.getElementById('currentVideoTime');
+  if (current) {
+    const m = Math.floor(video.currentTime / 60);
+    const s = Math.floor(video.currentTime % 60);
+    current.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+  }
+}
+
+function updateVideoDuration() {
+  const video = document.getElementById('videoElement');
+  if (!video || !Number.isFinite(video.duration) || video.duration <= 0) return;
+  const m = Math.floor(video.duration / 60);
+  const s = Math.floor(video.duration % 60);
+  const dur = document.getElementById('videoDuration');
+  if (dur) dur.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+  fitVideoLayoutToMedia();
+}
+
+function fitVideoLayoutToMedia() {
+  const video = document.getElementById('videoElement');
+  const stage = document.querySelector('#videoWindow .video-stage');
+  const windowEl = document.getElementById('videoWindow');
+  if (!video || !stage || !windowEl) return;
+  if (!Number.isFinite(video.videoWidth) || !Number.isFinite(video.videoHeight) || video.videoWidth <= 0 || video.videoHeight <= 0) return;
+
+  const ratio = video.videoWidth / video.videoHeight;
+  stage.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
+
+  const minWindowWidth = 340;
+  const maxWindowWidth = Math.min(window.innerWidth - 24, 820);
+  const targetStageHeight = Math.max(170, Math.min(window.innerHeight * 0.34, 320));
+  const targetStageWidth = targetStageHeight * ratio;
+  const targetWindowWidth = Math.round(Math.max(minWindowWidth, Math.min(maxWindowWidth, targetStageWidth + 24)));
+
+  windowEl.style.width = `${targetWindowWidth}px`;
+  // Keep the video window anchored to the right side instead of centering it.
+  windowEl.style.left = 'auto';
+  windowEl.style.right = '28px';
+  windowEl.style.top = '120px';
+}
+
+function setVolume(val) {
+  initMusicPlayer();
+  if (!musicPlayer) return;
+  musicPlayer.volume = Number(val) / 100;
+  if (Number(val) > 0) musicPlayer.muted = false;
+  updateMusicProgress();
+}
+
+function seekMusic(value) {
+  if (!musicPlayer || !Number.isFinite(musicPlayer.duration) || musicPlayer.duration <= 0) return;
+  musicPlayer.currentTime = (Number(value) / 100) * musicPlayer.duration;
+  updateMusicProgress();
+}
+
+function updatePlayerUI() {
+  const title = document.getElementById('playerTitle');
+  const status = document.getElementById('playerStatus');
+  if (!title || !status) return;
+
+  title.textContent = currentTrackIndex >= 0 && musicPlaylist[currentTrackIndex]
+    ? `Now Playing: ${musicPlaylist[currentTrackIndex].name}`
+    : 'Now Playing: —';
+  status.textContent = musicPlaylist.length
+    ? (isPlaying ? `Playing track ${currentTrackIndex + 1} of ${musicPlaylist.length}` : `${musicPlaylist.length} track(s) ready`)
+    : 'Ready to load music';
+
+  renderPlaylist();
+  const btn = document.getElementById('playPauseBtn');
+  if (btn) btn.textContent = isPlaying ? '⏸' : '▶';
+}
+
+function updateMusicProgress() {
+  if (!musicPlayer || !Number.isFinite(musicPlayer.duration) || musicPlayer.duration <= 0) {
+    const fill = document.getElementById('playerProgressFill');
+    const seekBar = document.getElementById('musicSeekBar');
+    if (fill) fill.style.width = '0%';
+    if (seekBar) seekBar.value = '0';
+    return;
+  }
+  const seekBar = document.getElementById('musicSeekBar');
+  const fill = document.getElementById('playerProgressFill');
+
+  const progress = (musicPlayer.currentTime / musicPlayer.duration) * 100;
+  if (fill) fill.style.width = `${progress}%`;
+  if (seekBar && document.activeElement !== seekBar) {
+    seekBar.value = String(progress);
+  }
+
+  const min = Math.floor(musicPlayer.currentTime / 60);
+  const sec = Math.floor(musicPlayer.currentTime % 60);
+  const currentTime = document.getElementById('currentTime');
+  if (currentTime) currentTime.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+}
+
+function updateMusicDuration() {
+  if (!musicPlayer || !Number.isFinite(musicPlayer.duration) || musicPlayer.duration <= 0) return;
+  const min = Math.floor(musicPlayer.duration / 60);
+  const sec = Math.floor(musicPlayer.duration % 60);
+  const duration = document.getElementById('duration');
+  if (duration) duration.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+}
+
+// ===== WINDOW DRAG & RESIZE INITIALIZATION =====
+function attachWindowDragListeners() {
+  // Attach event listeners to all window titlebars
+  const attachToTitlebars = () => {
+    document.querySelectorAll('.window-titlebar').forEach((titlebar) => {
+      const windowEl = titlebar.closest('.win95-window');
+      if (!windowEl) return;
+      const windowId = windowEl.id;
+      
+      // Remove existing listener if any (to avoid duplicates)
+      titlebar.removeEventListener('mousedown', titlebar._dragListener);
+      
+      // Create and attach new listener
+      const dragListener = (e) => startDragWindow(e, windowId);
+      titlebar._dragListener = dragListener;
+      titlebar.addEventListener('mousedown', dragListener);
+    });
+    
+    // Attach listeners to resize handles
+    document.querySelectorAll('.resize-handle').forEach((handle) => {
+      const windowEl = handle.closest('.win95-window');
+      if (!windowEl) return;
+      const windowId = windowEl.id;
+      
+      handle.removeEventListener('mousedown', handle._resizeListener);
+      
+      const resizeListener = (e) => startResizeWindow(e, windowId);
+      handle._resizeListener = resizeListener;
+      handle.addEventListener('mousedown', resizeListener);
+    });
+  };
+  
+  // Attach immediately
+  attachToTitlebars();
+  
+  // Watch for new windows being added
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.addedNodes.length) {
+        attachToTitlebars();
+      }
+    });
+  });
+  
+  const screenContent = document.getElementById('screenContent');
+  if (screenContent) {
+    observer.observe(screenContent, { childList: true, subtree: true });
+  }
+}
+
+window.addEventListener('load', () => {
+  // Attach window drag/resize listeners
+  attachWindowDragListeners();
+  
+  initMusicPlayer();
+  renderPlaylist();
+  updatePlayerUI();
+
+  const video = document.getElementById('videoElement');
+  if (video) {
+    video.volume = 0.7;
+    video.addEventListener('timeupdate', updateVideoProgress);
+    video.addEventListener('loadedmetadata', updateVideoDuration);
+    video.addEventListener('ended', videoNext);
+    video.addEventListener('play', () => { isVideoPlaying = true; updateVideoUI(); });
+    video.addEventListener('pause', () => { isVideoPlaying = false; updateVideoUI(); });
+  }
+  renderVideoPlaylist();
+  updateVideoUI();
+});
+
+
+window.addEventListener('resize', () => {
+  fitVideoLayoutToMedia();
+});
+
+// Expose functions to global scope for inline event handlers
+setTimeout(() => {
+  if (typeof window !== 'undefined') {
+    window.startDragWindow = startDragWindow;
+    window.startResizeWindow = startResizeWindow;
+    window.bringToFront = bringToFront;
+    window.openWindow = openWindow;
+    window.closeWindow = closeWindow;
+    window.minimizeWindow = minimizeWindow;
+    window.openAllWindows = openAllWindows;
+    window.closeAllWindows = closeAllWindows;
+    window.closeAllDoroTabs = closeAllDoroTabs;
+    window.toggleMonitor = toggleMonitor;
+    window.powerOn = powerOn;
+    window.powerOff = powerOff;
+    window.openDoroWindow = openDoroWindow;
+    window.selectIcon = selectIcon;
+    window.showContextMenu = showContextMenu;
+    window.closeContextMenu = closeContextMenu;
+    window.openWork = openWork;
+    window.musicSelectTrack = musicSelectTrack;
+    window.musicPlayPause = musicPlayPause;
+    window.musicPrevious = musicPrevious;
+    window.musicNext = musicNext;
+    window.musicRestart = musicRestart;
+    window.musicStop = musicStop;
+    window.setVolume = setVolume;
+    window.seekMusic = seekMusic;
+    window.loadSelectedTracks = loadSelectedTracks;
+    window.removeTrackByIndex = removeTrackByIndex;
+    window.videoSelectTrack = videoSelectTrack;
+    window.videoPlayPause = videoPlayPause;
+    window.videoPrevious = videoPrevious;
+    window.videoNext = videoNext;
+    window.videoStop = videoStop;
+    window.setVideoVolume = setVideoVolume;
+    window.seekVideo = seekVideo;
+    window.loadSelectedVideos = loadSelectedVideos;
+    window.removeVideoByIndex = removeVideoByIndex;
+    window.toggleStartMenu = toggleStartMenu;
+    window.closeStartMenu = closeStartMenu;
+    window.playVideoTransition = playVideoTransition;
+    window.exitVideoTransition = exitVideoTransition;
+  }
+}, 0);
+</script>
+<script>
+(() => {
+  let musicPlayer = null;
+  let musicPlaylist = [];
+  let currentTrackIndex = -1;
+  let isPlaying = false;
+
+  const initMusicPlayer = () => {
+    if (!musicPlayer) {
+      musicPlayer = new Audio();
+      musicPlayer.volume = 0.7;
+      musicPlayer.addEventListener('ended', () => window.musicNext());
+      musicPlayer.addEventListener('timeupdate', updateMusicProgress);
+      musicPlayer.addEventListener('loadedmetadata', updateMusicDuration);
+    }
+  };
+
+  const renderPlaylist = () => {
+    const container = document.getElementById('playlistContainer');
+    const picker = document.getElementById('trackPicker');
+    if (!container) return;
+
+    if (musicPlaylist.length === 0) {
+      container.innerHTML = '<div class="playlist-item" style="color:var(--win-dark);text-align:center;padding:20px;">Load MP3 files to start your playlist.</div>';
+      if (picker) picker.innerHTML = '<option value="-1">Choose a song...</option>';
+      return;
+    }
+
+    container.innerHTML = musicPlaylist.map((track, idx) =>
+      `<div class="playlist-item ${idx === currentTrackIndex ? 'active' : ''}" onclick="musicSelectTrack(${idx})"><span class="playlist-name">${idx === currentTrackIndex && isPlaying ? '▶ ' : ''}${track.name}</span><button class="playlist-remove" onclick="removeTrackByIndex(${idx}, event)" title="Remove song">x</button></div>`
+    ).join('');
+
+    if (picker) {
+      picker.innerHTML = musicPlaylist.map((track, idx) => `<option value="${idx}">${idx + 1}. ${track.name}</option>`).join('');
+      picker.value = String(currentTrackIndex >= 0 ? currentTrackIndex : 0);
+    }
+  };
+
+  const updatePlayerUI = () => {
+    const title = document.getElementById('playerTitle');
+    const status = document.getElementById('playerStatus');
+    const btn = document.getElementById('playPauseBtn');
+    if (title) {
+      title.textContent = currentTrackIndex >= 0 && musicPlaylist[currentTrackIndex]
+        ? `Now Playing: ${musicPlaylist[currentTrackIndex].name}`
+        : 'Now Playing: —';
+    }
+    if (status) {
+      status.textContent = musicPlaylist.length
+        ? (isPlaying ? `Playing track ${currentTrackIndex + 1} of ${musicPlaylist.length}` : `${musicPlaylist.length} track(s) ready`)
+        : 'Ready to load music';
+    }
+    if (btn) btn.textContent = isPlaying ? '⏸' : '▶';
+    renderPlaylist();
+  };
+
+  const updateMusicProgress = () => {
+    if (!musicPlayer || !Number.isFinite(musicPlayer.duration) || musicPlayer.duration <= 0) {
+      const fill = document.getElementById('playerProgressFill');
+      const seekBar = document.getElementById('musicSeekBar');
+      const currentTime = document.getElementById('currentTime');
+      const duration = document.getElementById('duration');
+      if (fill) fill.style.width = '0%';
+      if (seekBar) seekBar.value = '0';
+      if (currentTime) currentTime.textContent = '0:00';
+      if (duration) duration.textContent = '0:00';
+      return;
+    }
+
+    const progress = (musicPlayer.currentTime / musicPlayer.duration) * 100;
+    const fill = document.getElementById('playerProgressFill');
+    const seekBar = document.getElementById('musicSeekBar');
+    const currentTime = document.getElementById('currentTime');
+    const duration = document.getElementById('duration');
+    if (fill) fill.style.width = `${progress}%`;
+    if (seekBar && document.activeElement !== seekBar) seekBar.value = String(progress);
+    if (currentTime) {
+      const min = Math.floor(musicPlayer.currentTime / 60);
+      const sec = Math.floor(musicPlayer.currentTime % 60);
+      currentTime.textContent = `${min}:${String(sec).padStart(2, '0')}`;
+    }
+    if (duration) {
+      const min = Math.floor(musicPlayer.duration / 60);
+      const sec = Math.floor(musicPlayer.duration % 60);
+      duration.textContent = `${min}:${String(sec).padStart(2, '0')}`;
+    }
+  };
+
+  const updateMusicDuration = () => {
+    if (!musicPlayer || !Number.isFinite(musicPlayer.duration) || musicPlayer.duration <= 0) return;
+    const duration = document.getElementById('duration');
+    if (duration) {
+      const min = Math.floor(musicPlayer.duration / 60);
+      const sec = Math.floor(musicPlayer.duration % 60);
+      duration.textContent = `${min}:${String(sec).padStart(2, '0')}`;
+    }
+  };
+
+  const loadSelectedTracks = (fileList) => {
+    initMusicPlayer();
+    const files = Array.from(fileList || []).filter((file) => /audio\/(mpeg|mp3)|\.mp3$/i.test(file.type) || file.name.toLowerCase().endsWith('.mp3'));
+    const status = document.getElementById('playerStatus');
+    if (files.length === 0) {
+      if (status) status.textContent = 'No valid MP3 files selected';
+      return;
+    }
+
+    const existingKeys = new Set(musicPlaylist.map((track) => track.key));
+    const newTracks = [];
+
+    files.forEach((file) => {
+      const key = `${file.name}-${file.size}-${file.lastModified}`;
+      if (existingKeys.has(key)) return;
+      newTracks.push({
+        key,
+        name: file.name.replace(/\.mp3$/i, ''),
+        url: URL.createObjectURL(file)
+      });
+    });
+
+    if (newTracks.length === 0) {
+      if (status) status.textContent = 'Those songs are already in your playlist';
+      return;
+    }
+
+    musicPlaylist = [...musicPlaylist, ...newTracks];
+    if (currentTrackIndex === -1) currentTrackIndex = 0;
+    updatePlayerUI();
+    updateMusicProgress();
+    if (status) status.textContent = `${newTracks.length} song(s) added • ${musicPlaylist.length} total`;
+
+    const fileInput = document.getElementById('musicFileInput');
+    if (fileInput) fileInput.value = '';
+  };
+
+  const musicSelectTrack = (idx, forcePlay = true) => {
+    if (!musicPlaylist[idx]) return;
+    initMusicPlayer();
+    currentTrackIndex = idx;
+    musicPlayer.src = musicPlaylist[idx].url;
+    if (forcePlay) {
+      musicPlayer.play().catch(() => {});
+      isPlaying = true;
+    } else {
+      isPlaying = false;
+    }
+    updatePlayerUI();
+    updateMusicProgress();
+  };
+
+  const musicPlayPause = () => {
+    initMusicPlayer();
+    if (!musicPlayer.src && musicPlaylist.length > 0) {
+      musicSelectTrack(0);
+      return;
+    }
+    if (musicPlayer.paused) {
+      musicPlayer.play().catch(() => {});
+      isPlaying = true;
+    } else {
+      musicPlayer.pause();
+      isPlaying = false;
+    }
+    updatePlayerUI();
+    updateMusicProgress();
+  };
+
+  const musicRestart = () => {
+    if (!musicPlayer) return;
+    if (!musicPlayer.src && musicPlaylist.length > 0) {
+      musicSelectTrack(0);
+      return;
+    }
+    musicPlayer.currentTime = 0;
+    if (!musicPlayer.paused) musicPlayer.play().catch(() => {});
+    updateMusicProgress();
+  };
+
+  const musicStop = () => {
+    if (!musicPlayer) return;
+    musicPlayer.pause();
+    musicPlayer.currentTime = 0;
+    isPlaying = false;
+    updatePlayerUI();
+    updateMusicProgress();
+  };
+
+  const musicNext = () => {
+    if (musicPlaylist.length === 0) return;
+    currentTrackIndex = (currentTrackIndex + 1) % musicPlaylist.length;
+    musicSelectTrack(currentTrackIndex);
+  };
+
+  const musicPrevious = () => {
+    if (musicPlaylist.length === 0) return;
+    currentTrackIndex = (currentTrackIndex - 1 + musicPlaylist.length) % musicPlaylist.length;
+    musicSelectTrack(currentTrackIndex);
+  };
+
+  const setVolume = (val) => {
+    initMusicPlayer();
+    if (!musicPlayer) return;
+    musicPlayer.volume = Math.max(0, Math.min(1, Number(val) / 100));
+  };
+
+  const seekMusic = (value) => {
+    if (!musicPlayer || !Number.isFinite(musicPlayer.duration) || musicPlayer.duration <= 0) return;
+    musicPlayer.currentTime = (Number(value) / 100) * musicPlayer.duration;
+    updateMusicProgress();
+  };
+
+  const removeTrackByIndex = (idx, evt) => {
+    if (evt) evt.stopPropagation();
+    if (!musicPlaylist[idx]) return;
+
+    const removed = musicPlaylist[idx];
+    const wasCurrent = idx === currentTrackIndex;
+    const wasPlayingCurrent = wasCurrent && isPlaying;
+
+    if (removed.url) URL.revokeObjectURL(removed.url);
+    musicPlaylist.splice(idx, 1);
+
+    if (musicPlaylist.length === 0) {
+      currentTrackIndex = -1;
+      isPlaying = false;
+      if (musicPlayer) {
+        musicPlayer.pause();
+        musicPlayer.removeAttribute('src');
+        musicPlayer.load();
+      }
+      updatePlayerUI();
+      updateMusicProgress();
+      const status = document.getElementById('playerStatus');
+      if (status) status.textContent = 'Playlist is empty';
+      return;
+    }
+
+    if (idx < currentTrackIndex) currentTrackIndex -= 1;
+    if (wasCurrent) {
+      currentTrackIndex = Math.min(idx, musicPlaylist.length - 1);
+      musicPlayer.src = musicPlaylist[currentTrackIndex].url;
+      musicPlayer.currentTime = 0;
+      if (wasPlayingCurrent) {
+        musicPlayer.play().catch(() => {});
+        isPlaying = true;
+      } else {
+        musicPlayer.pause();
+        isPlaying = false;
+      }
+    }
+
+    updatePlayerUI();
+    updateMusicProgress();
+    const status = document.getElementById('playerStatus');
+    if (status) status.textContent = `Removed "${removed.name}" • ${musicPlaylist.length} song(s) left`;
+  };
+
+  window.loadSelectedTracks = loadSelectedTracks;
+  window.renderPlaylist = renderPlaylist;
+  window.updatePlayerUI = updatePlayerUI;
+  window.updateMusicProgress = updateMusicProgress;
+  window.updateMusicDuration = updateMusicDuration;
+  window.musicSelectTrack = musicSelectTrack;
+  window.musicPlayPause = musicPlayPause;
+  window.musicRestart = musicRestart;
+  window.musicStop = musicStop;
+  window.musicNext = musicNext;
+  window.musicPrevious = musicPrevious;
+  window.setVolume = setVolume;
+  window.seekMusic = seekMusic;
+  window.removeTrackByIndex = removeTrackByIndex;
+
+  // ===== VIDEO PLAYLIST SYSTEM =====
+  let videoPlaylist = [];
+  let currentVideoIndex = -1;
+  let isVideoPlaying = false;
+
+  const renderVideoPlaylist = () => {
+    const container = document.getElementById('videoPlaylistContainer');
+    const picker = document.getElementById('videoPicker');
+    const emptyState = document.getElementById('videoEmptyState');
+    if (!container) return;
+
+    if (videoPlaylist.length === 0) {
+      container.innerHTML = '<div class="playlist-item" style="color:var(--win-dark);text-align:center;padding:20px;">Load MP4 files to start your playlist.</div>';
+      if (picker) picker.innerHTML = '<option value="-1">Choose a video...</option>';
+      if (emptyState) emptyState.style.display = 'block';
+      return;
+    }
+
+    if (emptyState) emptyState.style.display = 'none';
+    container.innerHTML = videoPlaylist.map((video, idx) =>
+      `<div class="playlist-item ${idx === currentVideoIndex ? 'active' : ''}" onclick="videoSelectTrack(${idx})"><span class="playlist-name">${idx === currentVideoIndex && isVideoPlaying ? '▶ ' : ''}${video.name}</span><button class="playlist-remove" onclick="removeVideoByIndex(${idx}, event)" title="Remove video">x</button></div>`
+    ).join('');
+
+    if (picker) {
+      picker.innerHTML = videoPlaylist.map((video, idx) => `<option value="${idx}">${idx + 1}. ${video.name}</option>`).join('');
+      picker.value = String(currentVideoIndex >= 0 ? currentVideoIndex : 0);
+    }
+  };
+
+  const updateVideoUI = () => {
+    const status = document.getElementById('videoStatus');
+    if (status) {
+      status.textContent = videoPlaylist.length
+        ? (window.isVideoPlaying ? `Playing video ${currentVideoIndex + 1} of ${videoPlaylist.length}` : `${videoPlaylist.length} video(s) ready`)
+        : 'Ready to load videos';
+    }
+    renderVideoPlaylist();
+  };
+
+  const loadSelectedVideos = (fileList) => {
+    const files = Array.from(fileList || []).filter((file) => /video\/(mp4)|\.mp4$/i.test(file.type) || file.name.toLowerCase().endsWith('.mp4'));
+    const status = document.getElementById('videoStatus');
+    const emptyState = document.getElementById('videoEmptyState');
+    const video = document.getElementById('videoElement');
+    
+    if (files.length === 0) {
+      if (status) status.textContent = 'No valid MP4 files selected';
+      return;
+    }
+
+    const existingKeys = new Set(videoPlaylist.map((v) => v.key));
+    const newVideos = [];
+
+    files.forEach((file) => {
+      const key = `${file.name}-${file.size}-${file.lastModified}`;
+      if (existingKeys.has(key)) return;
+      newVideos.push({
+        key,
+        name: file.name.replace(/\.mp4$/i, ''),
+        url: URL.createObjectURL(file)
+      });
+    });
+
+    if (newVideos.length === 0) {
+      if (status) status.textContent = 'Those videos are already in your playlist';
+      return;
+    }
+
+    videoPlaylist = [...videoPlaylist, ...newVideos];
+    if (currentVideoIndex === -1) currentVideoIndex = 0;
+    
+    if (emptyState) emptyState.style.display = 'none';
+    if (video) {
+      video.innerHTML = '';
+      const source = document.createElement('source');
+      source.src = videoPlaylist[0].url;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      video.load();
+    }
+    
+    updateVideoUI();
+    if (status) status.textContent = `${newVideos.length} video(s) added • ${videoPlaylist.length} total`;
+
+    const fileInput = document.getElementById('videoFileInput');
+    if (fileInput) fileInput.value = '';
+  };
+
+  const removeVideoByIndex = (idx, evt) => {
+    if (evt) evt.stopPropagation();
+    if (!videoPlaylist[idx]) return;
+
+    const removed = videoPlaylist[idx];
+    const wasCurrent = idx === currentVideoIndex;
+    const wasPlayingCurrent = wasCurrent && isVideoPlaying;
+    const video = document.getElementById('videoElement');
+    const emptyState = document.getElementById('videoEmptyState');
+
+    if (removed.url) URL.revokeObjectURL(removed.url);
+    videoPlaylist.splice(idx, 1);
+
+    if (videoPlaylist.length === 0) {
+      currentVideoIndex = -1;
+      isVideoPlaying = false;
+      if (video) {
+        video.pause();
+        video.removeAttribute('src');
+        video.load();
+      }
+      if (emptyState) emptyState.style.display = 'block';
+      updateVideoUI();
+      const status = document.getElementById('videoStatus');
+      if (status) status.textContent = 'Playlist is empty';
+      return;
+    }
+
+    if (idx < currentVideoIndex) currentVideoIndex -= 1;
+    if (wasCurrent) {
+      currentVideoIndex = Math.min(idx, videoPlaylist.length - 1);
+      if (video) {
+        video.src = videoPlaylist[currentVideoIndex].url;
+        video.load();
+        if (wasPlayingCurrent) {
+          video.play().catch(() => {});
+          isVideoPlaying = true;
+        } else {
+          video.pause();
+          isVideoPlaying = false;
+        }
+      }
+    }
+
+    updateVideoUI();
+    const status = document.getElementById('videoStatus');
+    if (status) status.textContent = `Removed "${removed.name}" • ${videoPlaylist.length} video(s) left`;
+  };
+
+  window.renderVideoPlaylist = renderVideoPlaylist;
+  window.updateVideoUI = updateVideoUI;
+  window.loadSelectedVideos = loadSelectedVideos;
+  window.removeVideoByIndex = removeVideoByIndex;
+
+  let fallbackDragId = null;
+  let fallbackDragOffsetX = 0;
+  let fallbackDragOffsetY = 0;
+  let fallbackDragRootId = null;
+  let fallbackDragRootInv = null;
+
+  const beginFallbackWindowDrag = (e, windowEl) => {
+    const dragRoot = windowEl.closest('.screen-content, .win95-desktop');
+    fallbackDragId = windowEl.id;
+    fallbackDragRootId = dragRoot ? dragRoot.id : null;
+    fallbackDragRootInv = dragRoot ? getInverseTransformFor(dragRoot) : null;
+
+    const rootRect = dragRoot ? dragRoot.getBoundingClientRect() : { left: 0, top: 0 };
+    const point = fallbackDragRootInv ? applyInverseToPoint(fallbackDragRootInv, e.clientX, e.clientY) : { x: e.clientX, y: e.clientY };
+    const rect = windowEl.getBoundingClientRect();
+    const rectLocal = fallbackDragRootInv ? applyInverseToPoint(fallbackDragRootInv, rect.left, rect.top) : { x: rect.left, y: rect.top };
+
+    fallbackDragOffsetX = point.x - rectLocal.x;
+    fallbackDragOffsetY = point.y - rectLocal.y;
+
+    windowEl.style.zIndex = String(Math.max(1000, ...Array.from(document.querySelectorAll('.win95-window')).map((el) => Number.parseInt(getComputedStyle(el).zIndex || '0', 10) || 0)) + 1);
+      e.preventDefault();
+      e.stopImmediatePropagation();
+  };
+
+  const moveFallbackWindowDrag = (e) => {
+    if (!fallbackDragId) return;
+    const windowEl = document.getElementById(fallbackDragId);
+    if (!windowEl) return;
+
+    const dragRoot = fallbackDragRootId ? document.getElementById(fallbackDragRootId) : null;
+    const rootRect = dragRoot ? dragRoot.getBoundingClientRect() : { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+    const point = fallbackDragRootInv ? applyInverseToPoint(fallbackDragRootInv, e.clientX, e.clientY) : { x: e.clientX, y: e.clientY };
+    const rootLocal = fallbackDragRootInv ? applyInverseToPoint(fallbackDragRootInv, rootRect.left, rootRect.top) : { x: rootRect.left, y: rootRect.top };
+
+    const nextX = Math.max(0, Math.min(point.x - fallbackDragOffsetX - rootLocal.x, rootRect.width - windowEl.offsetWidth));
+    const nextY = Math.max(0, Math.min(point.y - fallbackDragOffsetY - rootLocal.y, rootRect.height - windowEl.offsetHeight));
+
+    windowEl.style.left = `${nextX}px`;
+    windowEl.style.top = `${nextY}px`;
+    windowEl.style.right = 'auto';
+  };
+
+  const endFallbackWindowDrag = () => {
+    fallbackDragId = null;
+    fallbackDragRootId = null;
+    fallbackDragRootInv = null;
+  };
+
+  document.addEventListener('mousedown', (e) => {
+    const titlebar = e.target.closest('.window-titlebar');
+    if (!titlebar || e.target.closest('.window-controls')) return;
+    const windowEl = titlebar.closest('.win95-window');
+    if (!windowEl) return;
+    beginFallbackWindowDrag(e, windowEl);
+  }, true);
+
+  document.addEventListener('mousemove', moveFallbackWindowDrag, true);
+  document.addEventListener('mouseup', endFallbackWindowDrag, true);
+
+  document.addEventListener('pointerdown', (e) => {
+    const titlebar = e.target.closest('.window-titlebar');
+    if (!titlebar || e.target.closest('.window-controls')) return;
+    const windowEl = titlebar.closest('.win95-window');
+    if (!windowEl) return;
+    beginFallbackWindowDrag(e, windowEl);
+  }, true);
+
+  document.addEventListener('pointermove', moveFallbackWindowDrag, true);
+  document.addEventListener('pointerup', endFallbackWindowDrag, true);
+
+  window.startDragWindow = window.startDragWindow || ((e, id) => {
+    const windowEl = document.getElementById(id);
+    if (!windowEl) return;
+    beginFallbackWindowDrag(e, windowEl);
+  });
+
+  // ===== WINDOW RESIZE =====
+  let resizeWindowId = null;
+  let resizeStartWidth = 0;
+  let resizeStartHeight = 0;
+  let resizeStartX = 0;
+  let resizeStartY = 0;
+
+  window.beginWindowResize = (e, windowId) => {
+    resizeWindowId = windowId;
+    const windowEl = document.getElementById(windowId);
+    if (!windowEl) return;
+    
+    resizeStartWidth = windowEl.offsetWidth;
+    resizeStartHeight = windowEl.offsetHeight;
+    resizeStartX = e.clientX;
+    resizeStartY = e.clientY;
+    
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  document.addEventListener('mousemove', (e) => {
+    if (!resizeWindowId) return;
+    const windowEl = document.getElementById(resizeWindowId);
+    if (!windowEl) return;
+    
+    const deltaX = e.clientX - resizeStartX;
+    const deltaY = e.clientY - resizeStartY;
+    
+    const newWidth = Math.max(250, resizeStartWidth + deltaX);
+    const newHeight = Math.max(200, resizeStartHeight + deltaY);
+    
+    windowEl.style.width = `${newWidth}px`;
+    windowEl.style.height = `${newHeight}px`;
+  }, true);
+
+  document.addEventListener('mouseup', () => {
+    resizeWindowId = null;
+  }, true);
+
+  document.addEventListener('pointermove', (e) => {
+    if (!resizeWindowId) return;
+    const windowEl = document.getElementById(resizeWindowId);
+    if (!windowEl) return;
+    
+    const deltaX = e.clientX - resizeStartX;
+    const deltaY = e.clientY - resizeStartY;
+    
+    const newWidth = Math.max(250, resizeStartWidth + deltaX);
+    const newHeight = Math.max(200, resizeStartHeight + deltaY);
+    
+    windowEl.style.width = `${newWidth}px`;
+    windowEl.style.height = `${newHeight}px`;
+  }, true);
+
+  document.addEventListener('pointerup', () => {
+    resizeWindowId = null;
+  }, true);
+})();
+</script>
+<script>
+(() => {
+  const showWindow = (id, popOut = false) => {
+    const windowEl = document.getElementById(id);
+    if (!windowEl) return;
+    if (popOut) {
+      const isInsideMonitor = windowEl.closest('.screen-content, .win95-desktop');
+      if (isInsideMonitor) {
+        const taskbar = document.querySelector('.taskbar');
+        if (taskbar) {
+          windowEl.style.display = 'none';
+          document.body.insertBefore(windowEl, taskbar);
+          windowEl.style.display = '';
+        }
+      }
+    }
+    windowEl.style.display = 'flex';
+    windowEl.style.visibility = 'visible';
+    windowEl.classList.add('visible', 'active');
+  };
+
+  const hideWindow = (id) => {
+    const windowEl = document.getElementById(id);
+    if (!windowEl) return;
+    windowEl.style.display = 'none';
+    windowEl.classList.remove('active');
+  };
+
+  window.bringToFront = window.bringToFront || ((id) => {
+    const windowEl = document.getElementById(id);
+    if (!windowEl) return;
+    const nextZ = Math.max(60, ...Array.from(document.querySelectorAll('.win95-window')).map((el) => Number.parseInt(getComputedStyle(el).zIndex || '0', 10) || 0)) + 1;
+    windowEl.style.zIndex = String(nextZ);
+  });
+
+  window.openWindow = window.openWindow || ((id, popOut = false) => {
+    showWindow(id, popOut);
+    window.bringToFront(id);
+  });
+
+  window.closeWindow = window.closeWindow || ((id) => {
+    hideWindow(id);
+  });
+
+  window.minimizeWindow = window.minimizeWindow || ((id) => {
+    hideWindow(id);
+  });
+
+  window.openAllWindows = window.openAllWindows || (() => {
+    document.querySelectorAll('.win95-window').forEach((windowEl) => {
+      windowEl.style.display = 'flex';
+      windowEl.style.visibility = 'visible';
+      windowEl.classList.add('visible', 'active');
+    });
+  });
+
+  window.closeAllWindows = window.closeAllWindows || (() => {
+    document.querySelectorAll('.win95-window').forEach((windowEl) => {
+      windowEl.style.display = 'none';
+      windowEl.classList.remove('active');
+    });
+  });
+
+  window.toggleMonitor = window.toggleMonitor || (() => {
+    const monitor = document.getElementById('monitor');
+    const offOverlay = document.getElementById('offOverlay');
+    const desktop = document.getElementById('win95Desktop');
+    if (!monitor || !offOverlay || !desktop) return;
+    const isHidden = offOverlay.style.display === 'none';
+    offOverlay.style.display = isHidden ? 'flex' : 'none';
+    desktop.style.display = isHidden ? 'none' : 'block';
+    monitor.classList.toggle('monitor-on', isHidden);
+  });
+
+  const bootLineIds = ['bl1', 'bl2', 'bl3', 'bl4', 'bl5', 'bl6'];
+  const bootLineText = [
+    'BIOS v2.01  Memory Test: 640K OK',
+    'Detecting Hardware...',
+    '  > CPU: RETRO-486 @ 66MHz        [OK]',
+    '  > Memory: 8192KB                [OK]',
+    '  > Portfolio Modules Loading...  [OK]',
+    'Starting PortfolioOS...'
+  ];
+
+  const resetBootVisuals = () => {
+    const fill = document.getElementById('bootBarFill');
+    if (fill) fill.style.width = '0%';
+    bootLineIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.textContent = '';
+        el.className = 'boot-line';
+      }
+    });
+  };
+
+  window.powerOn = () => {
+    const monitor = document.getElementById('monitor');
+    const offOverlay = document.getElementById('offOverlay');
+    const bootScreen = document.getElementById('bootScreen');
+    const desktop = document.getElementById('win95Desktop');
+    const content = document.getElementById('screenContent');
+    if (!monitor || !offOverlay || !bootScreen || !desktop || !content) return;
+
+    resetBootVisuals();
+    monitor.classList.add('monitor-on');
+    offOverlay.style.display = 'none';
+    desktop.style.display = 'none';
+    bootScreen.style.display = 'flex';
+    content.style.opacity = '1';
+    content.classList.remove('turning-off');
+    content.classList.add('turning-on');
+
+    const fill = document.getElementById('bootBarFill');
+    let progress = 0;
+    const progressTimer = window.setInterval(() => {
+      progress = Math.min(100, progress + 4);
+      if (fill) fill.style.width = `${progress}%`;
+      if (progress >= 100) window.clearInterval(progressTimer);
+    }, 70);
+
+    bootLineIds.forEach((id, idx) => {
+      window.setTimeout(() => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = bootLineText[idx];
+        if (idx === 0 || idx >= 2) el.classList.add('ok');
+        if (idx === 5) el.classList.add('warn');
+      }, [0, 200, 500, 700, 1000, 1400][idx]);
+    });
+
+    setTimeout(() => {
+      bootScreen.style.display = 'none';
+      desktop.style.display = 'block';
+    }, 2200);
+  };
+
+  window.powerOff = () => {
+    const monitor = document.getElementById('monitor');
+    const offOverlay = document.getElementById('offOverlay');
+    const bootScreen = document.getElementById('bootScreen');
+    const desktop = document.getElementById('win95Desktop');
+    const content = document.getElementById('screenContent');
+    if (!monitor || !offOverlay || !bootScreen || !desktop || !content) return;
+    content.classList.remove('turning-on');
+    content.classList.add('turning-off');
+    setTimeout(() => {
+      monitor.classList.remove('monitor-on');
+      content.classList.remove('turning-off');
+      content.style.opacity = '0';
+      desktop.style.display = 'none';
+      bootScreen.style.display = 'flex';
+      offOverlay.style.display = 'flex';
+      resetBootVisuals();
+    }, 500);
+  };
+
+  window.toggleMonitor = () => {
+    const offOverlay = document.getElementById('offOverlay');
+    if (!offOverlay) return;
+    if (getComputedStyle(offOverlay).display === 'none') {
+      window.powerOff();
+    } else {
+      window.powerOn();
+    }
+  };
+
+  window.openDoroWindow = () => {
+    const template = document.getElementById('doroWindow');
+    const taskbar = document.querySelector('.taskbar');
+    if (!template || !taskbar) return;
+
+    const instanceCount = document.querySelectorAll('.doro-instance').length + 1;
+    const clone = template.cloneNode(true);
+    const instanceId = `doroWindow_fallback_${Date.now()}_${instanceCount}`;
+    clone.id = instanceId;
+    clone.classList.add('visible', 'active', 'doro-instance');
+    clone.style.display = 'flex';
+    clone.style.right = 'auto';
+    clone.style.left = `${110 + ((instanceCount - 1) % 5) * 28}px`;
+    clone.style.top = `${118 + ((instanceCount - 1) % 4) * 24}px`;
+
+    const titlebar = clone.querySelector('.window-titlebar');
+    if (titlebar) {
+      titlebar.onmousedown = (e) => {
+        if (typeof window.startDragWindow === 'function') window.startDragWindow(e, instanceId);
+      };
+    }
+
+    const buttons = clone.querySelectorAll('.window-controls .win-btn');
+    if (buttons[0]) {
+      buttons[0].removeAttribute('onclick');
+      buttons[0].onmousedown = (e) => e.stopPropagation();
+      buttons[0].addEventListener('click', (e) => {
+        e.stopPropagation();
+        clone.style.display = 'none';
+        clone.classList.remove('visible', 'active');
+      });
+    }
+    if (buttons[2]) {
+      buttons[2].removeAttribute('onclick');
+      buttons[2].onmousedown = (e) => e.stopPropagation();
+      buttons[2].addEventListener('click', (e) => {
+        e.stopPropagation();
+        clone.remove();
+      });
+    }
+
+    document.body.insertBefore(clone, taskbar);
+    if (typeof window.bringToFront === 'function') {
+      window.bringToFront(instanceId);
+    }
+    if (typeof window.updateTaskbar === 'function') {
+      window.updateTaskbar();
+    }
+
+    const visibleDoros = document.querySelectorAll('.doro-instance.visible').length;
+    const mainCloseBtn = document.getElementById('closeAllDoroBtnMain');
+    if (mainCloseBtn) {
+      if (visibleDoros > 2) {
+        mainCloseBtn.style.display = 'flex';
+        mainCloseBtn.textContent = `✕✕ Close Doro Tabs (${visibleDoros})`;
+      } else {
+        mainCloseBtn.style.display = 'none';
+      }
+    }
+  };
+
+  const ensureStaticVideoAvailable = () => {
+    const video = document.getElementById('videoElement');
+    const picker = document.getElementById('videoPicker');
+    const playlist = document.getElementById('videoPlaylistContainer');
+    const status = document.getElementById('videoStatus');
+    const emptyState = document.getElementById('videoEmptyState');
+    if (!video || !picker || !playlist) return;
+
+    const staticPath = 'videos/Static%20%28FLAVOR%20FOLEY%29%20_%20vally.exe%E3%80%90COVER%E3%80%91.mp4';
+    const staticLabel = 'static';
+
+    const hasOption = Array.from(picker.options).some((opt) => opt.dataset.static === 'true');
+    if (!hasOption) {
+      const option = document.createElement('option');
+      option.value = '0';
+      option.textContent = staticLabel;
+      option.dataset.static = 'true';
+      picker.appendChild(option);
+    }
+
+    if (!video.getAttribute('src')) {
+      video.src = staticPath;
+      video.preload = 'auto';
+      video.currentTime = 178;
+      video.pause();
+    }
+
+    if (emptyState) emptyState.style.display = 'none';
+    video.style.display = 'block';
+    picker.value = '0';
+
+    if (!playlist.querySelector('[data-static-video="true"]')) {
+      const item = document.createElement('div');
+      item.className = 'playlist-item active';
+      item.dataset.staticVideo = 'true';
+      item.textContent = 'static';
+      item.addEventListener('click', () => {
+        video.src = staticPath;
+        video.currentTime = 178;
+        video.pause();
+      });
+      playlist.innerHTML = '';
+      playlist.appendChild(item);
+    }
+
+    if (status) status.textContent = '1 video(s) ready';
+  };
+
+  const getVideoElements = () => ({
+    video: document.getElementById('videoElement'),
+    picker: document.getElementById('videoPicker'),
+    status: document.getElementById('videoStatus'),
+    playBtn: document.getElementById('videoPlayPauseBtn'),
+    progressFill: document.getElementById('videoProgressFill'),
+    seekBar: document.getElementById('videoSeekBar'),
+    currentTimeEl: document.getElementById('currentVideoTime'),
+    durationEl: document.getElementById('videoDuration')
+  });
+
+  const staticVideoPath = 'videos/Static%20%28FLAVOR%20FOLEY%29%20_%20vally.exe%E3%80%90COVER%E3%80%91.mp4';
+
+  const updateFallbackVideoUI = () => {
+    const { video, playBtn, progressFill, seekBar, currentTimeEl, durationEl } = getVideoElements();
+    if (!video) return;
+    if (playBtn) playBtn.textContent = video.paused ? '▶' : '⏸';
+
+    const duration = Number.isFinite(video.duration) ? video.duration : 0;
+    const current = Number.isFinite(video.currentTime) ? video.currentTime : 0;
+    const pct = duration > 0 ? (current / duration) * 100 : 0;
+    if (progressFill) progressFill.style.width = `${pct}%`;
+    if (seekBar && document.activeElement !== seekBar) seekBar.value = String(pct || 0);
+
+    const fmt = (s) => {
+      const m = Math.floor((s || 0) / 60);
+      const sec = Math.floor((s || 0) % 60);
+      return `${m}:${String(sec).padStart(2, '0')}`;
+    };
+    if (currentTimeEl) currentTimeEl.textContent = fmt(current);
+    if (durationEl) durationEl.textContent = fmt(duration);
+  };
+
+  window.videoSelectTrack = (idx, forcePlay = true) => {
+    const { video, picker, status } = getVideoElements();
+    if (!video) return;
+
+    if (videoPlaylist.length === 0) {
+      if (!video.getAttribute('src') && !video.querySelector('source')) {
+        // Set up static fallback
+        video.innerHTML = '';
+        const source = document.createElement('source');
+        source.src = staticVideoPath;
+        source.type = 'video/mp4';
+        video.appendChild(source);
+        video.load();
+        try { video.currentTime = 178; } catch (_) {}
+      }
+      if (picker) picker.value = '-1';
+      if (status) status.textContent = 'No videos loaded';
+      return;
+    }
+
+    if (!videoPlaylist[idx]) return;
+    currentVideoIndex = idx;
+    
+    if (video) {
+      // Clear and set new source
+      video.innerHTML = '';
+      const source = document.createElement('source');
+      source.src = videoPlaylist[idx].url;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      video.load();
+
+      if (forcePlay) {
+        video.play().then(() => {
+          isVideoPlaying = true;
+          updateFallbackVideoUI();
+        }).catch((err) => {
+          console.warn('Playback error:', err);
+          isVideoPlaying = false;
+          updateFallbackVideoUI();
+        });
+      } else {
+        video.pause();
+        isVideoPlaying = false;
+      }
+    }
+
+    if (picker) picker.value = String(idx);
+    if (status) status.textContent = `Playing video ${idx + 1} of ${videoPlaylist.length}`;
+    updateVideoUI();
+  };
+
+  window.videoPlayPause = () => {
+    const { video } = getVideoElements();
+    if (!video) return;
+
+    // Simple toggle: if paused, play; otherwise pause
+    if (video.paused) {
+      video.play().catch((err) => {
+        console.warn('Play failed:', err);
+      });
+    } else {
+      video.pause();
+    }
+    
+    // Update UI after a small delay to let state settle
+    setTimeout(() => {
+      updateFallbackVideoUI();
+      updateVideoUI();
+    }, 50);
+  };
+
+  window.videoStop = () => {
+    const { video } = getVideoElements();
+    if (!video) return;
+    video.pause();
+    video.currentTime = 0;
+    isVideoPlaying = false;
+    updateFallbackVideoUI();
+    updateVideoUI();
+  };
+
+  window.videoNext = () => {
+    if (videoPlaylist.length === 0) {
+      window.videoSelectTrack(0, false);
+      return;
+    }
+    currentVideoIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+    window.videoSelectTrack(currentVideoIndex, false);
+  };
+
+  window.videoPrevious = () => {
+    if (videoPlaylist.length === 0) {
+      window.videoSelectTrack(0, false);
+      return;
+    }
+    currentVideoIndex = (currentVideoIndex - 1 + videoPlaylist.length) % videoPlaylist.length;
+    window.videoSelectTrack(currentVideoIndex, false);
+  };
+
+  window.setVideoVolume = (val) => {
+    const { video } = getVideoElements();
+    if (!video) return;
+    video.volume = Math.max(0, Math.min(1, Number(val) / 100));
+    if (video.volume > 0) video.muted = false;
+  };
+
+  window.seekVideo = (value) => {
+    const { video } = getVideoElements();
+    if (!video || !Number.isFinite(video.duration) || video.duration <= 0) return;
+    video.currentTime = (Number(value) / 100) * video.duration;
+    updateFallbackVideoUI();
+    updateVideoUI();
+  };
+
+  const { video: fallbackVideo } = getVideoElements();
+  if (fallbackVideo) {
+    fallbackVideo.addEventListener('timeupdate', updateFallbackVideoUI);
+    fallbackVideo.addEventListener('loadedmetadata', updateFallbackVideoUI);
+    fallbackVideo.addEventListener('play', updateFallbackVideoUI);
+    fallbackVideo.addEventListener('pause', updateFallbackVideoUI);
+  }
+
+  window.toggleStartMenu = window.toggleStartMenu || (() => {
+    const menu = document.getElementById('startMenu');
+    if (!menu) return;
+    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  window.closeStartMenu = window.closeStartMenu || (() => {
+    const menu = document.getElementById('startMenu');
+    if (menu) menu.style.display = 'none';
+  });
+
+  // Keep close-all behavior consistent even when fallback handlers are active.
+  // Hide all visible doro windows and force taskbar/main-button refresh.
+  window.closeAllDoroTabs = () => {
+    document.querySelectorAll('.doro-instance').forEach((doro) => {
+      doro.style.display = 'none';
+      doro.classList.remove('visible', 'active');
+    });
+
+    if (typeof window.updateTaskbar === 'function') {
+      window.updateTaskbar();
+    }
+
+    const mainCloseBtn = document.getElementById('closeAllDoroBtnMain');
+    if (mainCloseBtn) {
+      mainCloseBtn.style.display = 'none';
+      mainCloseBtn.classList.remove('pulse');
+      mainCloseBtn.textContent = '✕✕ Close Doro Tabs';
+    }
+  };
+
+  window.playVideoTransition = () => {
+    const overlay = document.getElementById('videoTransitionOverlay');
+    const video = document.getElementById('transitionVideo');
+    if (!overlay || !video) return;
+
+    const src = 'videos/%E3%83%84%E3%83%A6%20-%20%E6%B3%A5%E3%81%AE%E5%88%86%E9%9A%9B%E3%81%A7%E7%A7%81%E3%81%A0%E3%81%91%E3%81%AE%E5%A4%A7%E5%88%87%E3%82%92%E5%A5%AA%E3%81%8A%E3%81%86%E3%81%A0%E3%81%AA%E3%82%93%E3%81%A6%20MV%20-%20%E3%83%84%E3%83%A6%20(1080p).mp4';
+    const source = video.querySelector('source');
+    if (source && source.getAttribute('src') !== src) {
+      source.setAttribute('src', src);
+      video.load();
+    }
+
+    overlay.style.display = 'flex';
+    overlay.classList.add('angelic-enter');
+    overlay.classList.remove('angelic-exit');
+    video.classList.remove('angelic-outro');
+    video.classList.add('angelic-intro');
+    video.style.display = 'block';
+
+    // Start playback immediately, then seek to 2:27 when metadata is ready.
+    video.play().catch(() => {});
+    const seekToStart = () => {
+      try {
+        video.currentTime = 147;
+      } catch (_) {
+        // ignore until metadata is available
+      }
+    };
+    if (video.readyState >= 1) {
+      seekToStart();
+    } else {
+      video.addEventListener('loadedmetadata', seekToStart, { once: true });
+    }
+
+    window.setTimeout(() => {
+      overlay.classList.remove('angelic-enter');
+      video.classList.remove('angelic-intro');
+    }, 1000);
+  };
+
+  window.exitVideoTransition = () => {
+    const overlay = document.getElementById('videoTransitionOverlay');
+    const video = document.getElementById('transitionVideo');
+    if (!overlay || !video) return;
+    video.pause();
+    overlay.classList.remove('angelic-enter');
+    overlay.classList.add('angelic-exit');
+    video.classList.remove('angelic-intro');
+    video.classList.add('angelic-outro');
+    window.setTimeout(() => {
+      overlay.style.display = 'none';
+      overlay.classList.remove('angelic-exit');
+      video.classList.remove('angelic-outro');
+      video.currentTime = 0;
+    }, 900);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ensureStaticVideoAvailable);
+  } else {
+    ensureStaticVideoAvailable();
+  }
+
+  document.addEventListener('click', (e) => {
+    const offOverlay = document.getElementById('offOverlay');
+    if (!offOverlay || getComputedStyle(offOverlay).display === 'none') return;
+
+    // Do not wake the monitor when interacting with stickers or Doro controls.
+    if (e.target.closest('.sticker-btn') || e.target.closest('.monitor-stickers') || e.target.closest('#closeAllDoroBtnMain')) {
+      return;
+    }
+
+    // Only wake on direct off-overlay clicks (not power button—it has its own inline handler).
+    if (e.target.closest('#offOverlay') && !e.target.closest('#powerBtn')) {
+      window.powerOn();
+    }
+  }, true);
+})();
+</script>
+</body>
+</html>
