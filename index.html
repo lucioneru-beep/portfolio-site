@@ -973,6 +973,16 @@ body.dark .stat-value { color: var(--accent); }
   border: 2px solid #f0b37d;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
 }
+.file-icon .fi video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border: 2px solid #86a7ff;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
+  background: #000;
+  pointer-events: none;
+}
 .file-explorer .back-row {
   grid-column: 1 / -1;
   display: flex;
@@ -1616,12 +1626,6 @@ body.dark .faq-q { color: var(--accent); }
 }
 
 /* ===== RESPONSIVE ===== */
-/* Desktop: Show music and video players by default */
-#musicWindow,
-#videoWindow {
-  display: flex !important;
-}
-
 @media (max-width: 650px) {
   .monitor { width: 370px; height: 340px; }
   .screen-bezel { top: 16px; left: 18px; right: 18px; bottom: 55px; }
@@ -3414,6 +3418,15 @@ function openWindow(id, popOut = false) {
 function closeWindow(id) {
   const w = document.getElementById(id);
   if(!w) return;
+
+  // Stop any playing video in this window when closing it.
+  w.querySelectorAll('video').forEach((videoEl) => {
+    try {
+      videoEl.pause();
+      videoEl.currentTime = 0;
+    } catch (_) {}
+  });
+
   // If this is a dynamically created Doro instance, remove it from the DOM
   if (w.classList.contains('doro-instance')) {
     w.remove();
@@ -3839,8 +3852,10 @@ const folderIndex = {
     { icon: '🖼️', title: 'Illustration 4', desc: 'Final artwork and visual storytelling.', image: 'images/ill4.png' }
   ],
   videos: [
-    { icon: '🎬', title: 'Demo Reel', desc: 'Compilation of motion pieces.' },
-    { icon: '🎬', title: 'Animation Test', desc: 'Short loop animation.' }
+    { icon: '🎬', title: 'vid1', desc: 'Video work 1.', video: 'videos-works/vid1.mp4' },
+    { icon: '🎬', title: 'vid2', desc: 'Video work 2.', video: 'videos-works/vid2.mp4' },
+    { icon: '🎬', title: 'vid3', desc: 'Video work 3.', video: 'videos-works/vid3.mp4' },
+    { icon: '🎬', title: 'vid4', desc: 'Video work 4.', video: 'videos-works/vid4.mp4' }
   ]
 };
 
@@ -3874,7 +3889,11 @@ function openFolder(name) {
   header.textContent = `📂 C:\\Portfolio\\Works\\${name}\\ — ${items.length} item(s)`;
   explorer.innerHTML = items.map((it, idx) => `
     <div class="file-icon" data-item-index="${idx}">
-      <div class="fi">${it.image ? `<img src="${it.image}" alt="${it.title}">` : it.icon}</div>
+      <div class="fi">${it.image
+        ? `<img src="${it.image}" alt="${it.title}">`
+        : it.video
+          ? `<video src="${it.video}" muted autoplay loop playsinline preload="metadata" aria-hidden="true"></video>`
+          : it.icon}</div>
       <div class="file-icon-label">${it.title}</div>
     </div>
   `).join('') + '<div class="back-row"><button class="win95-folder-btn" onclick="renderWorksRoot()">◀ Back</button></div>';
@@ -3889,6 +3908,19 @@ function openWorkViewer(folderName, idx) {
   document.getElementById('workViewerIcon').textContent = it.icon || '🗂';
   document.getElementById('workViewerTitle').textContent = it.title;
   const content = document.getElementById('workViewerContent');
+
+  if (it.video) {
+    content.innerHTML = `
+      <div class="work-viewer-media">
+        <video class="work-viewer-img" src="${it.video}" controls preload="metadata" playsinline style="background:#000;"></video>
+      </div>
+      <div style="padding:8px;font-size:13px;color:var(--win-dark);">${it.desc || ''}</div>
+    `;
+    openWindow('workViewerWindow');
+    bringToFront('workViewerWindow');
+    return;
+  }
+
   content.innerHTML = `
       ${it.image ? `<div class="work-viewer-media" onclick="openArtworkFull('${it.image}', '${it.title.replace(/'/g, "\\'")}')"><img class="work-viewer-img" src="${it.image}" alt="${it.title}"></div>` : `<div class="work-placeholder" style="background:linear-gradient(135deg,#333,#000);height:160px;display:flex;align-items:center;justify-content:center;"><div style="font-size:48px;">${it.icon}</div></div>`}
     <div style="padding:8px;font-size:13px;color:var(--win-dark);">${it.desc || ''}</div>
@@ -4689,6 +4721,12 @@ function attachWindowDragListeners() {
 window.addEventListener('load', () => {
   // Attach window drag/resize listeners
   attachWindowDragListeners();
+
+  // Keep media windows open by default on desktop only.
+  if (window.matchMedia('(min-width: 651px)').matches) {
+    openWindow('musicWindow');
+    openWindow('videoWindow');
+  }
   
   initMusicPlayer();
   renderPlaylist();
@@ -4761,8 +4799,16 @@ setTimeout(() => {
 <script>
 (() => {
   let musicPlayer = null;
-  let musicPlaylist = [];
-  let currentTrackIndex = -1;
+  const builtInMusicTracks = [
+    {
+      key: 'builtin-otsukare-summer',
+      name: 'Halcali - Otsukare Summer',
+      url: '/music/Halcali%20-%20Otsukare%20Summer.mp3',
+      locked: true
+    }
+  ];
+  let musicPlaylist = [...builtInMusicTracks];
+  let currentTrackIndex = musicPlaylist.length ? 0 : -1;
   let isPlaying = false;
 
   const initMusicPlayer = () => {
@@ -4974,10 +5020,15 @@ setTimeout(() => {
     if (!musicPlaylist[idx]) return;
 
     const removed = musicPlaylist[idx];
+    const status = document.getElementById('playerStatus');
+    if (removed.locked) {
+      if (status) status.textContent = 'Built-in track cannot be removed';
+      return;
+    }
     const wasCurrent = idx === currentTrackIndex;
     const wasPlayingCurrent = wasCurrent && isPlaying;
 
-    if (removed.url) URL.revokeObjectURL(removed.url);
+    if (removed.url && removed.url.startsWith('blob:')) URL.revokeObjectURL(removed.url);
     musicPlaylist.splice(idx, 1);
 
     if (musicPlaylist.length === 0) {
@@ -4990,7 +5041,6 @@ setTimeout(() => {
       }
       updatePlayerUI();
       updateMusicProgress();
-      const status = document.getElementById('playerStatus');
       if (status) status.textContent = 'Playlist is empty';
       return;
     }
@@ -5011,7 +5061,6 @@ setTimeout(() => {
 
     updatePlayerUI();
     updateMusicProgress();
-    const status = document.getElementById('playerStatus');
     if (status) status.textContent = `Removed "${removed.name}" • ${musicPlaylist.length} song(s) left`;
   };
 
@@ -5029,6 +5078,10 @@ setTimeout(() => {
   window.setVolume = setVolume;
   window.seekMusic = seekMusic;
   window.removeTrackByIndex = removeTrackByIndex;
+
+  initMusicPlayer();
+  updatePlayerUI();
+  updateMusicProgress();
 
   // ===== VIDEO PLAYLIST SYSTEM =====
   let videoPlaylist = [];
@@ -5333,6 +5386,14 @@ setTimeout(() => {
   const hideWindow = (id) => {
     const windowEl = document.getElementById(id);
     if (!windowEl) return;
+
+    windowEl.querySelectorAll('video').forEach((videoEl) => {
+      try {
+        videoEl.pause();
+        videoEl.currentTime = 0;
+      } catch (_) {}
+    });
+
     windowEl.style.display = 'none';
     windowEl.classList.remove('active');
   };
