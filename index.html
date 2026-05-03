@@ -2075,8 +2075,9 @@ body.dark .faq-q { color: var(--accent); }
 }
 
 .skip-btn {
-  position: absolute;
+  position: fixed;
   bottom: 30px;
+  right: 20px;
   padding: 10px 20px;
   font-family: 'VT323', monospace;
   font-size: 14px;
@@ -2255,6 +2256,21 @@ body.dark .faq-q { color: var(--accent); }
   #musicWindow.visible,
   #videoWindow.visible {
     display: flex !important;
+  }
+
+  .skip-btn {
+    bottom: max(12px, env(safe-area-inset-bottom));
+    right: max(10px, env(safe-area-inset-right));
+  }
+
+  @media (orientation: landscape) {
+    .skip-btn {
+      top: max(10px, env(safe-area-inset-top));
+      right: max(10px, env(safe-area-inset-right));
+      bottom: auto;
+      font-size: 16px;
+      padding: 8px 14px;
+    }
   }
 
   #aboutWindow,
