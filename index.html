@@ -5647,13 +5647,10 @@ setTimeout(() => {
     const staticPath = 'videos/Static%20%28FLAVOR%20FOLEY%29%20_%20vally.exe%E3%80%90COVER%E3%80%91.mp4';
     const staticLabel = 'static';
 
-    const hasOption = Array.from(picker.options).some((opt) => opt.dataset.static === 'true');
-    if (!hasOption) {
-      const option = document.createElement('option');
-      option.value = '0';
-      option.textContent = staticLabel;
-      option.dataset.static = 'true';
-      picker.appendChild(option);
+    // Keep at least one real selectable video in the picker even when uploads are empty.
+    const staticOptionMarkup = '<option value="0" data-static="true">static</option>';
+    if (!picker.querySelector('option[data-static="true"]')) {
+      picker.innerHTML = staticOptionMarkup;
     }
 
     if (!video.getAttribute('src')) {
@@ -5683,6 +5680,14 @@ setTimeout(() => {
 
     if (status) status.textContent = '1 video(s) ready';
   };
+
+  const originalUpdateVideoUI = window.updateVideoUI;
+  if (typeof originalUpdateVideoUI === 'function') {
+    window.updateVideoUI = (...args) => {
+      originalUpdateVideoUI(...args);
+      ensureStaticVideoAvailable();
+    };
+  }
 
   const getVideoElements = () => ({
     video: document.getElementById('videoElement'),
@@ -5941,6 +5946,8 @@ setTimeout(() => {
   } else {
     ensureStaticVideoAvailable();
   }
+
+  window.addEventListener('load', ensureStaticVideoAvailable);
 
   document.addEventListener('click', (e) => {
     const offOverlay = document.getElementById('offOverlay');
