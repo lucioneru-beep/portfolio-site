@@ -5759,8 +5759,16 @@ setTimeout(() => {
 
     // Simple toggle: if paused, play; otherwise pause
     if (video.paused) {
+      if (!video.currentSrc && !video.getAttribute('src') && !video.querySelector('source')) {
+        ensureStaticVideoAvailable();
+      }
+
       video.play().catch((err) => {
-        console.warn('Play failed:', err);
+        // Mobile browsers can still reject play requests; retry muted.
+        video.muted = true;
+        video.play().catch((fallbackErr) => {
+          console.warn('Play failed:', err, fallbackErr);
+        });
       });
     } else {
       video.pause();
