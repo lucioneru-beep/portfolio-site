@@ -572,6 +572,260 @@ body.dark .desktop-text { color: rgba(0,255,65,0.4); }
   color: var(--text);
 }
 
+.monitor-lucio-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px outset var(--win-light);
+  background: linear-gradient(180deg, #fff8de 0%, #f0cf75 100%);
+  color: #5a2b00;
+  font-family: 'VT323', monospace;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.monitor-lucio-btn:active {
+  border-style: inset;
+}
+
+.monitor-lucio-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+  font-weight: bold;
+}
+
+#lucioWindow {
+  width: 460px;
+  top: 56px;
+  left: 72px;
+}
+
+.lucio-window .window-titlebar {
+  background: linear-gradient(to right, #5848ff, #b75bff);
+}
+
+.lucio-window .window-title {
+  letter-spacing: 1px;
+}
+
+#lucioWindow .window-body {
+  padding: 8px;
+  background:
+    radial-gradient(circle at 20% 16%, rgba(255,255,255,0.58) 0%, transparent 18%),
+    radial-gradient(circle at 82% 18%, rgba(255,214,244,0.42) 0%, transparent 20%),
+    radial-gradient(circle at 70% 84%, rgba(180,220,255,0.22) 0%, transparent 20%),
+    linear-gradient(180deg, #e9d2ff 0%, #ffd6f0 45%, #dff5ff 100%);
+}
+
+.lucio-scene {
+  position: relative;
+  min-height: 100%;
+  padding: 8px;
+  border: 3px solid #6d56ff;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.72) 0%, transparent 26%),
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.06) 36%, rgba(255,255,255,0.18) 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, #f4c6ef 0%, #f0d6ff 45%, #d9f2ff 100%);
+  overflow: hidden;
+}
+
+.lucio-scene::before,
+.lucio-scene::after {
+  content: '';
+  position: absolute;
+  inset: auto;
+  pointer-events: none;
+  border-radius: 999px;
+  opacity: 0.55;
+}
+
+.lucio-scene::before {
+  width: 110px;
+  height: 110px;
+  left: -20px;
+  top: -18px;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 72%);
+}
+
+.lucio-scene::after {
+  width: 160px;
+  height: 160px;
+  right: -42px;
+  bottom: -58px;
+  background: radial-gradient(circle, rgba(255,185,235,0.72) 0%, rgba(255,185,235,0) 68%);
+}
+
+.lucio-topline {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.lucio-badge {
+  padding: 2px 8px;
+  border: 2px solid #5f4bff;
+  background: linear-gradient(180deg, #fff3fb 0%, #f7d8ff 100%);
+  color: #4c2ea4;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.lucio-mood {
+  padding: 2px 8px;
+  border: 2px solid rgba(88,72,255,0.45);
+  background: rgba(255,255,255,0.72);
+  color: #5d41c9;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.lucio-stage {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.lucio-webcam-frame {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 3px solid #7c6bff;
+  padding: 0;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.78) 0%, transparent 28%),
+    linear-gradient(180deg, rgba(255,220,244,0.86) 0%, rgba(246,226,255,0.86) 42%, rgba(220,243,255,0.86) 100%);
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.45);
+}
+
+.lucio-webcam-frame::before,
+.lucio-webcam-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lucio-webcam-frame::before {
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.28) 0 18px, transparent 18px calc(100% - 18px), rgba(255,255,255,0.28) calc(100% - 18px) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.18) 0 18px, transparent 18px calc(100% - 18px), rgba(255,255,255,0.18) calc(100% - 18px) 100%);
+  mix-blend-mode: screen;
+}
+
+.lucio-webcam-frame::after {
+  background: radial-gradient(circle at 50% 18%, rgba(255,255,255,0.44) 0%, transparent 28%);
+}
+
+.lucio-webcam-frame:active {
+  border-style: inset;
+}
+
+.lucio-webcam-stage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.lucio-sprite-image {
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  transform: translateX(-50%);
+  z-index: 1;
+  width: min(86%, 320px);
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  display: block;
+  margin: 0;
+  image-rendering: auto;
+  filter: drop-shadow(0 10px 14px rgba(0,0,0,0.20));
+}
+
+.lucio-sprite-button::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.9) 0%, transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.36), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+.lucio-dialogue-panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.lucio-nameplate {
+  align-self: flex-start;
+  padding: 2px 10px;
+  border: 2px solid #7d5bff;
+  background: linear-gradient(180deg, #fff1fb 0%, #ffd7f4 100%);
+  color: #5d2f91;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.lucio-dialogue-box {
+  flex: 1 1 auto;
+  min-height: 92px;
+  padding: 10px 12px;
+  border: 2px solid #7d5bff;
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,240,255,0.96));
+  color: var(--text);
+  font-size: clamp(15px, 1.9vw, 20px);
+  line-height: 1.45;
+  cursor: pointer;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6);
+}
+
+.lucio-dialogue-box:active {
+  border-style: inset;
+}
+
+.lucio-window .window-statusbar {
+  justify-content: space-between;
+}
+
+.lucio-window .statusbar-item:last-child {
+  margin-left: auto;
+}
+
 .doro-window-content strong {
   display: block;
   font-size: 34px;
@@ -1670,6 +1924,14 @@ body.dark .faq-q { color: var(--accent); }
   #aboutWindow, #worksWindow, #linksWindow, #faqWindow, #contactsWindow, #videoWindow { width: calc(100% - 20px); left: 10px !important; right: auto !important; }
   .monitor-stickers { right: 16px; bottom: 36px; gap: 5px; }
   .sticker-btn { width: 38px; height: 38px; }
+  #lucioWindow .window-body { padding: 8px; }
+  .lucio-window { width: calc(100vw - 14px) !important; }
+  #lucioWindow { left: 7px !important; right: auto !important; }
+  .lucio-webcam-stage { width: 100%; }
+  .lucio-webcam-frame { aspect-ratio: 16 / 9; }
+  .lucio-webcam-frame { padding: 0; }
+  .lucio-sprite-image { width: min(90%, 280px); max-width: 100%; max-height: 100%; bottom: -2px; }
+  .lucio-dialogue-box { min-height: 82px; }
   .boot-screen { font-size: 10px; }
 }
 </style>
@@ -2423,7 +2685,6 @@ body.dark .faq-q { color: var(--accent); }
 
               <!-- Win95 Desktop -->
               <div class="win95-desktop" id="win95Desktop" style="display:none;" oncontextmenu="showContextMenu(event)">
-
                 <!-- Doro popup window -->
                 <div class="win95-window" id="doroWindow" style="top:120px;left:120px;width:260px;z-index:255;">
                   <div class="window-titlebar">
@@ -2446,6 +2707,44 @@ body.dark .faq-q { color: var(--accent); }
                   </div>
                   <div class="window-statusbar">
                     <div class="statusbar-item">doro</div>
+                  </div>
+                </div>
+
+                <!-- LUCIO WINDOW -->
+                <div class="win95-window lucio-window" id="lucioWindow" style="top:64px;left:352px;width:420px;">
+                  <div class="window-titlebar">
+                    <div class="window-title"><span class="title-icon">📷</span> Webcam</div>
+                    <div class="window-controls">
+                      <div class="win-btn" onclick="minimizeWindow('lucioWindow')">_</div>
+                      <div class="win-btn" style="font-size:7px;">□</div>
+                      <div class="win-btn" onclick="closeWindow('lucioWindow')">✕</div>
+                    </div>
+                  </div>
+                  <div class="window-menubar">
+                    <div class="menu-item">Camera</div>
+                    <div class="menu-item">Expressions</div>
+                    <div class="menu-item">Help</div>
+                  </div>
+                  <div class="window-body" style="padding:0;">
+                    <div class="lucio-scene" id="lucioScene">
+                      <div class="lucio-topline">
+                        <div class="lucio-badge">Webcam</div>
+                        <div class="lucio-mood" id="lucioMoodLabel">greet</div>
+                      </div>
+                      <div class="lucio-webcam-stage">
+                        <button class="lucio-webcam-frame" type="button" onclick="advanceLucioDialogue()" aria-label="Talk to Lucio">
+                          <img id="lucioSpriteImage" class="lucio-sprite-image" src="sprites/greet.png" alt="Lucio greet sprite">
+                        </button>
+                      </div>
+                      <div class="lucio-dialogue-panel">
+                        <div class="lucio-nameplate">LUCIO</div>
+                        <div class="lucio-dialogue-box" id="lucioDialogueText" onclick="advanceLucioDialogue()">yahallo, lucio here!</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="window-statusbar">
+                    <div class="statusbar-item" id="lucioStatusLabel">Mood: greet</div>
+                    <div class="statusbar-item">Lucio</div>
                   </div>
                 </div>
 
@@ -2482,6 +2781,10 @@ body.dark .faq-q { color: var(--accent); }
                   <div class="icon-item" ondblclick="toggleMonitor()" onclick="selectIcon(this)">
                     <div class="icon-img" aria-hidden="true">⚡</div>
                     <div class="icon-label">Shutdown</div>
+                  </div>
+                  <div class="icon-item" ondblclick="openLucioWindow()" onclick="selectIcon(this)" title="lucio.exe">
+                    <div class="icon-img">💬</div>
+                    <div class="icon-label">lucio.exe</div>
                   </div>
                 </div>
 
@@ -3127,7 +3430,7 @@ try {
 }
 
 function moveWindowsOutOfMonitor() {
-  const windowIds = ['aboutWindow','worksWindow','workViewerWindow','linksWindow','faqWindow','contactsWindow','musicWindow','videoWindow','doroWindow'];
+  const windowIds = ['aboutWindow','worksWindow','workViewerWindow','linksWindow','faqWindow','contactsWindow','musicWindow','videoWindow','doroWindow','lucioWindow'];
   const taskbar = document.querySelector('.taskbar');
   windowIds.forEach((id) => {
     const el = document.getElementById(id);
@@ -3197,6 +3500,181 @@ const works = [
     emoji: '💡'
   }
 ];
+
+const lucioScenes = {
+  greet: {
+    mood: 'greet',
+    sprite: 'sprites/greet.png',
+    line: 'yahallo, lucio here!',
+    label: 'opening line'
+  },
+  idle: {
+    mood: 'idle',
+    sprite: 'sprites/idle.png',
+    line: '...\nclick me if you want me to talk again.',
+    label: 'idle state'
+  },
+  talk: {
+    mood: 'talk',
+    sprite: 'sprites/talk.png',
+    dialogues: [
+      "i lowk like drawing, unc, music, and vocaloid.",
+      "if there's a will, there's a way.",
+      'BLESS.'
+    ],
+    label: 'sample dialogue'
+  },
+  nervous: {
+    mood: 'nervous',
+    sprite: 'sprites/nervous.png',
+    dialogues: [
+      "i often collect miku figures and other nerdy stuffs for fun!",
+      "i don't know what else to put in the dialogue, this was all planned in my head ;3;",
+      "i hope my clients don't know that sometimes the reason why i'm late on submitting my works is because i procrastinate..",
+      "i did mentioned that i like collecting.. but i hate that i'm always broke and almost no money because of it.."
+    ],
+    label: 'sample dialogue'
+  },
+  blink: {
+    mood: 'blink',
+    sprite: 'sprites/blink.png',
+    line: 'wait, let me process that for a second.',
+    label: 'sample dialogue'
+  },
+  cryUnc: {
+    mood: 'cry-unc',
+    sprite: 'sprites/cry-unc.png',
+    dialogues: [
+      'unc, you really do hate me..'
+    ],
+    label: 'sample dialogue'
+  }
+};
+
+const lucioDialogueQueue = [
+  { sceneKey: 'talk', dialogueIndex: 0 },
+  { sceneKey: 'nervous', dialogueIndex: 0 },
+  { sceneKey: 'talk', dialogueIndex: 1 },
+  { sceneKey: 'nervous', dialogueIndex: 1 },
+  { sceneKey: 'talk', dialogueIndex: 2 },
+  { sceneKey: 'nervous', dialogueIndex: 2 },
+  { sceneKey: 'nervous', dialogueIndex: 3 },
+  { sceneKey: 'cryUnc', dialogueIndex: 0 },
+  { sceneKey: 'cryUnc', dialogueIndex: 1 }
+];
+let lucioDialogueQueueIndex = 0;
+let lucioIdleTimeout = null;
+let lucioCurrentSceneKey = 'greet';
+let lucioCurrentDialogueEntry = null;
+let lucioHasGreeted = false;
+let lucioBlinkInterval = null;
+let lucioBlinkRestoreTimeout = null;
+let lucioBlinkActive = false;
+
+function startLucioBlinkLoop() {
+  if (lucioBlinkInterval) return;
+  lucioBlinkInterval = window.setInterval(triggerLucioBlink, 10000);
+}
+
+function triggerLucioBlink() {
+  const lucioWindow = document.getElementById('lucioWindow');
+  const spriteEl = document.getElementById('lucioSpriteImage');
+  if (!lucioWindow || !lucioWindow.classList.contains('visible') || !spriteEl || lucioBlinkActive) return;
+
+  const restoreDialogueEntry = lucioCurrentDialogueEntry;
+  lucioBlinkActive = true;
+  spriteEl.src = 'sprites/blink.png';
+  spriteEl.alt = 'Lucio blink sprite';
+
+  clearTimeout(lucioBlinkRestoreTimeout);
+  lucioBlinkRestoreTimeout = setTimeout(() => {
+    lucioBlinkActive = false;
+    if (lucioWindow.classList.contains('visible') && lucioCurrentDialogueEntry === restoreDialogueEntry) {
+      if (restoreDialogueEntry) {
+        renderLucioScene(restoreDialogueEntry.sceneKey, restoreDialogueEntry.dialogueIndex);
+      } else {
+        renderLucioScene(lucioCurrentSceneKey);
+      }
+    }
+  }, 650);
+}
+
+function getLucioDialogueText(sceneKey, dialogueIndex = 0) {
+  const scene = lucioScenes[sceneKey] || lucioScenes.greet;
+  if (Array.isArray(scene.dialogues) && scene.dialogues.length > 0) {
+    return scene.dialogues[Math.min(dialogueIndex, scene.dialogues.length - 1)];
+  }
+  return scene.line || '';
+}
+
+function renderLucioScene(sceneKey, dialogueIndex = 0) {
+  const scene = lucioScenes[sceneKey] || lucioScenes.greet;
+  lucioCurrentSceneKey = sceneKey in lucioScenes ? sceneKey : 'greet';
+
+  const spriteEl = document.getElementById('lucioSpriteImage');
+  const dialogueEl = document.getElementById('lucioDialogueText');
+  const moodEl = document.getElementById('lucioMoodLabel');
+  const statusEl = document.getElementById('lucioStatusLabel');
+  const dialogueText = getLucioDialogueText(lucioCurrentSceneKey, dialogueIndex);
+
+  lucioCurrentDialogueEntry = {
+    sceneKey: lucioCurrentSceneKey,
+    dialogueIndex,
+    text: dialogueText
+  };
+
+  if (spriteEl) {
+    spriteEl.src = scene.sprite;
+    spriteEl.alt = `Lucio ${scene.mood} sprite`;
+  }
+  if (dialogueEl) dialogueEl.textContent = dialogueText;
+  if (moodEl) moodEl.textContent = scene.mood;
+  if (statusEl) statusEl.textContent = `Mood: ${scene.mood}`;
+}
+
+function scheduleLucioIdle() {
+  clearTimeout(lucioIdleTimeout);
+  lucioIdleTimeout = setTimeout(() => {
+    const lucioWindow = document.getElementById('lucioWindow');
+    if (lucioWindow && lucioWindow.classList.contains('visible')) {
+      renderLucioScene('idle');
+      lucioCurrentSceneKey = 'idle';
+    }
+  }, 10000);
+}
+
+function openLucioWindow() {
+  openWindow('lucioWindow');
+  if (!lucioHasGreeted) {
+    lucioHasGreeted = true;
+    lucioDialogueQueueIndex = 0;
+    renderLucioScene('greet');
+  } else {
+    renderLucioScene('idle');
+  }
+  scheduleLucioIdle();
+  startLucioBlinkLoop();
+}
+
+function advanceLucioDialogue() {
+  const lucioWindow = document.getElementById('lucioWindow');
+  if (!lucioWindow || !lucioWindow.classList.contains('visible')) {
+    openLucioWindow();
+    return;
+  }
+
+  if (lucioCurrentSceneKey === 'idle' || lucioCurrentSceneKey === 'greet') {
+    lucioDialogueQueueIndex = 1;
+    renderLucioScene('talk', 0);
+    scheduleLucioIdle();
+    return;
+  }
+
+  const dialogueEntry = lucioDialogueQueue[lucioDialogueQueueIndex];
+  lucioDialogueQueueIndex = (lucioDialogueQueueIndex + 1) % lucioDialogueQueue.length;
+  renderLucioScene(dialogueEntry.sceneKey, dialogueEntry.dialogueIndex);
+  scheduleLucioIdle();
+}
 
 // ===== CLOCK =====
 function updateClock() {
@@ -3460,6 +3938,9 @@ function powerOn() {
 
 function powerOff() {
   isOn = false;
+  clearTimeout(lucioIdleTimeout);
+  clearTimeout(lucioBlinkRestoreTimeout);
+  lucioBlinkActive = false;
   const monitor = document.getElementById('monitor');
   const content = document.getElementById('screenContent');
   content.classList.remove('turning-on');
@@ -3563,6 +4044,12 @@ function closeWindow(id) {
   const w = document.getElementById(id);
   if(!w) return;
 
+  if (id === 'lucioWindow') {
+    clearTimeout(lucioIdleTimeout);
+    clearTimeout(lucioBlinkRestoreTimeout);
+    lucioBlinkActive = false;
+  }
+
   // Stop any playing video in this window when closing it.
   w.querySelectorAll('video').forEach((videoEl) => {
     try {
@@ -3594,14 +4081,14 @@ function minimizeWindow(id) {
 }
 
 function openAllWindows() {
-  ['aboutWindow','worksWindow','linksWindow','faqWindow','contactsWindow','musicWindow','videoWindow'].forEach(openWindow);
+  ['aboutWindow','worksWindow','linksWindow','faqWindow','contactsWindow','musicWindow','videoWindow','lucioWindow'].forEach(openWindow);
   document.querySelectorAll('.doro-instance').forEach((el) => {
     el.classList.add('visible', 'active');
     bringToFront(el.id);
   });
 }
 function closeAllWindows() {
-  ['aboutWindow','worksWindow','linksWindow','faqWindow','contactsWindow','workViewerWindow','musicWindow','videoWindow'].forEach(closeWindow);
+  ['aboutWindow','worksWindow','linksWindow','faqWindow','contactsWindow','workViewerWindow','musicWindow','videoWindow','lucioWindow'].forEach(closeWindow);
   document.querySelectorAll('.doro-instance').forEach((el) => closeWindow(el.id));
 }
 
@@ -3675,6 +4162,7 @@ function updateTaskbar() {
     {id:'contactsWindow', icon:'📧', label:'Contact'},
     {id:'musicWindow', icon:'♪', label:'Music'},
     {id:'videoWindow', icon:'🎬', label:'MP4'},
+    {id:'lucioWindow', icon:'💬', label:'Lucio'},
   ];
   wins.forEach(w => {
     const el = document.getElementById(w.id);
